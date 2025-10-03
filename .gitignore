@@ -1,0 +1,13 @@
+# Visual Studio user-specific files
+.vs/
+*.user
+*.suo
+
+# Build results
+bin/
+obj/
+Debug/
+Release/
+
+# Others
+*.log
