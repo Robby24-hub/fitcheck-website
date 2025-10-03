@@ -1,0 +1,151 @@
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/Registration.css" type="text/css" />
+    <link rel="icon" href="/images_fitcheck/fitcheckicon.png" />
+    <title>Registration | FitCheck Gym</title>
+</head>
+<body>
+    <header>
+        <div class="brand-container">
+            <img alt="logo" class="logo" src="/images_fitcheck/fitcheckicon.png">
+            <h1 class="brand">FITCHECK</h1>
+        </div>
+        <nav class="navbar">
+            <a href="/">Home</a>
+            <a href="/Account/Membership">Membership</a>
+            <a href="#">Classes</a>
+            <a href="#">About Us</a>
+            <a href="/Account/Login">Log In</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="outer-container">
+            <div class="container">
+                <h1 class="txt-membership-registration">FITCHECK MEMBERSHIP REGISTRATION</h1>
+                <form class="registration-form" method="post" asp-controller="Account" asp-action="Register">
+                    <!-- Personal Information -->
+                    <section class="form-section">
+                        <h2 class="section-title">PERSONAL INFORMATION</h2>
+                        <div class="form-group">
+                            <div class="input-row">
+                                <input type="text" name="fullName" placeholder="Full Name" class="input-field large" required>
+                                <select name="gender" class="input-field small" required>
+                                    <option value="">Gender</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            <div class="input-row">
+                                <input type="date" name="birthday" placeholder="Birthday" class="input-field medium" required>
+                                <input type="number" name="age" placeholder="Age" class="input-field small" required>
+                            </div>
+                            <div class="input-row">
+                                <input type="tel" name="contactNumber" placeholder="Contact Number" class="input-field medium" required>
+                                <input type="email" name="email" placeholder="Email Address" class="input-field medium" required>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Membership Plan -->
+                    <section class="form-section">
+                        <h2 class="section-title">MEMBERSHIP PLAN</h2>
+                        <div class="form-group">
+                            <select name="membershipPlan" class="input-field full" required>
+                                <option value="">Select Membership Plan</option>
+                                <option value="basic">Basic - 1 Month</option>
+                                <option value="standard">Standard - 3 Months</option>
+                                <option value="premium">Premium - 6 Months</option>
+                                <option value="annual">Annual - 12 Months</option>
+                            </select>
+                        </div>
+                    </section>
+
+                    <!-- Payment Information -->
+                    <section class="form-section">
+                        <h2 class="section-title">PAYMENT INFORMATION</h2>
+                        <div class="form-group">
+                            <select name="paymentMethod" class="input-field full" required>
+                                <option value="">Select Payment Method</option>
+                                <option value="credit">Credit Card</option>
+                                <option value="debit">Debit Card</option>
+                                <option value="cash">Cash</option>
+                                <option value="bank">Bank Transfer</option>
+                            </select>
+                        </div>
+                    </section>
+
+                    <!-- Account Setup -->
+                    <section class="form-section">
+                        <h2 class="section-title">ACCOUNT SETUP</h2>
+                        <div class="form-group">
+                            <input type="text" name="username" placeholder="Create Username" class="input-field full" required>
+                            <input type="password" name="password" placeholder="Create Password" class="input-field full" required>
+                            <input type="password" name="confirmPassword" placeholder="Confirm Password" class="input-field full" required>
+                        </div>
+                    </section>
+
+                    <!-- Terms and Conditions -->
+                    <div class="terms-section">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="agreeTerms" class="checkbox" required>
+                            <span>I agree to the <a href="#" class="link">Terms and Conditions</a></span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="agreePrivacy" class="checkbox" required>
+                            <span>I agree to the <a href="#" class="link">Privacy Policy</a></span>
+                        </label>
+                    </div>
+
+                    <!-- Register Button -->
+                    <button type="submit" class="register-btn">REGISTER</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <div class="hr-container">
+        <hr>
+    </div>
+    <footer>
+        <div class="footer-container">
+            <div class="left-side-footer">
+                <div class="description-footer">
+                    <img class="fitcheck-logo-footer" src="/images_fitcheck/fitcheckicon.png">
+                    <p>Transform your body and mind at FitCheck Gym. With state-of-the-art equipment, expert trainers, and a supportive community, we're here to help you achieve your fitness goals.</p>
+                </div>
+                <div class="follow-socials-container">
+                    <h4 class="follow-us-footer">FOLLOW US</h4>
+                    <div class="social-media-container">
+                        <a target="_blank" href="https://www.facebook.com/"><img src="/images_fitcheck/icon_fb-removebg-preview.png"></a>
+                        <a target="_blank" href="https://www.linkedin.com/"><img src="/images_fitcheck/Icon_linkedin-removebg-preview.png"></a>
+                        <a target="_blank" href="https://www.youtube.com/"><img src="/images_fitcheck/icon_youtube-removebg-preview.png"></a>
+                        <a target="_blank" href="https://www.instagram.com/"><img src="/images_fitcheck/icon_instagram-removebg-preview.png"></a>
+                    </div>
+                </div>
+            </div>
+            <div class="right-side-footer">
+                <div class="address">
+                    <img src="/images_fitcheck/icon_location-removebg-preview.png">
+                    <p>Street 1, Congressional Rd Caloocan City</p>
+                </div>
+                <div class="email-address">
+                    <img src="/images_fitcheck/icon_email-removebg-preview.png">
+                    <p>info@fitcheckgym.com</p>
+                </div>
+                <div class="contact-number">
+                    <img src="/images_fitcheck/icon_mobile-removebg-preview.png">
+                    <p>09192344890 / 09365144587</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

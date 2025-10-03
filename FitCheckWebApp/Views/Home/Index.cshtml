@@ -1,8 +1,138 @@
-ï»¿@{
-    ViewData["Title"] = "Home Page";
+@{
+    Layout = null;
 }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSS - FIXED -->
+    <link rel="stylesheet" href="~/css/LandingPage.css" asp-append-version="true" />
+    <!-- Favicon -->
+    <link rel="icon" href="~/images_fitcheck/fitcheckicon.png" />
+    <title>FitCheck Gym</title>
+</head>
+<body>
+    <header>
+        <div class="brand-container">
+            <img asp-append-version="true" src="~/images_fitcheck/fitcheckicon.png" alt="logo" class="logo" />
+            <h1 class="brand">FITCHECK</h1>
+        </div>
+        <nav class="navbar">
+            <a asp-controller="Home" asp-action="Index">Home</a>
+            <a asp-controller="Account" asp-action="Membership">Membership</a>
+            <a href="#">Classes</a>
+            <a href="#">About Us</a>
+            <a asp-controller="Account" asp-action="Login">Log In</a>
+        </nav>
+    </header>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+    <main>
+        <section class="hero">
+            <div class="container">
+                <div class="header-phrase">
+                    <h1><span class="make">MAKE</span> <span class="your">YOUR</span></h1>
+                    <h1><span class="body">BODY</span> <span class="shape">SHAPE</span></h1>
+                </div>
+                <p>WITH THE WIDEST RANGE OF CARDIO, STRENGTH AND GROUP TRAINING EQUIPMENT IN THE FITNESS INDUSTRY, OUR MISSION IS TO SOLUTIONS</p>
+                <button>START NOW</button>
+            </div>
+        </section>
+
+        <section class="black-background">
+            <h3 class="why-choose">WHY CHOOSE US?</h3>
+            <div class="grid-container">
+                <img class="grid-item-image" src="~/images_fitcheck/imageitem1.jpg" alt="imageitem1">
+                <div class="grid-item-text">
+                    <h3>MODERN EQUIPMENT</h3>
+                    <p>State-of-the-art equipment for strength and cardio. Train safely, efficiently, and effectively with the latest machines.</p>
+                </div>
+
+                <img class="grid-item-image" src="~/images_fitcheck/imageitem2.jpg" alt="imageitem2">
+                <div class="grid-item-text">
+                    <h3>24/7 GYM ACCESS</h3>
+                    <p>Workout on your schedule—our gym is open 24/7 so you can train anytime, day or night.</p>
+                </div>
+
+                <img class="grid-item-image" src="~/images_fitcheck/imageitem3.jpg" alt="imageitem3">
+                <div class="grid-item-text">
+                    <h3>GROUP FITNESS CLASSES</h3>
+                    <p>HIIT, Yoga, Zumba, Spin & more—energizing classes for every goal, from strength and flexibility to fun group workouts.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-3">
+            <div class="section-3-content">
+                <div class="find-strength-title">
+                    <h1>FIN<span>D</span> YOUR</h1>
+                    <h1>STRENG<span>T</span>H</h1>
+                </div>
+                <h3 class="subtitle">Unlock Your Exclusive Gym Pass</h3>
+            </div>
+        </section>
+
+        <section class="membership-section">
+            <div class="membership-section-title">
+                <h6>Billed Monthly</h6>
+                <h2>MEMBERSHIP</h2>
+            </div>
+            <div class="membership-section-grid-container">
+                <div class="fitstart">
+                    <h2>FITSTART</h2>
+                    <p>Perfect for all beginners who want unlimited full gym access at an affordable monthly rate.</p>
+                    <button class="btn-view-plans">View Plans</button>
+                </div>
+                <div class="fitelite">
+                    <h2>FITELITE</h2>
+                    <p>Designed for individuals who seek more than just a workout, our gym offers the ultimate fitness lifestyle with a touch of exclusivity. Here, you'll find premium facilities, personalized experiences, and an environment tailored for those who value health, performance, and luxury.</p>
+                    <button class="btn-view-plans">View Plans</button>
+                </div>
+                <div class="fitpro">
+                    <h2>FITPRO</h2>
+                    <p>Perfect for dedicated gym-goers who want variety in their workouts, consistent motivation, and extra benefits that elevate their fitness journey.</p>
+                    <button class="btn-view-plans">View Plans</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="hr-container">
+        <hr>
+    </div>
+
+    <footer>
+        <div class="footer-container">
+            <div class="left-side-footer">
+                <div class="description-footer">
+                    <img class="fitcheck-logo-footer" src="~/images_fitcheck/fitcheckicon.png">
+                    <p>Transform your body and mind at FitCheck Gym. With state-of-the-art equipment, expert trainers, and a supportive community, we're here to help you achieve your fitness goals.</p>
+                </div>
+                <div class="follow-socials-container">
+                    <h4 class="follow-us-footer">FOLLOW US</h4>
+                    <div class="social-media-container">
+                        <a target="_blank" href="https://www.facebook.com/"><img src="~/images_fitcheck/icon_fb-removebg-preview.png"></a>
+                        <a target="_blank" href="https://www.linkedin.com/"><img src="~/images_fitcheck/Icon_linkedin-removebg-preview.png"></a>
+                        <a target="_blank" href="https://www.youtube.com/"><img src="~/images_fitcheck/icon_youtube-removebg-preview.png"></a>
+                        <a target="_blank" href="https://www.instagram.com/"><img src="~/images_fitcheck/icon_instagram-removebg-preview.png"></a>
+                    </div>
+                </div>
+            </div>
+            <div class="right-side-footer">
+                <div class="address">
+                    <img src="~/images_fitcheck/icon_location-removebg-preview.png">
+                    <p>Street 1, Congressional Rd Caloocan City</p>
+                </div>
+                <div class="email-address">
+                    <img src="~/images_fitcheck/icon_email-removebg-preview.png">
+                    <p>info@fitcheckgym.com</p>
+                </div>
+                <div class="contact-number">
+                    <img src="~/images_fitcheck/icon_mobile-removebg-preview.png">
+                    <p>09192344890 / 09365144587</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
