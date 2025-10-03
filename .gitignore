@@ -1,13 +1,40 @@
-# Visual Studio user-specific files
+# Visual Studio
 .vs/
-*.user
 *.suo
+*.user
+*.userosscache
+*.sln.docstates
 
 # Build results
 bin/
 obj/
 Debug/
 Release/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+
+# NuGet
+*.nupkg
+*.snupkg
+*.nuspec
+packages/
+*.dll
+*.exe
+
+# Logs
+*.log
+
+# Publish
+publish/
+*.Publish.xml
 
 # Others
-*.log
+*.tmp
+*.temp
+*.dbmdl
+*.bak
