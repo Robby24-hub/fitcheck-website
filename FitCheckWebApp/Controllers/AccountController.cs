@@ -1,16 +1,17 @@
+using FitCheckWebApp.DataAccess;
+using FitCheckWebApp.Models;
+using FitCheckWebApp.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FitCheckWebApp.Controllers
 {
     public class AccountController : Controller
     {
-        // Login page (GET)
         public IActionResult Login()
         {
             return View();
         }
 
-        // Login form submission (POST)
         [HttpPost]
         public IActionResult Login(string email, string password)
         {
@@ -18,22 +19,41 @@ namespace FitCheckWebApp.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        // Registration page (GET)
+
         public IActionResult Register()
         {
             return View();
         }
 
-        // Registration form submission (POST)
+
         [HttpPost]
         [ActionName("Register")]
-        public IActionResult RegisterPost(string email, string password, string confirmPassword)
+        public IActionResult RegisterPost(RegistrationViewModel model)
         {
-            // TODO: Add registration logic here
+
+            if (!ModelState.IsValid)
+            {
+                return View(model); 
+            }
+
+            var account = new Account
+            {
+
+                Username = model.Username,
+                Email = model.Email,
+                PasswordHash = Helpers.Helpers.HashingPassword(model.Password!),
+                MembershipID = Helpers.Helpers.MapMemberShipToID(model.MembershipPlan)
+
+            };
+
+            AccountManager.PostAccount(account);
+
+
+            TempData["SuccessMessage"] = "Registration successful! Please log in.";
             return RedirectToAction("Login");
         }
 
-        // Membership page
+
         public IActionResult Membership()
         {
             return View();
