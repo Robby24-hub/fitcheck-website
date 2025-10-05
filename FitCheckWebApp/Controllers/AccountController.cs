@@ -13,10 +13,22 @@ namespace FitCheckWebApp.Controllers
         }
 
         [HttpPost]
-        public IActionResult Login(string email, string password)
+        public IActionResult Login(LoginViewModel loginModel)
         {
-            // TODO: Add authentication logic here
-            return RedirectToAction("Index", "Home");
+
+            var account = AccountManager.FindByEmail(loginModel.Email!);
+
+            if (account != null && Helpers.Helpers.verifyPassword(loginModel.Password!, account.PasswordHash!))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                ModelState.AddModelError("", "Invalid email or password");
+                return View();
+            }
+
+            
         }
 
 
@@ -28,21 +40,30 @@ namespace FitCheckWebApp.Controllers
 
         [HttpPost]
         [ActionName("Register")]
-        public IActionResult RegisterPost(RegistrationViewModel model)
+        public IActionResult RegisterPost(RegistrationViewModel registerModel)
         {
 
             if (!ModelState.IsValid)
             {
-                return View(model); 
+                return View(registerModel); 
+            }
+
+            var existingAccount = AccountManager.FindByEmail(registerModel.Email!);
+
+            if (existingAccount != null)
+            {
+
+                ModelState.AddModelError("Email", "Account already exists.");
+                return View(registerModel);
             }
 
             var account = new Account
             {
 
-                Username = model.Username,
-                Email = model.Email,
-                PasswordHash = Helpers.Helpers.HashingPassword(model.Password!),
-                MembershipID = Helpers.Helpers.MapMemberShipToID(model.MembershipPlan)
+                Username = registerModel.Username,
+                Email = registerModel.Email,
+                PasswordHash = Helpers.Helpers.HashingPassword(registerModel.Password!),
+                MembershipID = Helpers.Helpers.MapMemberShipToID(registerModel.MembershipPlan)
 
             };
 

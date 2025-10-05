@@ -36,6 +36,47 @@ namespace FitCheckWebApp.DataAccess
 
         }
 
+        public static Account? FindByEmail(string email)
+        {
+
+            using (var connection = new MySqlConnection(connectionString))
+            {
+                connection.Open();
+
+                using (var cmd = connection.CreateCommand())
+                {
+
+                    cmd.CommandText =
+                        @"SELECT Id, Username, PasswordHash, Email, Role, MembershipID, DateCreated, IsActive
+                            FROM account
+                            WHERE Email = @email";
+
+                    cmd.Parameters.AddWithValue("@email", email);
+
+                    using var reader = cmd.ExecuteReader();
+                    if (reader.Read())
+                    {
+                        return new Account
+                        {
+                            Id = reader.GetInt32("Id"),
+                            Username = reader.GetString("Username"),
+                            PasswordHash = reader.GetString("PasswordHash"),
+                            Email = reader.GetString("Email"),
+                            Role = reader.GetString("Role"),
+                            MembershipID = reader.IsDBNull(reader.GetOrdinal("MembershipID")) ? null : reader.GetInt32("MembershipID"),
+                            DateCreated = reader.GetDateTime("DateCreated"),
+                            IsActive = reader.GetBoolean("IsActive")
+                        };
+                    }
+
+                    return null;
+
+
+                }
+            }
+
+        }
+
     }
 }
     

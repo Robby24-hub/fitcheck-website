@@ -52,7 +52,7 @@ namespace FitCheckWebApp.Models.Database
                             Id INT AUTO_INCREMENT PRIMARY KEY,
                             Username VARCHAR(100) NOT NULL UNIQUE,
                             PasswordHash TEXT NOT NULL,
-                            Email VARCHAR(150),
+                            Email VARCHAR(150) NOT NULL UNIQUE,
                             Role ENUM('admin', 'trainer', 'user') DEFAULT 'user',
                             MembershipID INT NULL,
                             DateCreated DATETIME DEFAULT CURRENT_TIMESTAMP,

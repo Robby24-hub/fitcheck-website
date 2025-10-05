@@ -31,6 +31,13 @@ namespace FitCheckWebApp.Helpers
 
         }
 
+        public static Boolean verifyPassword(string passwordInput, string storedHash)
+        {
+
+            return BCrypt.Net.BCrypt.EnhancedVerify(passwordInput, storedHash);
+
+        }
+
 
     }
 }
