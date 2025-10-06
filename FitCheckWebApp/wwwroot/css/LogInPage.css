@@ -81,14 +81,16 @@ main {
 
 .form-container {
     background-color: black;
-    padding: 2rem;
-    justify-content:center;
-    width: 40%;
+    padding: 2rem 3rem;
+    justify-content: center;
+    width: 180%;
+    max-width: 800px;
+    transform: translateX(-23%);
     border: solid black;
     border-radius: 3rem;
     display: flex;
     flex-direction: column;
-    gap: 1.2rem;
+    gap: 1.3rem;
 }
 
 .txt-sign-in {

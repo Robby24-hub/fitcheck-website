@@ -38,5 +38,10 @@ namespace FitCheckWebApp.Controllers
         {
             return View();
         }
+
+        public IActionResult TermsAndConditions()
+        {
+            return View();
+        }
     }
 }
