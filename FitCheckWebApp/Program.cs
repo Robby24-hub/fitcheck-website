@@ -1,3 +1,5 @@
+using FitCheckWebApp.Models.Database;
+
 namespace FitCheckWebApp
 {
     public class Program
@@ -6,8 +8,12 @@ namespace FitCheckWebApp
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            var connectionString = builder.Configuration.GetConnectionString("LocalMySql");
+
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            DataBaseInitializer.InitializeDB();
 
             var app = builder.Build();
 

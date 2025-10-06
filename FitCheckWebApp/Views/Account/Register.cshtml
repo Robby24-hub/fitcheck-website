@@ -1,6 +1,9 @@
 @{
     Layout = null;
 }
+
+@model FitCheckWebApp.ViewModels.RegistrationViewModel
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,73 +38,114 @@
                         <h2 class="section-title">PERSONAL INFORMATION</h2>
                         <div class="form-group">
                             <div class="input-row">
-                                <input type="text" name="fullName" placeholder="Full Name" class="input-field large" required>
-                                <select name="gender" class="input-field small" required>
+
+                                <input asp-for="FullName" type="text" name="fullName" placeholder="Full Name" class="input-field large" >
+                                <span asp-validation-for="FullName" class="text-danger"></span>
+
+                                <select asp-for="Gender" name="gender" class="input-field small" >
+                                <span asp-validation-for="Gender" class="text-danger"></span>
                                     <option value="">Gender</option>
                                     <option value="Male">Male</option>
                                     <option value="Female">Female</option>
                                     <option value="Other">Other</option>
                                 </select>
+
                             </div>
+
                             <div class="input-row">
-                                <input type="date" name="birthday" placeholder="Birthday" class="input-field medium" required>
-                                <input type="number" name="age" placeholder="Age" class="input-field small" required>
+
+                                <input asp-for="Birthday" type="date" name="birthday" placeholder="Birthday" class="input-field medium" >
+                                <span asp-validation-for="Birthday" class="text-danger"></span>
+
+                                <input asp-for="Age" type="number" name="age" placeholder="Age" class="input-field small" >
+                                <span asp-validation-for="Age" class="text-danger"></span>
+
                             </div>
+
                             <div class="input-row">
-                                <input type="tel" name="contactNumber" placeholder="Contact Number" class="input-field medium" required>
-                                <input type="email" name="email" placeholder="Email Address" class="input-field medium" required>
+
+                                <input asp-for="ContactNumber" type="tel" name="contactNumber" placeholder="Contact Number" class="input-field medium" >
+                                <span asp-validation-for="ContactNumber" class="text-danger"></span>
+
+                                <input asp-for="Email" type="email" name="email" placeholder="Email Address" class="input-field medium" >
+                                <span asp-validation-for="Email" class="text-danger"></span>
+
                             </div>
+
                         </div>
                     </section>
 
                     <!-- Membership Plan -->
                     <section class="form-section">
                         <h2 class="section-title">MEMBERSHIP PLAN</h2>
+
                         <div class="form-group">
-                            <select name="membershipPlan" class="input-field full" required>
+
+                            <select asp-for="MembershipPlan" name="membershipPlan" class="input-field full" >
+                            <span asp-validation-for="MembershipPlan" class="text-danger"></span>
                                 <option value="">Select Membership Plan</option>
-                                <option value="basic">Basic - 1 Month</option>
-                                <option value="standard">Standard - 3 Months</option>
-                                <option value="premium">Premium - 6 Months</option>
-                                <option value="annual">Annual - 12 Months</option>
+                                <option value="FitStart">FitStart - 1 Month</option>
+                                <option value="FitElite">FitElite - 1 Month</option>
+                                <option value="FitPro">FitPro - 1 Month</option>
                             </select>
+
                         </div>
+
                     </section>
 
                     <!-- Payment Information -->
                     <section class="form-section">
                         <h2 class="section-title">PAYMENT INFORMATION</h2>
+
                         <div class="form-group">
-                            <select name="paymentMethod" class="input-field full" required>
+                                
+                            <select asp-for="PaymentMethod" name="paymentMethod" class="input-field full" >
+                            <span asp-validation-for="PaymentMethod" class="text-danger"></span>
                                 <option value="">Select Payment Method</option>
                                 <option value="credit">Credit Card</option>
                                 <option value="debit">Debit Card</option>
                                 <option value="cash">Cash</option>
-                                <option value="bank">Bank Transfer</option>
                             </select>
+
                         </div>
+
                     </section>
 
                     <!-- Account Setup -->
                     <section class="form-section">
                         <h2 class="section-title">ACCOUNT SETUP</h2>
                         <div class="form-group">
-                            <input type="text" name="username" placeholder="Create Username" class="input-field full" required>
-                            <input type="password" name="password" placeholder="Create Password" class="input-field full" required>
-                            <input type="password" name="confirmPassword" placeholder="Confirm Password" class="input-field full" required>
+                            <input asp-for="Username" type="text" name="username" placeholder="Create Username" class="input-field full" >
+                            <span asp-validation-for="Username" class="text-danger"></span>
+
+                            <input asp-for="Password" type="password" name="password" placeholder="Create Password" class="input-field full" >
+                            <span asp-validation-for="Username" class="text-danger"></span>
+
+                            <input asp-for="ConfirmPassword "type="password" name="confirmPassword" placeholder="Confirm Password" class="input-field full" >
+                            <span asp-validation-for="Username" class="text-danger"></span>
+
                         </div>
                     </section>
 
                     <!-- Terms and Conditions -->
                     <div class="terms-section">
+
                         <label class="checkbox-label">
-                            <input type="checkbox" name="agreeTerms" class="checkbox" required>
+
+                            <input asp-for="AgreeTerms" type="checkbox" name="agreeTerms" class="checkbox">
                             <span>I agree to the <a href="#" class="link">Terms and Conditions</a></span>
+
                         </label>
+                        <span asp-validation-for="AgreeTerms" class="text-danger"></span>
+
                         <label class="checkbox-label">
-                            <input type="checkbox" name="agreePrivacy" class="checkbox" required>
+
+                            <input asp-for="AgreePrivacy" type="checkbox" name="agreePrivacy" class="checkbox">
                             <span>I agree to the <a href="#" class="link">Privacy Policy</a></span>
+
                         </label>
+                        <span asp-validation-for="AgreePrivacy" class="text-danger"></span>
+
                     </div>
 
                     <!-- Register Button -->
