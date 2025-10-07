@@ -5,11 +5,11 @@
 @model FitCheckWebApp.ViewModels.RegistrationViewModel
 
 <!DOCTYPE html>
-<html lang="en" id="terms-and-conditions">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/Registration.css" asp-append-version="true" />
+    <link rel="stylesheet" href="/css/Registration.css" type="text/css" />
     <link rel="icon" href="/images_fitcheck/fitcheckicon.png" />
     <title>Registration | FitCheck Gym</title>
 </head>
@@ -84,9 +84,6 @@
                             <select asp-for="MembershipPlan" name="membershipPlan" class="input-field full" >
                             <span asp-validation-for="MembershipPlan" class="text-danger"></span>
                                 <option value="">Select Membership Plan</option>
-                                <option value="fitstart">FitStart</option>
-                                <option value="fitpro">FitPro</option>
-                                <option value="fitelite">FitElite</option>
                                 <option value="FitStart">FitStart - 1 Month</option>
                                 <option value="FitElite">FitElite - 1 Month</option>
                                 <option value="FitPro">FitPro - 1 Month</option>
@@ -134,8 +131,6 @@
                     <div class="terms-section">
 
                         <label class="checkbox-label">
-                            <input type="checkbox" name="agreeTerms" class="checkbox" required>
-                            <span>I agree to the <a href="/Account/TermsAndConditions" class="link">Terms and Conditions</a></span>
 
                             <input asp-for="AgreeTerms" type="checkbox" name="agreeTerms" class="checkbox">
                             <span>I agree to the <a href="#" class="link">Terms and Conditions</a></span>
@@ -144,8 +139,6 @@
                         <span asp-validation-for="AgreeTerms" class="text-danger"></span>
 
                         <label class="checkbox-label">
-                            <input type="checkbox" name="agreePrivacy" class="checkbox" required>
-                            <span>I agree to the <a href="/Account/PrivacyPolicy" class="link">Privacy Policy</a></span>
 
                             <input asp-for="AgreePrivacy" type="checkbox" name="agreePrivacy" class="checkbox">
                             <span>I agree to the <a href="#" class="link">Privacy Policy</a></span>
@@ -157,14 +150,8 @@
 
                     <!-- Register Button -->
                     <button type="submit" class="register-btn">REGISTER</button>
-
-				</form>
-				<p class="txt-login-here">
-					Already have an account?
-					<a asp-controller="Account" asp-action="Login">Log In Here</a>
-				</p>
-			</div>
-            
+                </form>
+            </div>
         </div>
     </main>
 
