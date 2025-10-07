@@ -1,0 +1,144 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Corrected MVC linking syntax -->
+    <link rel="stylesheet" href="~/css/TermsAndConditions.css" asp-append-version="true">
+    <link rel="icon" href="~/images_fitcheck/fitcheckicon.png" type="image/png">
+    <title>Terms And Conditions | Fitcheck Gym</title>
+</head>
+<body>
+    <header>
+        <div class="brand-container">
+            <img alt="logo" class="logo" src="~/images_fitcheck/fitcheckicon.png">
+            <h1 class="brand">FITCHECK</h1>
+        </div>
+        <nav class="navbar">
+            <a asp-controller="Home" asp-action="Index">Home</a>
+            <a asp-controller="Account" asp-action="Membership">Membership</a>
+            <a href="#">Classes</a>
+            <a href="#">About Us</a>
+            <a asp-controller="Account" asp-action="Login">Log In</a>
+
+
+        </nav>
+    </header>
+
+    <main>
+        <div class="t-and-c-container">
+			<h1>Terms And Conditions</h1>
+			<ol>
+				<li>
+					Membership Eligibility
+					<ul>
+						<li>Members must be at least 16 years old. Those under 18 require parental/guardian consent.</li>
+						<li>Memberships are non-transferable and valid only for the registered member.</li>
+					</ul>
+				</li>
+				<li>
+					Gym Access & Conduct
+					<ul>
+						<li>Members must present their membership pass upon entry.</li>
+						<li>Proper gym attire and footwear are required.</li>
+						<li>Members must follow staff instructions and gym rules at all times.</li>
+						<li>The gym reserves the right to suspend or terminate memberships for inappropriate or unsafe behavior.</li>
+					</ul>
+				</li>
+				<li>
+					Health & Safety
+					<ul>
+						<li>Members confirm they are physically fit to participate in exercise activities.</li>
+						<li>Members with medical conditions or injuries must inform gym staff prior to participation.</li>
+						<li>The gym is not responsible for injuries sustained due to misuse of equipment or failure to follow instructions.</li>
+					</ul>
+				</li>
+				<li>
+					Membership Plans & Payments
+					<ul>
+						<li>All membership fees are payable in advance according to the selected plan.</li>
+						<li>Payments are non-refundable, except where required by law.</li>
+						<li>Failure to pay fees on time may result in suspension of access.</li>
+						<li>Auto-renewal (if enabled) will charge the registered payment method at the end of each term.</li>
+					</ul>
+				</li>
+				<li>
+					Cancellations & Freezing Membership
+					<ul>
+						<li>Members may request cancellation or freezing of membership by providing at least 15 days’ notice before the next billing cycle.</li>
+						<li>Requests must be made in writing or through the member portal.</li>
+					</ul>
+				</li>
+				<li>
+					Liability Waiver
+					<ul>
+						<li>By registering, members agree to use the facilities at their own risk.</li>
+						<li>The gym, its staff, and affiliates are not liable for personal injury, loss, or damage to personal property.</li>
+					</ul>
+				</li>
+			</ol>
+			<div class="btn-container">
+                <a asp-controller="Account" asp-action="Register"><button class="return-btn">Return to Registration</button></a>
+            </div>
+        </div>
+        
+        
+    </main>
+
+    <div class="hr-container">
+        <hr>
+    </div>
+
+    <footer>
+        <div class="footer-container">
+            <div class="left-side-footer">
+                <div class="description-footer">
+                    <img class="fitcheck-logo-footer" src="~/images_fitcheck/fitcheckicon.png">
+                    <p>
+                        Transform your body and mind at FitCheck Gym. With state-of-the-art equipment,
+                        expert trainers, and a supportive community, we're here to help you achieve your fitness goals.
+                    </p>
+                </div>
+
+                <div class="follow-socials-container">
+                    <h4 class="follow-us-footer">FOLLOW US</h4>
+                    <div class="social-media-container">
+                        <a target="_blank" href="https://www.facebook.com/">
+                            <img src="~/images_fitcheck/icon_fb-removebg-preview.png">
+                        </a>
+                        <a target="_blank" href="https://www.linkedin.com/">
+                            <img src="~/images_fitcheck/Icon_linkedin-removebg-preview.png">
+                        </a>
+                        <a target="_blank" href="https://www.youtube.com/">
+                            <img src="~/images_fitcheck/icon_youtube-removebg-preview.png">
+                        </a>
+                        <a target="_blank" href="https://www.instagram.com/">
+                            <img src="~/images_fitcheck/icon_instagram-removebg-preview.png">
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="right-side-footer">
+                <div class="address">
+                    <img src="~/images_fitcheck/icon_location-removebg-preview.png">
+                    <p>Street 1, Congressional Rd Caloocan City</p>
+                </div>
+                <div class="email-address">
+                    <img src="~/images_fitcheck/icon_email-removebg-preview.png">
+                    <p>info@fitcheckgym.com</p>
+                </div>
+                <div class="contact-number">
+                    <img src="~/images_fitcheck/icon_mobile-removebg-preview.png">
+                    <p>09192344890 / 09365144587</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
+
