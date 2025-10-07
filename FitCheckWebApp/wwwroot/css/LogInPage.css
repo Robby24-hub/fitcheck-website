@@ -271,7 +271,6 @@ footer .right-side-footer {
 .right-side-footer {
     flex-direction: column;
     gap: 1rem;
-
     flex: 1;
 }
 
