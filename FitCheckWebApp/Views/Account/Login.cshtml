@@ -1,6 +1,9 @@
 @{
     Layout = null;
 }
+
+@model FitCheckWebApp.ViewModels.LoginViewModel
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,11 +41,21 @@
                 <div>
                     <h5 class="txt-email">Email</h5>
                     <input type="email" name="Email" class="email-field" required>
+        <div class="form-container">
+            <h2 class="txt-sign-in">Sign in to your account</h2>
+            <form method="post" asp-controller="Account" asp-action="Login">
+
+                <div>
+                    <h5 class="txt-email">Email</h5>
+                    <input asp-for="Email" type="email" name="email" class="email-field"/>
+                    <span asp-validation-for="Email" class ="text-danger"></span>
                 </div>
 
                 <div>
                     <h5 class="txt-password">Password</h5>
                     <input type="password" name="Password" class="password-field" required>
+                    <input asp-for="Password" type="password" name="password" class="password-field"/>
+                    <span asp-validation-for="Password" class ="text-danger"></span>
                 </div>
 
                 <a asp-controller="Account" asp-action="ForgotPassword" class="forgot-password">

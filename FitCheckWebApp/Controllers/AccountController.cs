@@ -1,39 +1,80 @@
+using FitCheckWebApp.DataAccess;
+using FitCheckWebApp.Models;
+using FitCheckWebApp.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FitCheckWebApp.Controllers
 {
     public class AccountController : Controller
     {
-        // Login page (GET)
         public IActionResult Login()
         {
             return View();
         }
 
-        // Login form submission (POST)
         [HttpPost]
-        public IActionResult Login(string email, string password)
+        public IActionResult Login(LoginViewModel loginModel)
         {
-            // TODO: Add authentication logic here
-            return RedirectToAction("Index", "Home");
+
+            var account = AccountManager.FindByEmail(loginModel.Email!);
+
+            if (account != null && Helpers.Helpers.verifyPassword(loginModel.Password!, account.PasswordHash!))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                ModelState.AddModelError("", "Invalid email or password");
+                return View();
+            }
+
+            
         }
 
-        // Registration page (GET)
+
         public IActionResult Register()
         {
             return View();
         }
 
-        // Registration form submission (POST)
+
         [HttpPost]
         [ActionName("Register")]
-        public IActionResult RegisterPost(string email, string password, string confirmPassword)
+        public IActionResult RegisterPost(RegistrationViewModel registerModel)
         {
-            // TODO: Add registration logic here
+
+            if (!ModelState.IsValid)
+            {
+                return View(registerModel); 
+            }
+
+            var existingAccount = AccountManager.FindByEmail(registerModel.Email!);
+
+            if (existingAccount != null)
+            {
+
+                ModelState.AddModelError("Email", "Account already exists.");
+                return View(registerModel);
+            }
+
+            var account = new Account
+            {
+
+                Username = registerModel.Username,
+                Email = registerModel.Email,
+                PasswordHash = Helpers.Helpers.HashingPassword(registerModel.Password!),
+                MembershipID = Helpers.Helpers.MapMemberShipToID(registerModel.MembershipPlan)
+
+            };
+
+            AccountManager.PostAccount(account);
+
+
+            TempData["SuccessMessage"] = "Registration successful! Please log in.";
             return RedirectToAction("Login");
         }
 
-        // Membership page
+
         public IActionResult Membership()
         {
             return View();
