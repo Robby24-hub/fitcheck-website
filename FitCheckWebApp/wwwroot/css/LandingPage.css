@@ -66,10 +66,6 @@ header {
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    padding: 3.5rem;
 }
 
 
