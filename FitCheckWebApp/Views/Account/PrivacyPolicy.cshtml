@@ -1,9 +1,6 @@
-@{
+﻿@{
     Layout = null;
 }
-
-@model FitCheckWebApp.ViewModels.LoginViewModel
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,9 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Corrected MVC linking syntax -->
-    <link rel="stylesheet" href="~/css/LogInPage.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/PrivacyPolicy.css" asp-append-version="true">
     <link rel="icon" href="~/images_fitcheck/fitcheckicon.png" type="image/png">
-    <title>Log In | Fitcheck Gym</title>
+    <title>Privacy Policy | Fitcheck Gym</title>
 </head>
 <body>
     <header>
@@ -33,44 +30,64 @@
     </header>
 
     <main>
-        <h1 class="txt-welcome">WELCOME TO FITCHECK</h1>
-		<!-- Use MVC form helpers -->
-		<form asp-controller="Account" asp-action="Login" method="post">
-			<div class="form-container">
-                <h2 class="txt-sign-in">Sign in to your account</h2>
-                <div>
-                    <h5 class="txt-email">Email</h5>
-                    <input type="email" name="Email" class="email-field" required>
-        <div class="form-container">
-            <h2 class="txt-sign-in">Sign in to your account</h2>
-            <form method="post" asp-controller="Account" asp-action="Login">
+        <div class="p-and-p-container">
+            <h1>Privacy Policy</h1>
+            <ol>
+                <li>
+                    Information We Collect
+                    <ul>
+                        <li>Personal details (name, date of birth, gender, address, contact number, email).</li>
+                        <li>Membership details (plan type, start/end dates, payment history).</li>
+                        <li>Health & safety information voluntarily provided (medical conditions, injuries).</li>
+                        <li>Emergency contact information.</li>
+                    </ul>
+                </li>
+                <li>
+                    How We Use Your Information
+                    <ul>
+                        <li>To process memberships and payments.</li>
+                        <li>To contact you regarding gym updates, classes, and account status.</li>
+                        <li>To ensure member safety in case of emergencies.</li>
+                        <li>To comply with billing and legal obligations.</li>
+                    </ul>
+                </li>
+                <li>
+                    Data Sharing & Security
+                    <ul>
+                        <li>We do not sell or rent your personal information to third parties.</li>
+                        <li>Data may be shared with payment processors and service providers strictly for operational purposes.</li>
+                        <li>Reasonable measures are taken to protect your data from unauthorized access.</li>
+                    </ul>
+                </li>
+                <li>
+                    Marketing & Communication
+                    <ul>
+                        <li>With your consent, we may send promotions, offers, or newsletters.</li>
+                        <li>You can opt out of marketing communications at any time.</li>
+                    </ul>
+                </li>
+                <li>
+                    Your Rights
+                    <ul>
+                        <li>You may request access, correction, or deletion of your personal data.</li>
+                        <li>You may withdraw consent for data processing (subject to legal and contractual obligations).</li>
+                    </ul>
+                </li>
+                <li>
+                    Policy Updates
+                    <ul>
+                        <li>The gym may update this Privacy Policy as needed.</li>
+                        <li>Members will be notified of significant changes.</li>
+                    </ul>
+                </li>
+            </ol>
+            <div class="btn-container">
+                <a asp-controller="Account" asp-action="Register"><button class="return-btn">Return to Registration</button></a>
+            </div>
+        </div>
 
-                <div>
-                    <h5 class="txt-email">Email</h5>
-                    <input asp-for="Email" type="email" name="email" class="email-field"/>
-                    <span asp-validation-for="Email" class ="text-danger"></span>
-                </div>
 
-                <div>
-                    <h5 class="txt-password">Password</h5>
-                    <input type="password" name="Password" class="password-field" required>
-                    <input asp-for="Password" type="password" name="password" class="password-field"/>
-                    <span asp-validation-for="Password" class ="text-danger"></span>
-                </div>
-
-                <a asp-controller="Account" asp-action="ForgotPassword" class="forgot-password">
-                    <p>Forgot Password?</p>
-                </a>
-
-                <button type="submit">LOGIN</button>
-
-                <p class="txt-register-here">
-                    Don't have an account?
-                    <a asp-controller="Account" asp-action="Register">Register Here</a>
-                </p>
-             </div>
-		</form>
-	</main>
+    </main>
 
     <div class="hr-container">
         <hr>

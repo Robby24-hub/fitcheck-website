@@ -1,9 +1,6 @@
-@{
+﻿@{
     Layout = null;
 }
-
-@model FitCheckWebApp.ViewModels.LoginViewModel
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,9 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Corrected MVC linking syntax -->
-    <link rel="stylesheet" href="~/css/LogInPage.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/TermsAndConditions.css" asp-append-version="true">
     <link rel="icon" href="~/images_fitcheck/fitcheckicon.png" type="image/png">
-    <title>Log In | Fitcheck Gym</title>
+    <title>Terms And Conditions | Fitcheck Gym</title>
 </head>
 <body>
     <header>
@@ -33,44 +30,64 @@
     </header>
 
     <main>
-        <h1 class="txt-welcome">WELCOME TO FITCHECK</h1>
-		<!-- Use MVC form helpers -->
-		<form asp-controller="Account" asp-action="Login" method="post">
-			<div class="form-container">
-                <h2 class="txt-sign-in">Sign in to your account</h2>
-                <div>
-                    <h5 class="txt-email">Email</h5>
-                    <input type="email" name="Email" class="email-field" required>
-        <div class="form-container">
-            <h2 class="txt-sign-in">Sign in to your account</h2>
-            <form method="post" asp-controller="Account" asp-action="Login">
-
-                <div>
-                    <h5 class="txt-email">Email</h5>
-                    <input asp-for="Email" type="email" name="email" class="email-field"/>
-                    <span asp-validation-for="Email" class ="text-danger"></span>
-                </div>
-
-                <div>
-                    <h5 class="txt-password">Password</h5>
-                    <input type="password" name="Password" class="password-field" required>
-                    <input asp-for="Password" type="password" name="password" class="password-field"/>
-                    <span asp-validation-for="Password" class ="text-danger"></span>
-                </div>
-
-                <a asp-controller="Account" asp-action="ForgotPassword" class="forgot-password">
-                    <p>Forgot Password?</p>
-                </a>
-
-                <button type="submit">LOGIN</button>
-
-                <p class="txt-register-here">
-                    Don't have an account?
-                    <a asp-controller="Account" asp-action="Register">Register Here</a>
-                </p>
-             </div>
-		</form>
-	</main>
+        <div class="t-and-c-container">
+			<h1>Terms And Conditions</h1>
+			<ol>
+				<li>
+					Membership Eligibility
+					<ul>
+						<li>Members must be at least 16 years old. Those under 18 require parental/guardian consent.</li>
+						<li>Memberships are non-transferable and valid only for the registered member.</li>
+					</ul>
+				</li>
+				<li>
+					Gym Access & Conduct
+					<ul>
+						<li>Members must present their membership pass upon entry.</li>
+						<li>Proper gym attire and footwear are required.</li>
+						<li>Members must follow staff instructions and gym rules at all times.</li>
+						<li>The gym reserves the right to suspend or terminate memberships for inappropriate or unsafe behavior.</li>
+					</ul>
+				</li>
+				<li>
+					Health & Safety
+					<ul>
+						<li>Members confirm they are physically fit to participate in exercise activities.</li>
+						<li>Members with medical conditions or injuries must inform gym staff prior to participation.</li>
+						<li>The gym is not responsible for injuries sustained due to misuse of equipment or failure to follow instructions.</li>
+					</ul>
+				</li>
+				<li>
+					Membership Plans & Payments
+					<ul>
+						<li>All membership fees are payable in advance according to the selected plan.</li>
+						<li>Payments are non-refundable, except where required by law.</li>
+						<li>Failure to pay fees on time may result in suspension of access.</li>
+						<li>Auto-renewal (if enabled) will charge the registered payment method at the end of each term.</li>
+					</ul>
+				</li>
+				<li>
+					Cancellations & Freezing Membership
+					<ul>
+						<li>Members may request cancellation or freezing of membership by providing at least 15 days’ notice before the next billing cycle.</li>
+						<li>Requests must be made in writing or through the member portal.</li>
+					</ul>
+				</li>
+				<li>
+					Liability Waiver
+					<ul>
+						<li>By registering, members agree to use the facilities at their own risk.</li>
+						<li>The gym, its staff, and affiliates are not liable for personal injury, loss, or damage to personal property.</li>
+					</ul>
+				</li>
+			</ol>
+			<div class="btn-container">
+                <a asp-controller="Account" asp-action="Register"><button class="return-btn">Return to Registration</button></a>
+            </div>
+        </div>
+        
+        
+    </main>
 
     <div class="hr-container">
         <hr>

@@ -122,7 +122,7 @@ header {
 }
 
 .section-title {
-    color: #c8ff00;
+    color: #d2f801;
     font-size: 12px;
     font-weight: 600;
     letter-spacing: 1.5px;
@@ -219,7 +219,7 @@ select.input-field {
 
 .register-btn {
     width: 100%;
-    background: #c8ff00;
+    background: #d2f801;
     color: #1a1a1a;
     font-size: 16px;
     font-weight: 700;
@@ -232,15 +232,33 @@ select.input-field {
     text-transform: uppercase;
 }
 
-.register-btn:hover {
+    .register-btn:hover {
     background: #d4ff33;
     transform: translateY(-2px);
     box-shadow: 0 5px 20px rgba(200, 255, 0, 0.4);
 }
 
-.register-btn:active {
+    .register-btn:active {
     transform: translateY(0);
 }
+
+.txt-login-here {
+    width: 100%;
+    font-size: .9rem;
+    text-align: center;
+    text-decoration: none;
+    margin-top: 1rem;
+}
+
+    .txt-login-here a {
+        color: white;
+    }
+
+        .txt-login-here a:hover {
+            text-decoration: underline;
+            color: #d2f801;
+            cursor: pointer;
+        }
 
 /* Responsive Design */
 @media (max-width: 600px) {
@@ -286,6 +304,7 @@ select.input-field {
     display: flex;
     justify-content: center;
     background-color: black;
+    
 }
 
 hr {

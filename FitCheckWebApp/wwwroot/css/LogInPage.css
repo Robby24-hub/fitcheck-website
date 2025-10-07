@@ -60,9 +60,9 @@ header {
 
 /*===========================================*/
 
-main{
+main {
     min-height: 90vh;
-    color:white;
+    color: white;
     background: linear-gradient(to top, #1C1C1C, black);
     display: flex;
     align-items: center;
@@ -70,7 +70,7 @@ main{
     flex-direction: column;
 }
 
-.txt-welcome{
+.txt-welcome {
     margin: 1rem;
     background: linear-gradient(0deg,rgba(210, 248, 1, 1) 18%, rgba(97, 97, 97, 1) 94%);
     background-clip: text;
@@ -79,26 +79,28 @@ main{
 
 
 
-.form-container{
+.form-container {
     background-color: black;
-    padding: 2rem;
-    width: 40%;
+    padding: 2rem 3rem;
+    justify-content: center;
+    width: 180%;
+    max-width: 800px;
+    transform: translateX(-23%);
     border: solid black;
     border-radius: 3rem;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    gap: 1.2rem;
+    gap: 1.3rem;
 }
 
-.txt-sign-in{
+.txt-sign-in {
     align-self: center;
     font-size: 1.5rem;
     margin-bottom: 1rem;
 }
 
 .txt-email,
-.txt-password{
+.txt-password {
     font-size: 1rem;
 }
 
@@ -111,20 +113,20 @@ main{
 }
 
 .forgot-password {
-    align-self: flex-end; 
     text-decoration: none;
     color: white;
     font-size: 0.9rem;
+    align-self: flex-end;
 }
 
-.forgot-password p:hover{
-    text-decoration: underline;
-    color: #d2f801;
-    cursor: pointer;
-}
+    .forgot-password p:hover {
+        text-decoration: underline;
+        color: #d2f801;
+        cursor: pointer;
+    }
 
 button {
-    background-color: #d2f801; 
+    background-color: #d2f801;
     border: none;
     border-radius: 8px;
     padding: 0.5rem 1rem;
@@ -133,31 +135,29 @@ button {
     cursor: pointer;
 }
 
- button:hover{
-    background: #d4ff33;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 20px rgba(200, 255, 0, 0.4);
-}
+    button:hover {
+        background: #d4ff33;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba(200, 255, 0, 0.4);
+    }
 
-/*admin + register section*/
-.bottom-links {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between; 
+/*register section*/
+.txt-register-here {
     width: 100%;
-    font-size: 0.9rem;
+    font-size: .9rem;
+    text-align: center;
+    text-decoration: none;
 }
 
-.bottom-links a {
-    color: white; 
-}
+    .txt-register-here a {
+        color: white;
+    }
 
-.bottom-links a:hover{
-    text-decoration: underline;
-    color: #d2f801;
-    cursor: pointer;
-}
-
+        .txt-register-here a:hover {
+            text-decoration: underline;
+            color: #d2f801;
+            cursor: pointer;
+        }
 
 
 
