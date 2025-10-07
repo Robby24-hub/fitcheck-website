@@ -9,38 +9,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- Corrected MVC linking syntax -->
-    <link rel="stylesheet" href="~/css/LogInPage.css" asp-append-version="true">
-    <link rel="icon" href="~/images_fitcheck/fitcheckicon.png" type="image/png">
+    <link rel="stylesheet" href="/css/LogInPage.css" type="text/css" />
+    <link rel="icon" href="/images_fitcheck/fitcheckicon.png" />
     <title>Log In | Fitcheck Gym</title>
 </head>
 <body>
     <header>
         <div class="brand-container">
-            <img alt="logo" class="logo" src="~/images_fitcheck/fitcheckicon.png">
+            <img alt="logo" class="logo" src="/images_fitcheck/fitcheckicon.png">
             <h1 class="brand">FITCHECK</h1>
         </div>
         <nav class="navbar">
-            <a asp-controller="Home" asp-action="Index">Home</a>
-            <a asp-controller="Account" asp-action="Membership">Membership</a>
+            <a href="/">Home</a>
+            <a href="/Home/Membership">Membership</a>
             <a href="#">Classes</a>
             <a href="#">About Us</a>
-            <a asp-controller="Account" asp-action="Login">Log In</a>
-
-
+            <a href="/Home/LogInPage">Log In</a>
         </nav>
     </header>
-
     <main>
         <h1 class="txt-welcome">WELCOME TO FITCHECK</h1>
-		<!-- Use MVC form helpers -->
-		<form asp-controller="Account" asp-action="Login" method="post">
-			<div class="form-container">
-                <h2 class="txt-sign-in">Sign in to your account</h2>
-                <div>
-                    <h5 class="txt-email">Email</h5>
-                    <input type="email" name="Email" class="email-field" required>
         <div class="form-container">
             <h2 class="txt-sign-in">Sign in to your account</h2>
             <form method="post" asp-controller="Account" asp-action="Login">
@@ -53,70 +41,52 @@
 
                 <div>
                     <h5 class="txt-password">Password</h5>
-                    <input type="password" name="Password" class="password-field" required>
                     <input asp-for="Password" type="password" name="password" class="password-field"/>
                     <span asp-validation-for="Password" class ="text-danger"></span>
                 </div>
 
-                <a asp-controller="Account" asp-action="ForgotPassword" class="forgot-password">
-                    <p>Forgot Password?</p>
-                </a>
+                <a href="/Account/ForgotPassword" class="forgot-password"><p>Forgot Password?</p></a>
 
                 <button type="submit">LOGIN</button>
 
-                <p class="txt-register-here">
-                    Don't have an account?
-                    <a asp-controller="Account" asp-action="Register">Register Here</a>
-                </p>
-             </div>
-		</form>
-	</main>
-
+                <div class="bottom-links">
+                    <a href="/Account/AdminLogin"><p>Log in as Admin</p></a>
+                    <p>Don't have an account? <a href="/Account/Register">Register Here</a></p>
+                </div>
+            </form>
+        </div>
+    </main>
     <div class="hr-container">
         <hr>
     </div>
-
     <footer>
         <div class="footer-container">
             <div class="left-side-footer">
                 <div class="description-footer">
-                    <img class="fitcheck-logo-footer" src="~/images_fitcheck/fitcheckicon.png">
-                    <p>
-                        Transform your body and mind at FitCheck Gym. With state-of-the-art equipment,
-                        expert trainers, and a supportive community, we're here to help you achieve your fitness goals.
-                    </p>
+                    <img class="fitcheck-logo-footer" src="/images_fitcheck/fitcheckicon.png">
+                    <p>Transform your body and mind at FitCheck Gym. With state-of-the-art equipment, expert trainers, and a supportive community, we're here to help you achieve your fitness goals.</p>
                 </div>
-
                 <div class="follow-socials-container">
                     <h4 class="follow-us-footer">FOLLOW US</h4>
                     <div class="social-media-container">
-                        <a target="_blank" href="https://www.facebook.com/">
-                            <img src="~/images_fitcheck/icon_fb-removebg-preview.png">
-                        </a>
-                        <a target="_blank" href="https://www.linkedin.com/">
-                            <img src="~/images_fitcheck/Icon_linkedin-removebg-preview.png">
-                        </a>
-                        <a target="_blank" href="https://www.youtube.com/">
-                            <img src="~/images_fitcheck/icon_youtube-removebg-preview.png">
-                        </a>
-                        <a target="_blank" href="https://www.instagram.com/">
-                            <img src="~/images_fitcheck/icon_instagram-removebg-preview.png">
-                        </a>
+                        <a target="_blank" href="https://www.facebook.com/"><img src="/images_fitcheck/icon_fb-removebg-preview.png"></a>
+                        <a target="_blank" href="https://www.linkedin.com/"><img src="/images_fitcheck/Icon_linkedin-removebg-preview.png"></a>
+                        <a target="_blank" href="https://www.youtube.com/"><img src="/images_fitcheck/icon_youtube-removebg-preview.png"></a>
+                        <a target="_blank" href="https://www.instagram.com/"><img src="/images_fitcheck/icon_instagram-removebg-preview.png"></a>
                     </div>
                 </div>
             </div>
-
             <div class="right-side-footer">
                 <div class="address">
-                    <img src="~/images_fitcheck/icon_location-removebg-preview.png">
+                    <img src="/images_fitcheck/icon_location-removebg-preview.png">
                     <p>Street 1, Congressional Rd Caloocan City</p>
                 </div>
                 <div class="email-address">
-                    <img src="~/images_fitcheck/icon_email-removebg-preview.png">
+                    <img src="/images_fitcheck/icon_email-removebg-preview.png">
                     <p>info@fitcheckgym.com</p>
                 </div>
                 <div class="contact-number">
-                    <img src="~/images_fitcheck/icon_mobile-removebg-preview.png">
+                    <img src="/images_fitcheck/icon_mobile-removebg-preview.png">
                     <p>09192344890 / 09365144587</p>
                 </div>
             </div>
