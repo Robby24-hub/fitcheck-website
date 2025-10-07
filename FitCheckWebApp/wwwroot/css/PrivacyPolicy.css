@@ -73,7 +73,7 @@ main {
     gap: 2rem;
 }
 
-.t-and-c-container {
+.p-and-p-container {
     color: white;
     max-width: 800px;
     text-align: left;
@@ -81,13 +81,13 @@ main {
 }
 
     /* Target only list elements for white color, NOT h1 */
-    .t-and-c-container ol,
-    .t-and-c-container ul,
-    .t-and-c-container li {
+    .p-and-p-container ol,
+    .p-and-p-container ul,
+    .p-and-p-container li {
         color: white !important;
     }
 
-    .t-and-c-container h1 {
+    .p-and-p-container h1 {
         text-align: left;
         margin-bottom: 2rem;
         background: linear-gradient(0deg, rgba(210, 248, 1, 1) 18%, rgba(97, 97, 97, 1) 94%);
@@ -97,21 +97,21 @@ main {
         font-size: 2rem;
     }
 
-    .t-and-c-container ol {
+    .p-and-p-container ol {
         list-style-type: decimal;
         margin-left: 1.5rem;
         line-height: 1.8;
         padding-left: 1rem;
     }
 
-        .t-and-c-container ol > li {
+        .p-and-p-container ol > li {
             margin-bottom: 1.5rem;
             font-size: 1.1rem;
             font-weight: bold;
             padding-left: 0.5rem;
         }
 
-    .t-and-c-container ul {
+    .p-and-p-container ul {
         list-style-type: disc;
         margin-left: 2rem;
         margin-top: 0.5rem;
@@ -119,21 +119,21 @@ main {
         padding-left: 1rem;
     }
 
-        .t-and-c-container ul li {
+        .p-and-p-container ul li {
             margin-bottom: 0.5rem;
             font-weight: normal;
             font-size: 1rem;
             padding-left: 0.5rem;
         }
 
-.btn-container{
-    display:flex;
+.btn-container {
+    display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .return-btn {
-    max-width: fit-content;
+    width: 100%;
     background: #d2f801;
     color: #1a1a1a;
     font-size: 16px;
@@ -156,7 +156,6 @@ main {
     .return-btn:active {
         transform: translateY(0);
     }
-
 
 /*===========================================*/
 

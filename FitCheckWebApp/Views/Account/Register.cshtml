@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/Registration.css" type="text/css" />
+    <link rel="stylesheet" href="/css/Registration.css" asp-append-version="true" />
     <link rel="icon" href="/images_fitcheck/fitcheckicon.png" />
     <title>Registration | FitCheck Gym</title>
 </head>
@@ -99,14 +99,20 @@
                         </label>
                         <label class="checkbox-label">
                             <input type="checkbox" name="agreePrivacy" class="checkbox" required>
-                            <span>I agree to the <a href="#" class="link">Privacy Policy</a></span>
+                            <span>I agree to the <a href="/Account/PrivacyPolicy" class="link">Privacy Policy</a></span>
                         </label>
                     </div>
 
                     <!-- Register Button -->
                     <button type="submit" class="register-btn">REGISTER</button>
-                </form>
-            </div>
+
+				</form>
+				<p class="txt-login-here">
+					Already have an account?
+					<a asp-controller="Account" asp-action="Login">Log In Here</a>
+				</p>
+			</div>
+            
         </div>
     </main>
 
