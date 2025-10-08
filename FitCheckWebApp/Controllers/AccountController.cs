@@ -79,5 +79,15 @@ namespace FitCheckWebApp.Controllers
         {
             return View();
         }
+
+        public IActionResult TermsAndConditions()
+        {
+            return View();
+        }
+
+        public IActionResult PrivacyPolicy() 
+        { 
+            return View(); 
+        }
     }
 }

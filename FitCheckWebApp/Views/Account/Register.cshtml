@@ -117,13 +117,13 @@
                     <div class="terms-section">
                         <label class="checkbox-label">
                             <input asp-for="AgreeTerms" type="checkbox" class="checkbox" required>
-                            <span>I agree to the <a href="/Account/TermsAndConditions" class="link">Terms and Conditions</a></span>
+                            <span>I agree to the <a asp-controller="Account" asp-action="TermsAndConditions" class="link">Terms and Conditions</a></span>
                         </label>
                         <span asp-validation-for="AgreeTerms" class="text-danger"></span>
 
                         <label class="checkbox-label">
                             <input asp-for="AgreePrivacy" type="checkbox" class="checkbox" required>
-                            <span>I agree to the <a href="/Account/PrivacyPolicy" class="link">Privacy Policy</a></span>
+                            <span>I agree to the <a asp-controller="Account" asp-action="PrivacyPolicy" class="link">Privacy Policy</a></span>
                         </label>
                         <span asp-validation-for="AgreePrivacy" class="text-danger"></span>
                     </div>
