@@ -5,11 +5,11 @@
 @model FitCheckWebApp.ViewModels.RegistrationViewModel
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" id="terms-and-conditions">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/Registration.css" type="text/css" />
+    <link rel="stylesheet" href="/css/Registration.css" asp-append-version="true" />
     <link rel="icon" href="/images_fitcheck/fitcheckicon.png" />
     <title>Registration | FitCheck Gym</title>
 </head>
@@ -33,124 +33,109 @@
             <div class="container">
                 <h1 class="txt-membership-registration">FITCHECK MEMBERSHIP REGISTRATION</h1>
                 <form class="registration-form" method="post" asp-controller="Account" asp-action="Register">
+                    
                     <!-- Personal Information -->
                     <section class="form-section">
                         <h2 class="section-title">PERSONAL INFORMATION</h2>
                         <div class="form-group">
                             <div class="input-row">
-
-                                <input asp-for="FullName" type="text" name="fullName" placeholder="Full Name" class="input-field large" >
+                                <input asp-for="FullName" type="text" placeholder="Full Name" class="input-field large" required>
                                 <span asp-validation-for="FullName" class="text-danger"></span>
 
-                                <select asp-for="Gender" name="gender" class="input-field small" >
-                                <span asp-validation-for="Gender" class="text-danger"></span>
+                                <select asp-for="Gender" class="input-field small" required>
                                     <option value="">Gender</option>
                                     <option value="Male">Male</option>
                                     <option value="Female">Female</option>
                                     <option value="Other">Other</option>
                                 </select>
-
+                                <span asp-validation-for="Gender" class="text-danger"></span>
                             </div>
 
                             <div class="input-row">
-
-                                <input asp-for="Birthday" type="date" name="birthday" placeholder="Birthday" class="input-field medium" >
+                                <input asp-for="Birthday" type="date" placeholder="Birthday" class="input-field medium" required>
                                 <span asp-validation-for="Birthday" class="text-danger"></span>
 
-                                <input asp-for="Age" type="number" name="age" placeholder="Age" class="input-field small" >
+                                <input asp-for="Age" type="number" placeholder="Age" class="input-field small" required>
                                 <span asp-validation-for="Age" class="text-danger"></span>
-
                             </div>
 
                             <div class="input-row">
-
-                                <input asp-for="ContactNumber" type="tel" name="contactNumber" placeholder="Contact Number" class="input-field medium" >
+                                <input asp-for="ContactNumber" type="tel" placeholder="Contact Number" class="input-field medium" required>
                                 <span asp-validation-for="ContactNumber" class="text-danger"></span>
 
-                                <input asp-for="Email" type="email" name="email" placeholder="Email Address" class="input-field medium" >
+                                <input asp-for="Email" type="email" placeholder="Email Address" class="input-field medium" required>
                                 <span asp-validation-for="Email" class="text-danger"></span>
-
                             </div>
-
                         </div>
                     </section>
 
                     <!-- Membership Plan -->
                     <section class="form-section">
                         <h2 class="section-title">MEMBERSHIP PLAN</h2>
-
                         <div class="form-group">
-
-                            <select asp-for="MembershipPlan" name="membershipPlan" class="input-field full" >
-                            <span asp-validation-for="MembershipPlan" class="text-danger"></span>
+                            <select asp-for="MembershipPlan" class="input-field full" required>
                                 <option value="">Select Membership Plan</option>
-                                <option value="FitStart">FitStart - 1 Month</option>
-                                <option value="FitElite">FitElite - 1 Month</option>
-                                <option value="FitPro">FitPro - 1 Month</option>
+                                <option value="FitStart">FitStart</option>
+                                <option value="FitPro">FitPro</option>
+                                <option value="FitElite">FitElite</option>
                             </select>
-
+                            <span asp-validation-for="MembershipPlan" class="text-danger"></span>
                         </div>
-
                     </section>
 
                     <!-- Payment Information -->
                     <section class="form-section">
                         <h2 class="section-title">PAYMENT INFORMATION</h2>
-
                         <div class="form-group">
-                                
-                            <select asp-for="PaymentMethod" name="paymentMethod" class="input-field full" >
-                            <span asp-validation-for="PaymentMethod" class="text-danger"></span>
+                            <select asp-for="PaymentMethod" class="input-field full" required>
                                 <option value="">Select Payment Method</option>
                                 <option value="credit">Credit Card</option>
                                 <option value="debit">Debit Card</option>
                                 <option value="cash">Cash</option>
+                                <option value="bank">Bank Transfer</option>
                             </select>
-
+                            <span asp-validation-for="PaymentMethod" class="text-danger"></span>
                         </div>
-
                     </section>
 
                     <!-- Account Setup -->
                     <section class="form-section">
                         <h2 class="section-title">ACCOUNT SETUP</h2>
                         <div class="form-group">
-                            <input asp-for="Username" type="text" name="username" placeholder="Create Username" class="input-field full" >
+                            <input asp-for="Username" type="text" placeholder="Create Username" class="input-field full" required>
                             <span asp-validation-for="Username" class="text-danger"></span>
 
-                            <input asp-for="Password" type="password" name="password" placeholder="Create Password" class="input-field full" >
-                            <span asp-validation-for="Username" class="text-danger"></span>
+                            <input asp-for="Password" type="password" placeholder="Create Password" class="input-field full" required>
+                            <span asp-validation-for="Password" class="text-danger"></span>
 
-                            <input asp-for="ConfirmPassword "type="password" name="confirmPassword" placeholder="Confirm Password" class="input-field full" >
-                            <span asp-validation-for="Username" class="text-danger"></span>
-
+                            <input asp-for="ConfirmPassword" type="password" placeholder="Confirm Password" class="input-field full" required>
+                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                         </div>
                     </section>
 
                     <!-- Terms and Conditions -->
                     <div class="terms-section">
-
                         <label class="checkbox-label">
-
-                            <input asp-for="AgreeTerms" type="checkbox" name="agreeTerms" class="checkbox">
-                            <span>I agree to the <a href="#" class="link">Terms and Conditions</a></span>
-
+                            <input asp-for="AgreeTerms" type="checkbox" class="checkbox" required>
+                            <span>I agree to the <a href="/Account/TermsAndConditions" class="link">Terms and Conditions</a></span>
                         </label>
                         <span asp-validation-for="AgreeTerms" class="text-danger"></span>
 
                         <label class="checkbox-label">
-
-                            <input asp-for="AgreePrivacy" type="checkbox" name="agreePrivacy" class="checkbox">
-                            <span>I agree to the <a href="#" class="link">Privacy Policy</a></span>
-
+                            <input asp-for="AgreePrivacy" type="checkbox" class="checkbox" required>
+                            <span>I agree to the <a href="/Account/PrivacyPolicy" class="link">Privacy Policy</a></span>
                         </label>
                         <span asp-validation-for="AgreePrivacy" class="text-danger"></span>
-
                     </div>
 
                     <!-- Register Button -->
                     <button type="submit" class="register-btn">REGISTER</button>
                 </form>
+
+                <p class="txt-login-here">
+                    Already have an account?
+                    <a asp-controller="Account" asp-action="Login">Log In Here</a>
+                </p>
             </div>
         </div>
     </main>
@@ -158,13 +143,16 @@
     <div class="hr-container">
         <hr>
     </div>
+
     <footer>
         <div class="footer-container">
             <div class="left-side-footer">
                 <div class="description-footer">
                     <img class="fitcheck-logo-footer" src="/images_fitcheck/fitcheckicon.png">
-                    <p>Transform your body and mind at FitCheck Gym. With state-of-the-art equipment, expert trainers, and a supportive community, we're here to help you achieve your fitness goals.</p>
+                    <p>Transform your body and mind at FitCheck Gym. With state-of-the-art equipment,
+                       expert trainers, and a supportive community, we're here to help you achieve your fitness goals.</p>
                 </div>
+
                 <div class="follow-socials-container">
                     <h4 class="follow-us-footer">FOLLOW US</h4>
                     <div class="social-media-container">
@@ -175,6 +163,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="right-side-footer">
                 <div class="address">
                     <img src="/images_fitcheck/icon_location-removebg-preview.png">
@@ -184,12 +173,10 @@
                     <img src="/images_fitcheck/icon_email-removebg-preview.png">
                     <p>info@fitcheckgym.com</p>
                 </div>
-
                 <div class="contact-number">
                     <img src="/images_fitcheck/icon_mobile-removebg-preview.png">
                     <p>09192344890 / 09365144587</p>
                 </div>
-
             </div>
         </div>
     </footer>
