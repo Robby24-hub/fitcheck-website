@@ -5,8 +5,8 @@
     box-sizing: border-box;
     font-family: Arial, Helvetica, sans-serif;
 }
-body{
 
+body {
     background-color: black;
 }
 
@@ -48,16 +48,16 @@ header {
     gap: 3rem;
 }
 
-.navbar a {
-    text-decoration: none;
-    color: white;
-    font-size: 1.2rem;
-    font-family: Arial, Helvetica, sans-serif;
-}
+    .navbar a {
+        text-decoration: none;
+        color: white;
+        font-size: 1.2rem;
+        font-family: Arial, Helvetica, sans-serif;
+    }
 
-.navbar a:hover {
-    color:#d2f801;
-}
+        .navbar a:hover {
+            color: #d2f801;
+        }
 
 /*=====================================================================*/
 
@@ -67,6 +67,10 @@ header {
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 3.5rem;
 }
 
 
@@ -102,7 +106,7 @@ header {
 }
 
 /* Button */
-button{
+button {
     padding: 0.8rem 2rem;
     border: none;
     border-radius: 25px;
@@ -115,11 +119,11 @@ button{
     transition: 0.3s;
 }
 
-button:hover{
-    background: #d4ff33;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 20px rgba(200, 255, 0, 0.4);
-}
+    button:hover {
+        background: #d4ff33;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba(200, 255, 0, 0.4);
+    }
 
 /*===============================================*/
 
@@ -156,14 +160,14 @@ button:hover{
 /* Images should be squares */
 .grid-item-image {
     width: 100%;
-    aspect-ratio: 1 / 1; 
+    aspect-ratio: 1 / 1;
     object-fit: cover;
 }
 
 /* Text blocks */
 .grid-item-text {
     width: 100%;
-    aspect-ratio: 1 / 1; 
+    aspect-ratio: 1 / 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -173,20 +177,20 @@ button:hover{
     background-color: rgb(18, 18, 18);
 }
 
-/* Title */
-.grid-item-text h3 {
-    color: #d2f801;
-    font-size: 1.8rem;
-    margin-bottom: 2rem;
-}
+    /* Title */
+    .grid-item-text h3 {
+        color: #d2f801;
+        font-size: 1.8rem;
+        margin-bottom: 2rem;
+    }
 
-/* Paragraph */
-.grid-item-text p {
-    color: white;
-    font-size: 1rem;
-    line-height: 1.4;
-    text-align: justify;
-}
+    /* Paragraph */
+    .grid-item-text p {
+        color: white;
+        font-size: 1rem;
+        line-height: 1.4;
+        text-align: justify;
+    }
 
 /*======================================*/
 
@@ -251,18 +255,18 @@ button:hover{
     margin-bottom: 3rem;
 }
 
-.membership-section-title h6 {
-    font-size: 1rem;
-    color: #ccc;
-    margin-bottom: 0.5rem;
-    letter-spacing: 1px;
-}
+    .membership-section-title h6 {
+        font-size: 1rem;
+        color: #ccc;
+        margin-bottom: 0.5rem;
+        letter-spacing: 1px;
+    }
 
-.membership-section-title h2 {
-    font-size: 3rem;
-    font-weight: bold;
-    color: #d2f801;
-}
+    .membership-section-title h2 {
+        font-size: 3rem;
+        font-weight: bold;
+        color: #d2f801;
+    }
 
 /* Grid container */
 .membership-section-grid-container {
@@ -273,22 +277,22 @@ button:hover{
     flex-wrap: wrap;
 }
 
-/* Shared card styles */
-.membership-section-grid-container > div {
-    background-color: #171717;
-    border: 2px solid black;
-    border-radius: 25px;
-    padding: 2rem 1.5rem;
-    text-align: center;
-    transition: transform 0.3s ease;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
+    /* Shared card styles */
+    .membership-section-grid-container > div {
+        background-color: #171717;
+        border: 2px solid black;
+        border-radius: 25px;
+        padding: 2rem 1.5rem;
+        text-align: center;
+        transition: transform 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
 
-.membership-section-grid-container > div:hover {
-    transform: translateY(-10px);
-}
+        .membership-section-grid-container > div:hover {
+            transform: translateY(-10px);
+        }
 
 /* Different card heights */
 .fitstart {
@@ -335,11 +339,11 @@ button:hover{
     transition: 0.3s;
 }
 
-.btn-view-plans:hover {
-    background: #d4ff33;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 20px rgba(200, 255, 0, 0.4);
-}
+    .btn-view-plans:hover {
+        background: #d4ff33;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba(200, 255, 0, 0.4);
+    }
 
 /*===========================================*/
 
@@ -354,7 +358,7 @@ footer {
 }
 
 /* HR line */
-.hr-container{
+.hr-container {
     display: flex;
     justify-content: center;
     background-color: black;
@@ -366,7 +370,7 @@ hr {
 }
 
 /* Footer content container */
-.left-side-footer, 
+.left-side-footer,
 .right-side-footer {
     display: flex;
 }
@@ -378,7 +382,7 @@ footer {
     align-items: center;
 }
 
-.footer-container{
+.footer-container {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -402,17 +406,17 @@ footer .right-side-footer {
     flex: 1;
 }
 
-.description-footer img {
-    width: 6rem;
-    height: auto;
-}
+    .description-footer img {
+        width: 6rem;
+        height: auto;
+    }
 
-.description-footer p {
-    color: white;
-    font-size: 0.95rem;
-    line-height: 1.4;
-    max-width: 400px;
-}
+    .description-footer p {
+        color: white;
+        font-size: 0.95rem;
+        line-height: 1.4;
+        max-width: 400px;
+    }
 
 /* Social follow */
 .follow-socials-container {
@@ -434,16 +438,16 @@ footer .right-side-footer {
     align-items: center;
 }
 
-.social-media-container img {
-    width: 20px;
-    height: auto;
-    cursor: pointer;
-    transition: transform 0.2s;
-}
+    .social-media-container img {
+        width: 20px;
+        height: auto;
+        cursor: pointer;
+        transition: transform 0.2s;
+    }
 
-.social-media-container img:hover {
-    transform: scale(1.1);
-}
+        .social-media-container img:hover {
+            transform: scale(1.1);
+        }
 
 /*================ Right side =================*/
 .right-side-footer {
@@ -453,20 +457,19 @@ footer .right-side-footer {
 }
 
 
-.right-side-footer div {
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-}
+    .right-side-footer div {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+    }
 
-.right-side-footer p {
-    color: white;
-    font-size: 0.95rem;
-    width: 300px;
-}
+    .right-side-footer p {
+        color: white;
+        font-size: 0.95rem;
+        width: 300px;
+    }
 
-.right-side-footer img {
-    width: 25px;
-    height: auto;
-}
-
+    .right-side-footer img {
+        width: 25px;
+        height: auto;
+    }
