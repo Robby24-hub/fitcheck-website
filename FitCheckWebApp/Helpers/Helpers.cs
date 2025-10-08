@@ -37,7 +37,18 @@ namespace FitCheckWebApp.Helpers
             return BCrypt.Net.BCrypt.EnhancedVerify(passwordInput, storedHash);
 
         }
+        
+        public static int CalculateAge(RegistrationViewModel model)
+        {
 
+            int birthYear = model.Birthday.Year;
+            int currentYear = DateTime.Now.Year;
+            int age = birthYear - currentYear;
+
+            return birthYear;
+
+
+        }
 
     }
 }
