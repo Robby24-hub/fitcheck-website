@@ -55,8 +55,7 @@
                                 <input asp-for="Birthday" type="date" placeholder="Birthday" class="input-field medium" required>
                                 <span asp-validation-for="Birthday" class="text-danger"></span>
 
-                                <input asp-for="Age" type="number" placeholder="Age" class="input-field small" required>
-                                <span asp-validation-for="Age" class="text-danger"></span>
+                                <input asp-for="Age" type="number" id="ageOutput" placeholder="Age" class="input-field small" readonly>
                             </div>
 
                             <div class="input-row">
@@ -181,4 +180,7 @@
         </div>
     </footer>
 </body>
+
+<script src="~/js/register.js"></script>
+
 </html>
