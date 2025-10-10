@@ -22,12 +22,6 @@ namespace FitCheckWebApp.ViewModels
         [Required, EmailAddress]
         public string? Email { get; set; }
 
-        [Required]
-        public MembershipPlan MembershipPlan { get; set; }
-
-        [Required]
-        public PaymentMethod PaymentMethod { get; set; }
-
         [Required]  
         public string? Username { get; set; }
 
@@ -45,17 +39,5 @@ namespace FitCheckWebApp.ViewModels
 
     }
 
-    public enum MembershipPlan
-    {
-        FitStart,
-        FitElite,
-        FitPro
-    }
 
-    public enum PaymentMethod
-    {
-        credit,
-        debit,
-        cash
-    }
 }

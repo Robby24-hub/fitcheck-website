@@ -20,11 +20,11 @@
             <h1 class="brand">FITCHECK</h1>
         </div>
         <nav class="navbar">
-            <a href="/">Home</a>
-            <a href="/Account/Membership">Membership</a>
+            <a asp-controller="Home" asp-action="Index">Home</a>
+            <a asp-controller="Transaction" asp-action="Membership">Membership</a>
             <a href="#">Classes</a>
             <a href="#">About Us</a>
-            <a href="/Account/Login">Log In</a>
+            <a asp-controller="Account" asp-action="Login">Log In</a>
         </nav>
     </header>
 
@@ -42,7 +42,7 @@
                                 <input asp-for="FullName" type="text" placeholder="Full Name" class="input-field large" required>
                                 <span asp-validation-for="FullName" class="text-danger"></span>
 
-                                <select asp-for="Gender" class="input-field small" required>
+                                <select asp-for="Gender" class="input-field small">    
                                     <option value="">Gender</option>
                                     <option value="Male">Male</option>
                                     <option value="Female">Female</option>
@@ -72,13 +72,12 @@
                     <section class="form-section">
                         <h2 class="section-title">MEMBERSHIP PLAN</h2>
                         <div class="form-group">
-                            <select asp-for="MembershipPlan" class="input-field full" required>
+                            <select " class="input-field full">
                                 <option value="">Select Membership Plan</option>
                                 <option value="FitStart">FitStart</option>
                                 <option value="FitPro">FitPro</option>
                                 <option value="FitElite">FitElite</option>
                             </select>
-                            <span asp-validation-for="MembershipPlan" class="text-danger"></span>
                         </div>
                     </section>
 
@@ -86,14 +85,13 @@
                     <section class="form-section">
                         <h2 class="section-title">PAYMENT INFORMATION</h2>
                         <div class="form-group">
-                            <select asp-for="PaymentMethod" class="input-field full" required>
+                            <select class="input-field full" >
                                 <option value="">Select Payment Method</option>
                                 <option value="credit">Credit Card</option>
                                 <option value="debit">Debit Card</option>
                                 <option value="cash">Cash</option>
                                 <option value="bank">Bank Transfer</option>
                             </select>
-                            <span asp-validation-for="PaymentMethod" class="text-danger"></span>
                         </div>
                     </section>
 

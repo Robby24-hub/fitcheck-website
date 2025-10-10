@@ -53,20 +53,19 @@ namespace FitCheckWebApp.Controllers
                 Username = model.Username,
                 Email = model.Email,
                 PasswordHash = HashingPassword(model.Password!),
-                MembershipID = MapMemberShipToID(model.MembershipPlan)
             };
 
             AccountManager.PostAccount(account);
 
-            TempData["SuccessMessage"] = "Registration successful! Please log in.";
             return RedirectToAction("Login");
         }
 
         // ===== PAGES =====
-        public IActionResult Membership() => View();
 
         public IActionResult TermsAndConditions() => View();
 
         public IActionResult PrivacyPolicy() => View();
+
+        public IActionResult PaymentMethod() => View();
     }
 }

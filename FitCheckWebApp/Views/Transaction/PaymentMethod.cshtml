@@ -1,0 +1,236 @@
+@{
+    Layout = null;
+}
+
+@model FitCheckWebApp.ViewModels.TransactionViewModel
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FitCheck — Select Payment Method</title>
+  <link rel="stylesheet" href="/css/PaymentMethod.css" />
+</head>
+<body>
+  <header>
+    <div class="brand-container">
+      <img alt="logo" class="logo" src="~/images_fitcheck/LOGO.png">
+      <h1 class="brand">FITCHECK</h1>
+    </div>
+    <nav class="navbar">
+      <a asp-controller="Home" asp-action="Index">Home</a>
+      <a asp-controller="Transaction" asp-action="Membership">Membership</a>
+      <a href="#">Classes</a>
+      <a asp-controller="Account" asp-action="Login">Log out</a>
+    </nav>
+  </header>
+
+<main class="container">
+  <h1 class="page-title">Select Payment Method</h1>
+  <section class="grid">
+    <a class="card" href="#" aria-label="Pay with Mastercard" onclick="showPaymentForm('mastercard')">
+      <img src="~/images_fitcheck/Mastercard.png" alt="Mastercard" width="306" height="228"/>
+    </a>
+    <a class="card" href="#" aria-label="Pay with GCash" onclick="showPaymentForm('gcash')">
+      <img src="~/images_fitcheck/Gcash.png" alt="GCash" width="306" height="228"/>
+    </a>
+    <a class="card" href="#" aria-label="Pay with Pay Cash" onclick="showPaymentForm('paycash')">
+      <img src="~/images_fitcheck/Paycash.png" alt="Pay Cash" width="306" height="228"/>
+    </a>
+  </section>
+</main>
+
+<!-- Modal for Payment Form -->
+<div id="paymentModal" class="payment-modal">
+  <div class="payment-modal-content">
+    <span class="close-btn" onclick="closePaymentForm()">&times;</span>
+    <h2>Payment Details</h2>
+    <form asp-controller="Transaction" asp-action="PaymentMethod" method="post"  id="paymentForm">
+
+       <input type="hidden" id="paymentMethod" name="paymentMethod" value="" />
+
+      <div class="form-row">
+        <div class="input-group">
+          <label for="firstName">First Name</label>
+          <input type="text" id="firstName" name="firstName" required>
+        </div>
+        <div class="input-group">
+          <label for="surname">Surname</label>
+          <input type="text" id="surname" name="surname" required>
+        </div>
+      </div>
+
+      <!-- Dynamic Fields Based on Payment Method -->
+      <div class="form-row" id="dynamicFields"></div>
+
+      <!-- Membership Plan and Price -->
+      <div class="form-row">
+        <label for="membershipPlanSelect">Membership Plan:</label>
+        <select asp-for="MembershipPlan" id="membershipPlanSelect" required>
+          <option value="" disabled selected>Select a plan</option>
+          <option value="FitStart" data-price="999">FitStart — ₱999</option>
+          <option value="FitPro" data-price="1499">FitPro — ₱1,499</option>
+          <option value="FitElite" data-price="2499">FitElite — ₱2,499</option>
+        </select>
+      </div>
+
+      <div class="form-row">
+        <label>Price: </label>
+        <span id="membershipPriceValue">₱0</span>
+      </div>
+
+      <div class="form-row">
+        <p style="color: red; font-size: 14px; text-align: center;">Note: There are no refunds for payments made.</p>
+      </div>
+
+      <div class="form-row">
+        <button type="submit" class="pay-btn">Pay Now</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Thank You Message Modal -->
+<div id="thankYouModal" class="payment-modal">
+  <div class="payment-modal-content">
+    <span class="close-btn" onclick="closeThankYouMessage()">&times;</span>
+    <h2>Thank You for Subscribing!</h2>
+    <p>Your payment has been successfully processed. We appreciate your subscription to FitCheck!</p>
+  </div>
+</div>
+
+<script>
+  // Helper: Get query parameter from URL
+  function getQueryParam(param) {
+    return new URLSearchParams(window.location.search).get(param);
+  }
+
+  window.onload = function() {
+    const membershipSelect = document.getElementById('membershipPlanSelect');
+    const priceDisplay = document.getElementById('membershipPriceValue');
+
+    // Update price when user changes dropdown
+    membershipSelect.addEventListener('change', function() {
+      const selectedOption = membershipSelect.options[membershipSelect.selectedIndex];
+      priceDisplay.textContent = '₱' + selectedOption.getAttribute('data-price');
+    });
+
+    // Preselect plan from query parameter
+    const planParam = getQueryParam('plan');
+    if (planParam) {
+      for (let option of membershipSelect.options) {
+        if (option.value === planParam) {
+          option.selected = true;
+          priceDisplay.textContent = '₱' + option.getAttribute('data-price');
+          break;
+        }
+      }
+    }
+  };
+
+  function showPaymentForm(paymentMethod) {
+    const modal = document.getElementById("paymentModal");
+    modal.style.display = "block";
+
+    document.getElementById("paymentMethod").value = paymentMethod;
+
+    const dynamicFields = document.getElementById("dynamicFields");
+
+    if (paymentMethod === 'mastercard') {
+      dynamicFields.innerHTML = `
+        <div class="form-row">
+          <div class="input-group">
+            <label for="cardNumber">Card Number</label>
+            <input type="text" id="cardNumber" name="cardNumber" required>
+          </div>
+          <div class="input-group">
+            <label for="cardHolderName">Cardholder Name</label>
+            <input type="text" id="cardHolderName" name="cardHolderName" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group">
+            <label for="cvv">CVV</label>
+            <input type="text" id="cvv" name="cvv" required>
+          </div>
+          <div class="input-group">
+            <label for="validity">Validity</label>
+            <input type="text" id="validity" name="validity" required>
+          </div>
+        </div>`;
+    } else if (paymentMethod === 'gcash') {
+      dynamicFields.innerHTML = `
+        <div class="form-row">
+          <div class="input-group">
+            <label for="accountNumber">Account Number</label>
+            <input type="text" id="accountNumber" name="accountNumber" required>
+          </div>
+        </div>`;
+    } else if (paymentMethod === 'paycash') {
+      dynamicFields.innerHTML = `
+        <div class="form-row">
+          <div class="input-group">
+            <label for="cellphoneNumber">Cellphone No. (+63)</label>
+            <input type="text" id="cellphoneNumber" name="cellphoneNumber" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <label>Go to the nearest FitCheck branch to complete the payment.</label>
+        </div>`;
+    }
+  }
+
+  function closePaymentForm() {
+    document.getElementById("paymentModal").style.display = "none";
+  }
+
+  function showThankYouMessage(event) {
+    event.preventDefault();
+    closePaymentForm();
+    document.getElementById("thankYouModal").style.display = "block";
+  }
+
+  function closeThankYouMessage() {
+    document.getElementById("thankYouModal").style.display = "none";
+  }
+</script>
+
+<link rel="stylesheet" href="/css/PaymentMethod.css">
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-container">
+    <div class="footer-left">
+      <div class="footer-top">
+        <img src="~/images_fitcheck/logo.png" alt="FitCheck Logo" class="footer-logo">
+        <p class="footer-desc">
+          Transform your body and mind at FitCheck Gym. 
+          With state-of-the-art equipment, expert trainers, 
+          and a supportive community, we’re here to help 
+          you achieve your fitness goals.
+        </p>
+      </div>
+      <div class="footer-bottom">
+        <p class="follow-text">FOLLOW US</p>
+        <div class="social-icons">
+          <a href="#"><i class="fab fa-facebook"></i></a>
+          <a href="#"><i class="fab fa-linkedin"></i></a>
+          <a href="#"><i class="fab fa-youtube"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-right">
+      <p><i class="fas fa-map-marker-alt"></i> Street 1, Congressional Rd Caloocan City</p>
+      <p><i class="fas fa-envelope"></i> info@fitcheckgym.com</p>
+      <p><i class="fas fa-mobile-alt"></i> 09192344890 / 09365414587</p>
+    </div>
+  </div>
+</footer>
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+</body>
+</html>

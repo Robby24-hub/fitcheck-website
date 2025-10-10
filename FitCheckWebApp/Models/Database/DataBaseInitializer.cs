@@ -34,41 +34,31 @@ namespace FitCheckWebApp.Models.Database
                 using (var tableCmd = connection.CreateCommand())
                 {
 
-                    tableCmd.CommandText =
-                        @"
-                        CREATE TABLE IF NOT EXISTS Membership (
-                            MembershipID INT AUTO_INCREMENT PRIMARY KEY,
-                            MembershipName ENUM('FitStart', 'FitElite', 'FitPro') NOT NULL,
-                            Price DECIMAL(10,2) DEFAULT 0.00,
-                            DurationMonths INT DEFAULT 1,
-                            Benefits TEXT
-                        );";
-                    tableCmd.ExecuteNonQuery();
-
-
-                    tableCmd.CommandText =
-                        @"
+                    tableCmd.CommandText = @"
                         CREATE TABLE IF NOT EXISTS Account (
                             Id INT AUTO_INCREMENT PRIMARY KEY,
                             Username VARCHAR(100) NOT NULL UNIQUE,
                             PasswordHash TEXT NOT NULL,
                             Email VARCHAR(150) NOT NULL UNIQUE,
-                            Role ENUM('admin', 'trainer', 'user') DEFAULT 'user',
-                            MembershipID INT NULL,
+                            Role ENUM('admin','trainer','user') DEFAULT 'user',
+                            MembershipPlan ENUM('FitStart','FitElite','FitPro') DEFAULT NULL,
                             DateCreated DATETIME DEFAULT CURRENT_TIMESTAMP,
-                            IsActive BOOLEAN DEFAULT TRUE,
-                            FOREIGN KEY (MembershipID) REFERENCES Membership(MembershipID)
+                            IsActive BOOLEAN DEFAULT TRUE
                         );";
                     tableCmd.ExecuteNonQuery();
 
-                    tableCmd.CommandText =
-                        @"
-                        INSERT IGNORE INTO Membership (MembershipName, Price, DurationMonths, Benefits)
-                        VALUES
-                        ('FitStart', 0.00, 1, 'Basic plan'),
-                        ('FitElite', 0.00, 3, 'Elite plan'),
-                        ('FitPro', 0.00, 6, 'Pro plan');
-                        ";
+                    tableCmd.CommandText = @"
+                        CREATE TABLE IF NOT EXISTS `Transaction` (
+                            TransactionID INT AUTO_INCREMENT PRIMARY KEY,
+                            AccountID INT NOT NULL,
+                            MembershipPlan ENUM('FitStart','FitElite','FitPro') NOT NULL,
+                            PaymentMethod ENUM('credit','debit','cash') NOT NULL,
+                            TransactionDate DATETIME DEFAULT CURRENT_TIMESTAMP,
+                            StartDate DATETIME NOT NULL,
+                            EndDate DATETIME NOT NULL,
+                            Status ENUM('Active','Expired','Cancelled') DEFAULT 'Active',
+                            FOREIGN KEY (AccountID) REFERENCES Account(Id)
+                        );";
                     tableCmd.ExecuteNonQuery();
 
                 }
