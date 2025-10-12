@@ -110,6 +110,18 @@
                         </div>
                     </section>
 
+                    <!-- Emergency Contact -->
+                    <section class="form-section">
+                        <h2 class="section-title">EMERGENCY CONTACT</h2>
+                        <div class="form-group">
+                            <input asp-for="FullName" type="text" placeholder="Full Name" class="input-field full" required>
+                            <span asp-validation-for="FullName" class="text-danger"></span>
+
+                            <input asp-for="ContactNumber" type="tel" placeholder="Cellphone Number" class="input-field full" required>
+                            <span asp-validation-for="ContactNumber" class="text-danger"></span>
+                        </div>
+                    </section>
+
                     <!-- Terms and Conditions -->
                     <div class="terms-section">
                         <label class="checkbox-label">
