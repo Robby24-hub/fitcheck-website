@@ -13,11 +13,11 @@
 
         public string Role { get; set; } = "user";
 
-        public int? MembershipID { get; set; }
-
         public DateTime DateCreated { get; set; } = DateTime.Now;
 
         public bool IsActive { get; set; } = true;
+
+        public MembershipPlan MembershipPlan { get; set; }
 
     }
 }
