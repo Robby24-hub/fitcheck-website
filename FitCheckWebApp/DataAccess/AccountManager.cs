@@ -19,16 +19,16 @@ namespace FitCheckWebApp.DataAccess
                 {
 
                     cmd.CommandText =
-                        @"INSERT INTO account (Username, PasswordHash, Email, Role, MembershipID, DateCreated, IsActive)
-                            VALUES(@username, @passwordhash, @email, @role, @membershipid, @datecreated, @isactive)";
+                        @"INSERT INTO account (Username, PasswordHash, Email, Role, DateCreated, IsActive, MembershipPlan)
+                            VALUES(@username, @passwordhash, @email, @role, @datecreated, @isactive, @membershipplan)";
 
                     cmd.Parameters.AddWithValue("@username", account.Username);
                     cmd.Parameters.AddWithValue("@passwordhash", account.PasswordHash);
                     cmd.Parameters.AddWithValue("@email", account.Email);
                     cmd.Parameters.AddWithValue("@role", account.Role);
-                    cmd.Parameters.AddWithValue("@membershipid", account.MembershipID);
                     cmd.Parameters.AddWithValue("@datecreated", account.DateCreated);
                     cmd.Parameters.AddWithValue("@isactive", account.IsActive);
+                    cmd.Parameters.AddWithValue("@membershipplan", account.MembershipPlan);
 
                     cmd.ExecuteNonQuery();
                 }
@@ -47,7 +47,7 @@ namespace FitCheckWebApp.DataAccess
                 {
 
                     cmd.CommandText =
-                        @"SELECT Id, Username, PasswordHash, Email, Role, MembershipID, DateCreated, IsActive
+                        @"SELECT Id, Username, PasswordHash, Email, Role, DateCreated, IsActive, MembershipPlan
                             FROM account
                             WHERE Email = @email";
 
@@ -56,17 +56,29 @@ namespace FitCheckWebApp.DataAccess
                     using var reader = cmd.ExecuteReader();
                     if (reader.Read())
                     {
-                        return new Account
+                        string parsedMembershipPlan = reader.GetString("MembershipPlan");
+
+
+                        if (Enum.TryParse(parsedMembershipPlan, out MembershipPlan membershipPlan))
                         {
-                            Id = reader.GetInt32("Id"),
-                            Username = reader.GetString("Username"),
-                            PasswordHash = reader.GetString("PasswordHash"),
-                            Email = reader.GetString("Email"),
-                            Role = reader.GetString("Role"),
-                            MembershipID = reader.IsDBNull(reader.GetOrdinal("MembershipID")) ? null : reader.GetInt32("MembershipID"),
-                            DateCreated = reader.GetDateTime("DateCreated"),
-                            IsActive = reader.GetBoolean("IsActive")
-                        };
+
+                            return new Account
+                            {
+                                Id = reader.GetInt32("Id"),
+                                Username = reader.GetString("Username"),
+                                PasswordHash = reader.GetString("PasswordHash"),
+                                Email = reader.GetString("Email"),
+                                Role = reader.GetString("Role"),
+                                DateCreated = reader.GetDateTime("DateCreated"),
+                                IsActive = reader.GetBoolean("IsActive"),
+                                MembershipPlan = membershipPlan
+                            };
+                        } else
+                        {
+                            throw new InvalidOperationException($"Invalid MembershipPlan value: {parsedMembershipPlan}");
+                        }
+
+                       
                     }
 
                     return null;

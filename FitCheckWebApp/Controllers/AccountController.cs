@@ -57,7 +57,7 @@ namespace FitCheckWebApp.Controllers
 
             AccountManager.PostAccount(account);
 
-            return RedirectToAction("Login");
+            return RedirectToAction("UserHome");
         }
 
         // ===== PAGES =====
@@ -67,5 +67,10 @@ namespace FitCheckWebApp.Controllers
         public IActionResult PrivacyPolicy() => View();
 
         public IActionResult PaymentMethod() => View();
+
+        public IActionResult ClassesUser() => View();
+
+        public IActionResult UserHome() => View();
+
     }
 }
