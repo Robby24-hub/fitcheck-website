@@ -1,7 +1,5 @@
 ﻿namespace FitCheckWebApp.Models
 {
-    namespace FitCheckWebApp.Models
-    {
         public class Transaction
         {
             public int TransactionID { get; set; }
@@ -37,7 +35,5 @@
             Expired,
             Cancelled
         }
-
-    }
 
 }

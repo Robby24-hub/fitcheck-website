@@ -1,4 +1,5 @@
-﻿using FitCheckWebApp.ViewModels;
+﻿using FitCheckWebApp.Models;
+using FitCheckWebApp.ViewModels;
 
 namespace FitCheckWebApp.Helpers
 {
