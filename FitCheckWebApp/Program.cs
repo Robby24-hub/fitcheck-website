@@ -1,3 +1,4 @@
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using FitCheckWebApp.Models.Database;
 
 namespace FitCheckWebApp
@@ -10,18 +11,33 @@ namespace FitCheckWebApp
 
             var connectionString = builder.Configuration.GetConnectionString("LocalMySql");
 
-            // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            
+            builder.Services.AddDistributedMemoryCache(); 
+            builder.Services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(60);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+
+
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.LoginPath = "/Account/Login";
+                    options.LogoutPath = "/Account/Logout";
+                    options.ExpireTimeSpan = TimeSpan.FromHours(2);
+                });
 
             DataBaseInitializer.InitializeDB();
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
@@ -30,6 +46,9 @@ namespace FitCheckWebApp
 
             app.UseRouting();
 
+
+            app.UseSession();
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(

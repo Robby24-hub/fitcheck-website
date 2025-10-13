@@ -28,7 +28,7 @@ namespace FitCheckWebApp.DataAccess
                     cmd.Parameters.AddWithValue("@role", account.Role);
                     cmd.Parameters.AddWithValue("@datecreated", account.DateCreated);
                     cmd.Parameters.AddWithValue("@isactive", account.IsActive);
-                    cmd.Parameters.AddWithValue("@membershipplan", account.MembershipPlan);
+                    cmd.Parameters.AddWithValue("@membershipplan", account.MembershipPlan.ToString());
 
                     cmd.ExecuteNonQuery();
                 }
@@ -56,27 +56,26 @@ namespace FitCheckWebApp.DataAccess
                     using var reader = cmd.ExecuteReader();
                     if (reader.Read())
                     {
-                        string parsedMembershipPlan = reader.GetString("MembershipPlan");
+                        string? membershipValue = reader["MembershipPlan"]?.ToString();
 
-
-                        if (Enum.TryParse(parsedMembershipPlan, out MembershipPlan membershipPlan))
+                        MembershipPlan membershipPlan;
+                        if (!Enum.TryParse(membershipValue, out membershipPlan))
                         {
-
-                            return new Account
-                            {
-                                Id = reader.GetInt32("Id"),
-                                Username = reader.GetString("Username"),
-                                PasswordHash = reader.GetString("PasswordHash"),
-                                Email = reader.GetString("Email"),
-                                Role = reader.GetString("Role"),
-                                DateCreated = reader.GetDateTime("DateCreated"),
-                                IsActive = reader.GetBoolean("IsActive"),
-                                MembershipPlan = membershipPlan
-                            };
-                        } else
-                        {
-                            throw new InvalidOperationException($"Invalid MembershipPlan value: {parsedMembershipPlan}");
+                            membershipPlan = MembershipPlan.None;
                         }
+
+                        return new Account
+                        {
+                            Id = reader.GetInt32("Id"),
+                            Username = reader.GetString("Username"),
+                            PasswordHash = reader.GetString("PasswordHash"),
+                            Email = reader.GetString("Email"),
+                            Role = reader.GetString("Role"),
+                            DateCreated = reader.GetDateTime("DateCreated"),
+                            IsActive = reader.GetBoolean("IsActive"),
+                            MembershipPlan = membershipPlan
+                        };
+                        
 
                        
                     }

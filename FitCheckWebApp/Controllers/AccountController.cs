@@ -1,6 +1,10 @@
+using System.Security.Claims;
 using FitCheckWebApp.DataAccess;
 using FitCheckWebApp.Models;
 using FitCheckWebApp.ViewModels;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static FitCheckWebApp.Helpers.Helpers;
 
@@ -16,16 +20,51 @@ namespace FitCheckWebApp.Controllers
         }
 
         [HttpPost]
-        public IActionResult Login(LoginViewModel model)
+        public async Task<IActionResult> Login(LoginViewModel model)
         {
             var account = AccountManager.FindByEmail(model.Email!);
 
             if (account != null && verifyPassword(model.Password!, account.PasswordHash!))
-                return RedirectToAction("Index", "Home");
+            {
+                
+                var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.NameIdentifier, account.Id.ToString()),
+            new Claim(ClaimTypes.Name, account.Username ?? ""),
+            new Claim(ClaimTypes.Email, account.Email ?? ""),
+            new Claim(ClaimTypes.Role, account.Role)
+        };
+
+                
+                var claimsIdentity = new ClaimsIdentity(
+                    claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                var authProperties = new AuthenticationProperties
+                {
+                    IsPersistent = true, 
+                    ExpiresUtc = DateTimeOffset.UtcNow.AddHours(1)
+                };
+
+                
+                await HttpContext.SignInAsync(
+                    CookieAuthenticationDefaults.AuthenticationScheme,
+                    new ClaimsPrincipal(claimsIdentity),
+                    authProperties);
+
+                return RedirectToAction("UserHome");
+            }
 
             ModelState.AddModelError("", "Invalid email or password");
             return View(model);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Login", "Account");
+        }
+
 
         // ===== REGISTER =====
         [HttpGet]
@@ -57,7 +96,7 @@ namespace FitCheckWebApp.Controllers
 
             AccountManager.PostAccount(account);
 
-            return RedirectToAction("UserHome");
+            return RedirectToAction("Login");
         }
 
         // ===== PAGES =====
@@ -66,11 +105,16 @@ namespace FitCheckWebApp.Controllers
 
         public IActionResult PrivacyPolicy() => View();
 
+
+        [Authorize]
         public IActionResult PaymentMethod() => View();
 
+        [Authorize]
+        public IActionResult UserHome() => View();
+
+        [Authorize]
         public IActionResult ClassesUser() => View();
 
-        public IActionResult UserHome() => View();
 
     }
 }
