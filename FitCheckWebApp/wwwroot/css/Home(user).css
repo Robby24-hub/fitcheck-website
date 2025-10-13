@@ -1,0 +1,264 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body{
+    background-color: black;
+}
+
+/* Header */
+header {
+    background-color: black;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+/* Brand section*/
+.brand-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+
+.logo {
+    width: 5rem;
+    margin: .5rem;
+}
+
+.brand {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #d2f801;
+}
+
+/* Navbar */
+.navbar {
+    display: flex;
+    gap: 3rem;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: white;
+    font-size: 1.2rem;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.navbar a:hover {
+    color:#d2f801;
+}
+
+/* Welcome */
+.welcome {
+    margin-top: 10px;
+}
+
+.welcome h2 {
+    color: #c7ff00;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+}
+
+/* Membership Overview */
+.membership-overview {
+    margin-top: 35px;
+    text-align: center; /* centers the heading */
+}
+
+.membership-overview h3 {
+    color: #c7ff00;
+    margin-bottom: 20px;
+    font-size: 1.6rem;
+    letter-spacing: 0.5px;
+}
+
+.overview-box {
+    background: #0e0e0e;
+    border-radius: 20px;
+    padding: 25px 35px;
+    line-height: 1.9;
+    font-size: 1rem;
+    border: 1px solid #222;
+    width: 600px; /* fixed centered width */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+    margin: 0 auto; /* centers horizontally */
+    text-align: left; /* keeps text aligned properly */
+}
+
+.overview-box p {
+color: #fff;
+
+}
+.active {
+    color: #00ff80;
+}
+
+.paid {
+    color: #00ff80;
+}
+
+/* Membership Pass */
+.membership-pass {
+    margin-top: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.pass-card {
+    position: relative;
+    background-image: url("/images_fitcheck//pass-bg.png"); /* Replace wiimth your image path */
+    background-size: 869px 514px;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 669px;
+    height: 414px;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding-left: 60px;
+    margin: 0 auto; /* ensure it's centered */
+}
+
+/* Member photo placeholder */
+.photo {
+    width: 120px;
+    height: 150px;
+    background: #d3d3d3;
+    border-radius: 3px;
+    margin-right: 50px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.4);
+}
+
+/* Texts on the card */
+.pass-details {
+    color: #fff;
+}
+
+.pass-details h3 {
+    color: #c7ff00;
+    font-size: 1.4rem;
+    margin-bottom: 15px;
+    letter-spacing: 0.5px;
+}
+
+.pass-details p {
+    font-size: 1rem;
+    line-height: 1.8;
+}
+
+.pass-details span {
+    color: #c7ff00;
+}
+
+
+/* ====== Footer ====== */
+/* FOOTER */
+footer {
+  background: #000;
+  color: #fff;
+  padding: 40px 60px;
+  font-family: Arial, sans-serif;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+/* LEFT SIDE */
+.footer-left {
+  flex: 1.5;
+  min-width: 350px;
+}
+.footer-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+.footer-logo {
+  max-width: 120px;
+}
+.footer-desc {
+  font-size: 14px;
+  color: #bbb;
+  line-height: 1.5;
+  max-width: 300px;
+  align-items: center;
+  margin-top: 50px;
+}
+.footer-bottom {
+  margin-top: 20px;
+}
+.follow-text {
+  color: #ccff00;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+.social-icons a {
+  margin-right: 12px;
+  font-size: 18px;
+  color: #fff;
+  transition: 0.3s;
+}
+.social-icons a:hover {
+  color: #ccff00;
+}
+
+/* RIGHT SIDE */
+.footer-right {
+  flex: 1;
+  min-width: 280px;
+}
+.footer-right p {
+  margin: 12px 0;
+  font-size: 14px;
+  color: #ccc;
+}
+.footer-right i {
+  margin-right: 8px;
+  color: #ccff00;
+}
+
+
+
+/* Responsive */
+@media (max-width: 1000px) {
+    body {
+        padding: 0 5%;
+    }
+
+    .overview-box {
+        width: 100%;
+    }
+
+    .pass-card {
+        flex-direction: column;
+        height: auto;
+        width: 100%;
+        padding: 30px 20px;
+    }
+
+    .photo {
+        margin: 0 0 25px 0;
+    }
+}
+
