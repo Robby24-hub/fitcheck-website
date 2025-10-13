@@ -1,4 +1,5 @@
-﻿using FitCheckWebApp.DataAccess;
+﻿using System.Security.Claims;
+using FitCheckWebApp.DataAccess;
 using FitCheckWebApp.Models;
 using FitCheckWebApp.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -19,19 +20,24 @@ namespace FitCheckWebApp.Controllers
             if (!ModelState.IsValid)
                 return View(newtransaction);
 
+
+            if (!User.Identity!.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
             var transaction = new Transaction
             {
-                AccountID = 1,
+                AccountID = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value),
                 MembershipPlan = newtransaction.MembershipPlan,
                 PaymentMethod = newtransaction.PaymentMethod,
                 StartDate = DateTime.Now,
                 EndDate = DateTime.Now.AddMonths(1)
-
             };
 
+            TransactionManager.PostTransaction(transaction);
 
-
-           return RedirectToAction("Membership");
+            return RedirectToAction("Membership");
         }
 
         // ===== PAGES =====

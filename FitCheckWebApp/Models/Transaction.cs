@@ -17,6 +17,7 @@
 
         public enum MembershipPlan
         {
+            None,
             FitStart,
             FitElite,
             FitPro

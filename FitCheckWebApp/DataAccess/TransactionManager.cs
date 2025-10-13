@@ -2,17 +2,12 @@
 using MySql.Data.MySqlClient;
 
 namespace FitCheckWebApp.DataAccess
-
 {
-
-
-   
+    
     public class TransactionManager
     {
 
         private static readonly string connectionString = "server=localhost;user id=root;password=;database=fitcheckdb;";
-
-
 
         internal static void PostTransaction(Transaction transaction)
         {
@@ -37,12 +32,7 @@ namespace FitCheckWebApp.DataAccess
 
                     cmd.ExecuteNonQuery();
                 }
-                
             }
         }
-
-
-
     }
-
 }
