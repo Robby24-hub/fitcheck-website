@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using FitCheckWebApp.Models;
 
 namespace FitCheckWebApp.ViewModels
 {
@@ -14,18 +15,6 @@ namespace FitCheckWebApp.ViewModels
 
     }
 
-    public enum MembershipPlan
-    {
-        FitStart,
-        FitElite,
-        FitPro
-    }
-
-    public enum PaymentMethod
-    {
-        credit,
-        debit,
-        cash
-    }
+    
 }
 

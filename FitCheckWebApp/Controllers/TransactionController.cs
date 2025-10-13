@@ -21,9 +21,17 @@ namespace FitCheckWebApp.Controllers
 
             var transaction = new Transaction
             {
+                AccountID = 1,
+                MembershipPlan = newtransaction.MembershipPlan,
+                PaymentMethod = newtransaction.PaymentMethod,
+                StartDate = DateTime.Now,
+                EndDate = DateTime.Now.AddMonths(1)
 
             };
 
+
+
+           return RedirectToAction("Membership");
         }
 
         // ===== PAGES =====
