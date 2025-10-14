@@ -110,7 +110,19 @@ namespace FitCheckWebApp.Controllers
         public IActionResult PaymentMethod() => View();
 
         [Authorize]
-        public IActionResult UserHome() => View();
+        public IActionResult UserHome()
+        {
+            if (!User.Identity!.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            int accountId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+
+            var transaction = TransactionManager.FindById(accountId);
+
+            return View(transaction);
+        }
 
         [Authorize]
         public IActionResult ClassesUser() => View();

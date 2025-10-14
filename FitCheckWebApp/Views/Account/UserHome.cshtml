@@ -28,11 +28,13 @@
         <section class="membership-overview">
             <h3>MEMBERSHIP OVERVIEW</h3>
             <div class="overview-box">
-                <p><strong>Status:</strong> <span class="active">Active</span></p>
-                <p><strong>Last Payment Date:</strong> October 1, 2025</p>
-                <p><strong>Payment Status:</strong> <span class="paid">Paid</span></p>
-                <p><strong>Membership Type:</strong> FitElite</p>
-                <p><strong>Next Payment Due:</strong> November 1, 2025</p>
+
+                <p><strong>Status:</strong> <span class="active">@Model.Status</span></p>
+                <p><strong>Last Payment Date:</strong> @Model.TransactionDate.ToString("MMMM d, yyyy")</p>
+                <p><strong>Payment Status: </strong> <span class="paid">Paid</span></p>
+                <p><strong>Membership Type:</strong>  @Model.MembershipPlan</p>
+                <p><strong>Next Payment Due:</strong> @Model.EndDate.ToString("MMMM d, yyyy")</p>
+
             </div>
         </section>
 
@@ -40,11 +42,13 @@
             <div class="pass-card">
                 <div class="photo"></div>
                 <div class="pass-details">
+
                     <h3>MEMBERSHIP PASS</h3>
                     <p><span>Name :</span> Juan Dela Cruz</p>
                     <p><span>Member ID :</span> 12345 - AB</p>
-                    <p><span>Plan Type :</span> FitElite</p>
-                    <p><span>Valid until :</span> August 2026</p>
+                    <p><span>Plan Type :</span> @Model.MembershipPlan</p>
+                    <p><span>Valid until : </span> @Model.EndDate.ToString("MMMM d, yyyy")</p>
+
                 </div>
             </div>
         </section>

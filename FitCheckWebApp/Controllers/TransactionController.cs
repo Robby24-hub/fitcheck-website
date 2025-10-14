@@ -2,6 +2,7 @@
 using FitCheckWebApp.DataAccess;
 using FitCheckWebApp.Models;
 using FitCheckWebApp.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FitCheckWebApp.Controllers
@@ -10,7 +11,7 @@ namespace FitCheckWebApp.Controllers
     {
         // ==== MemberShipChoice
 
-        [HttpGet]
+        [HttpGet, Authorize]
         public IActionResult PaymentMethod() => View();
 
         [HttpPost]
@@ -37,13 +38,15 @@ namespace FitCheckWebApp.Controllers
 
             TransactionManager.PostTransaction(transaction);
 
+
             return RedirectToAction("Membership");
         }
+
+
 
         // ===== PAGES =====
         public IActionResult Membership() => View();
 
-        
-
+    
     }
 }

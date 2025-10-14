@@ -27,7 +27,8 @@
         {
             Credit,
             Debit,
-            Cash
+            Cash,
+            None
         }
 
         public enum TransactionStatus

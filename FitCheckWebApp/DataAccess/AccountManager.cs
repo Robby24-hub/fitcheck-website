@@ -54,6 +54,7 @@ namespace FitCheckWebApp.DataAccess
                     cmd.Parameters.AddWithValue("@email", email);
 
                     using var reader = cmd.ExecuteReader();
+
                     if (reader.Read())
                     {
                         string? membershipValue = reader["MembershipPlan"]?.ToString();

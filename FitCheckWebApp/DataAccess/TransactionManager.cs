@@ -34,5 +34,74 @@ namespace FitCheckWebApp.DataAccess
                 }
             }
         }
+
+        public static Transaction? FindById(int id)
+        {
+
+            using (var connection = new MySqlConnection(connectionString))
+            {
+                connection.Open();
+
+                using( var cmd = connection.CreateCommand())
+                {
+                    cmd.CommandText =
+                        @"SELECT TransactionID, AccountID, MembershipPlan, PaymentMethod, TransactionDate, StartDate, EndDate, Status
+                            FROM Transaction
+                            WHERE AccountID = @accountId";
+
+                    cmd.Parameters.AddWithValue("@accountId", id);
+
+                    using var reader = cmd.ExecuteReader();
+
+                    if (reader.Read())
+                    {
+
+                        string? membershipValue = reader["MembershipPlan"]?.ToString();
+                        string? paymentValue = reader["PaymentMethod"]?.ToString();
+                        string? statusValue = reader["Status"]?.ToString();
+
+                        MembershipPlan membershipPlan;
+
+                        PaymentMethod paymentMethod; 
+
+                        TransactionStatus status;
+
+
+
+                        if (!Enum.TryParse(membershipValue, out membershipPlan))
+                        {
+                            membershipPlan = MembershipPlan.None;
+                        }
+
+                        if (!Enum.TryParse(paymentValue, out paymentMethod))
+                        {
+                            paymentMethod = PaymentMethod.None;
+                        }
+
+                        if(!Enum.TryParse(statusValue, out status))
+                        {
+                            status = TransactionStatus.Active;
+                        }
+
+                        return new Transaction
+                        {
+                            TransactionID = reader.GetInt32("TransactionID"),
+                            AccountID = reader.GetInt32("AccountID"),
+                            MembershipPlan = membershipPlan,
+                            PaymentMethod = paymentMethod,
+                            TransactionDate = reader.GetDateTime("TransactionDate"),
+                            StartDate = reader.GetDateTime("StartDate"),
+                            EndDate = reader.GetDateTime("EndDate"),
+                            Status = status
+                        };
+
+                    }
+
+                    return null;
+
+                }
+            }
+
+        }
     }
 }
