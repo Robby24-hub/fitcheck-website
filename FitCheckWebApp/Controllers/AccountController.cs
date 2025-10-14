@@ -28,12 +28,12 @@ namespace FitCheckWebApp.Controllers
             {
                 
                 var claims = new List<Claim>
-        {
-            new Claim(ClaimTypes.NameIdentifier, account.Id.ToString()),
-            new Claim(ClaimTypes.Name, account.Username ?? ""),
-            new Claim(ClaimTypes.Email, account.Email ?? ""),
-            new Claim(ClaimTypes.Role, account.Role)
-        };
+                {
+                    new Claim(ClaimTypes.NameIdentifier, account.Id.ToString()),
+                    new Claim(ClaimTypes.Name, account.Username ?? ""),
+                    new Claim(ClaimTypes.Email, account.Email ?? ""),
+                    new Claim(ClaimTypes.Role, account.Role)
+                };
 
                 
                 var claimsIdentity = new ClaimsIdentity(

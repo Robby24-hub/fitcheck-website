@@ -36,16 +36,20 @@ namespace FitCheckWebApp.Models.Database
 
                     tableCmd.CommandText = @"
                         CREATE TABLE IF NOT EXISTS Account (
-                            Id INT AUTO_INCREMENT PRIMARY KEY,
+                            Id INT(11) AUTO_INCREMENT PRIMARY KEY,
+                            MemberID VARCHAR(20) UNIQUE,
                             Username VARCHAR(100) NOT NULL UNIQUE,
                             PasswordHash TEXT NOT NULL,
                             Email VARCHAR(150) NOT NULL UNIQUE,
                             Role ENUM('admin','trainer','user') DEFAULT 'user',
-                            MembershipPlan ENUM('FitStart','FitElite','FitPro') DEFAULT NULL,
                             DateCreated DATETIME DEFAULT CURRENT_TIMESTAMP,
-                            IsActive BOOLEAN DEFAULT TRUE
+                            IsActive TINYINT(1) DEFAULT 1,
+                            MembershipPlan ENUM('FitStart','FitElite','FitPro') DEFAULT NULL,
+                            FirstName VARCHAR(50),
+                            LastName VARCHAR(50)
                         );";
                     tableCmd.ExecuteNonQuery();
+
 
                     tableCmd.CommandText = @"
                         CREATE TABLE IF NOT EXISTS `Transaction` (

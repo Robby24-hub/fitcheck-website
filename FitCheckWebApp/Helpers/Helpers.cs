@@ -51,5 +51,17 @@ namespace FitCheckWebApp.Helpers
 
         }
 
+        public static string? MemberIdGenerator()
+        {
+            string todaysDate = DateTime.Now.ToString("yyyyMMdd");
+
+            int dailyCount = 1;
+
+            string memberID = $"{todaysDate}-{dailyCount:D3}";
+
+            return memberID;
+
+        }
+
     }
 }

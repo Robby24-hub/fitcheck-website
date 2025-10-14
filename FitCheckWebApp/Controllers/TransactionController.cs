@@ -18,6 +18,8 @@ namespace FitCheckWebApp.Controllers
         public IActionResult PaymentMethod(TransactionViewModel newtransaction)
         {
 
+            int accountId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+
             if (!ModelState.IsValid)
                 return View(newtransaction);
 
@@ -29,7 +31,7 @@ namespace FitCheckWebApp.Controllers
 
             var transaction = new Transaction
             {
-                AccountID = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value),
+                AccountID = accountId,
                 MembershipPlan = newtransaction.MembershipPlan,
                 PaymentMethod = newtransaction.PaymentMethod,
                 StartDate = DateTime.Now,
@@ -38,6 +40,14 @@ namespace FitCheckWebApp.Controllers
 
             TransactionManager.PostTransaction(transaction);
 
+            var account = AccountManager.FindById(accountId); 
+
+            if (account != null)
+            {
+                account.MemberID = Helpers.Helpers.MemberIdGenerator();
+
+                AccountManager.UpdateAccount(account);
+            }
 
             return RedirectToAction("Membership");
         }
