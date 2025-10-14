@@ -1,3 +1,5 @@
+@model FitCheckWebApp.ViewModels.MembershipPassViewModel
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -44,15 +46,16 @@
                 <div class="pass-details">
 
                     <h3>MEMBERSHIP PASS</h3>
-                    <p><span>Name :</span> Juan Dela Cruz</p>
-                    <p><span>Member ID :</span> 12345 - AB</p>
+                    <p><span>Name :</span> @Model.FullName</p>
+                    <p><span>Member ID :</span> @Model.MemberID</p>
                     <p><span>Plan Type :</span> @Model.MembershipPlan</p>
-                    <p><span>Valid until : </span> @Model.EndDate.ToString("MMMM d, yyyy")</p>
+                    <p><span>Valid until :</span> @Model.EndDate.ToString("MMMM d, yyyy")</p>
 
                 </div>
             </div>
         </section>
     </main>
+
 
 <!-- FOOTER -->
 <footer>

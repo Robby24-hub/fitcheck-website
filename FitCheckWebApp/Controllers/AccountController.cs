@@ -121,10 +121,31 @@ namespace FitCheckWebApp.Controllers
 
             int accountId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 
-            var transaction = TransactionManager.FindById(accountId);
+            var account = AccountManager.FindById(accountId); 
+            var transaction = TransactionManager.FindById(accountId); 
 
-            return View(transaction);
+            if (account == null)
+                return RedirectToAction("Login", "Account");
+
+            if (transaction == null)
+            {
+                return RedirectToAction("Membership", "Transaction");
+            }
+
+            MembershipPassViewModel model = new MembershipPassViewModel
+            {
+                FullName = $"{account.FirstName} {account.LastName}",
+                MemberID = account.MemberID,
+                MembershipPlan = account.MembershipPlan.ToString(),
+                TransactionDate = transaction!.TransactionDate,
+                EndDate = transaction.EndDate,
+                Status = transaction.Status.ToString()
+            };
+
+
+            return View(model);
         }
+
 
         [Authorize]
         public IActionResult ClassesUser() => View();
