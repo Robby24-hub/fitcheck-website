@@ -59,9 +59,7 @@ header {
             color: #d2f801;
         }
 
-
 /*===================================================*/
-
 
 main {
     min-height: 100vh;
@@ -143,6 +141,7 @@ main {
     gap: 15px;
 }
 
+/* Input fields */
 .input-field {
     background: #fff;
     border: none;
@@ -177,6 +176,20 @@ main {
     .input-field.small {
         flex: 0.6;
     }
+
+/* First Name / Last Name adjustments */
+.input-row input.input-field.medium {
+    flex: 1;
+}
+
+    .input-row input.input-field.medium + input.input-field.medium {
+        margin-left: 15px; /* spacing between first and last name */
+    }
+
+/* Emergency Contact row */
+.form-group input.input-field.medium {
+    flex: 1;
+}
 
 select.input-field {
     cursor: pointer;
@@ -276,6 +289,7 @@ select.input-field {
     .input-field.medium,
     .input-field.small {
         width: 100%;
+        margin-left: 0; /* remove margin for stacked fields */
     }
 
     .title {
@@ -286,7 +300,6 @@ select.input-field {
         padding: 20px;
     }
 }
-
 
 /*===================================================*/
 
@@ -301,7 +314,6 @@ footer {
 }
 
 /* HR line */
-
 .hr-container {
     display: flex;
     justify-content: center;

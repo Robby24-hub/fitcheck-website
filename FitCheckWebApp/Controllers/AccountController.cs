@@ -92,6 +92,8 @@ namespace FitCheckWebApp.Controllers
                 Username = model.Username,
                 Email = model.Email,
                 PasswordHash = HashingPassword(model.Password!),
+                FirstName = model.FirstName,
+                LastName = model.LastName
             };
 
             AccountManager.PostAccount(account);

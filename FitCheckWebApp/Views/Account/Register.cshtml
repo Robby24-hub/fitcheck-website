@@ -39,8 +39,11 @@
                         <h2 class="section-title">PERSONAL INFORMATION</h2>
                         <div class="form-group">
                             <div class="input-row">
-                                <input asp-for="FullName" type="text" placeholder="Full Name" class="input-field large" required>
-                                <span asp-validation-for="FullName" class="text-danger"></span>
+                                <input asp-for="FirstName" type="text" placeholder="First Name" class="input-field medium" required>
+                                <span asp-validation-for="FirstName" class="text-danger"></span>
+
+                                <input asp-for="LastName" type="text" placeholder="Last Name" class="input-field medium" required>
+                                <span asp-validation-for="LastName" class="text-danger"></span>
 
                                 <select asp-for="Gender" class="input-field small">    
                                     <option value="">Gender</option>
