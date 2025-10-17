@@ -53,13 +53,13 @@
 
                 <button type="submit">LOGIN</button>
 
-                <p class="txt-register-here">
-                    Don't have an account?
-                    <a asp-controller="Account" asp-action="Register">Register Here</a>
-                </p>
-
                 <div class="bottom-links">
-                    <a asp-controller="Account" asp-action="AdminLogin"><p>Log in as Admin</p></a>
+                    <a asp-controller="Account" asp-action="AdminLogin">Log in as Admin</a>
+
+                    <p class="txt-register-here">
+                        Don't have an account?
+                        <a asp-controller="Account" asp-action="Register">Register Here</a>
+                    </p>
                 </div>
             </div>
         </form>
