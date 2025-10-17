@@ -143,22 +143,32 @@ button {
     }
 
 /*register section*/
-.txt-register-here {
+.bottom-links {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     width: 100%;
     font-size: .9rem;
-    text-align: center;
-    text-decoration: none;
+}
+
+    .bottom-links a {
+        color: white;
+        text-decoration: none;
+    }
+
+        .bottom-links a:hover {
+            text-decoration: underline;
+            color: #d2f801;
+            cursor: pointer;
+        }
+
+.txt-register-here {
+    text-align: right;
 }
 
     .txt-register-here a {
         color: white;
     }
-
-        .txt-register-here a:hover {
-            text-decoration: underline;
-            color: #d2f801;
-            cursor: pointer;
-        }
 
 
 

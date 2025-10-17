@@ -45,7 +45,16 @@
                                 <input asp-for="LastName" type="text" placeholder="Last Name" class="input-field medium" required>
                                 <span asp-validation-for="LastName" class="text-danger"></span>
 
-                                <select asp-for="Gender" class="input-field small">    
+                                
+                            </div>
+
+                            <div class="input-row">
+                                <input asp-for="Birthday" type="date" placeholder="Birthday" class="input-field medium" required>
+                                <span asp-validation-for="Birthday" class="text-danger"></span>
+
+                                <input asp-for="Age" type="number" id="ageOutput" placeholder="Age" class="input-field small" readonly>
+
+                                <select asp-for="Gender" class="input-field small">
                                     <option value="">Gender</option>
                                     <option value="Male">Male</option>
                                     <option value="Female">Female</option>
@@ -55,46 +64,12 @@
                             </div>
 
                             <div class="input-row">
-                                <input asp-for="Birthday" type="date" placeholder="Birthday" class="input-field medium" required>
-                                <span asp-validation-for="Birthday" class="text-danger"></span>
-
-                                <input asp-for="Age" type="number" id="ageOutput" placeholder="Age" class="input-field small" readonly>
-                            </div>
-
-                            <div class="input-row">
                                 <input asp-for="ContactNumber" type="tel" placeholder="Contact Number" class="input-field medium" required>
                                 <span asp-validation-for="ContactNumber" class="text-danger"></span>
 
                                 <input asp-for="Email" type="email" placeholder="Email Address" class="input-field medium" required>
                                 <span asp-validation-for="Email" class="text-danger"></span>
                             </div>
-                        </div>
-                    </section>
-
-                    <!-- Membership Plan -->
-                    <section class="form-section">
-                        <h2 class="section-title">MEMBERSHIP PLAN</h2>
-                        <div class="form-group">
-                            <select class="input-field full">
-                                <option value="">Select Membership Plan</option>
-                                <option value="FitStart">FitStart</option>
-                                <option value="FitPro">FitPro</option>
-                                <option value="FitElite">FitElite</option>
-                            </select>
-                        </div>
-                    </section>
-
-                    <!-- Payment Information -->
-                    <section class="form-section">
-                        <h2 class="section-title">PAYMENT INFORMATION</h2>
-                        <div class="form-group">
-                            <select class="input-field full" >
-                                <option value="">Select Payment Method</option>
-                                <option value="credit">Credit Card</option>
-                                <option value="debit">Debit Card</option>
-                                <option value="cash">Cash</option>
-                                <option value="bank">Bank Transfer</option>
-                            </select>
                         </div>
                     </section>
 
