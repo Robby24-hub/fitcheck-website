@@ -48,7 +48,7 @@
     <h2>Payment Details</h2>
     <form asp-controller="Transaction" asp-action="PaymentMethod" method="post"  id="paymentForm">
 
-       <input type="hidden" id="paymentMethod" name="paymentMethod" value="" />
+       <input type="hidden" asp-for="PaymentMethod" id="paymentMethod" value="" />
 
       <div class="form-row">
         <div class="input-group">
@@ -101,100 +101,89 @@
 </div>
 
 <script>
-  // Helper: Get query parameter from URL
-  function getQueryParam(param) {
-    return new URLSearchParams(window.location.search).get(param);
-  }
+    window.onload = function() {
+      const membershipSelect = document.getElementById('membershipPlanSelect');
+      const priceDisplay = document.getElementById('membershipPriceValue');
 
-  window.onload = function() {
-    const membershipSelect = document.getElementById('membershipPlanSelect');
-    const priceDisplay = document.getElementById('membershipPriceValue');
+      membershipSelect.addEventListener('change', function() {
+        const selectedOption = membershipSelect.options[membershipSelect.selectedIndex];
+        priceDisplay.textContent = '₱' + selectedOption.getAttribute('data-price');
+      });
 
-    // Update price when user changes dropdown
-    membershipSelect.addEventListener('change', function() {
-      const selectedOption = membershipSelect.options[membershipSelect.selectedIndex];
-      priceDisplay.textContent = '₱' + selectedOption.getAttribute('data-price');
-    });
-
-    // Preselect plan from query parameter
-    const planParam = getQueryParam('plan');
-    if (planParam) {
-      for (let option of membershipSelect.options) {
-        if (option.value === planParam) {
-          option.selected = true;
-          priceDisplay.textContent = '₱' + option.getAttribute('data-price');
-          break;
+      const params = new URLSearchParams(window.location.search);
+      const planParam = params.get('plan');
+      if (planParam) {
+        for (let option of membershipSelect.options) {
+          if (option.value === planParam) {
+            option.selected = true;
+            priceDisplay.textContent = '₱' + option.getAttribute('data-price');
+          }
         }
       }
+    };
+
+    function showPaymentForm(paymentMethod) {
+      const modal = document.getElementById("paymentModal");
+      modal.style.display = "block";
+
+      const hiddenPayment = document.getElementById("paymentMethod");
+      const dynamicFields = document.getElementById("dynamicFields");
+
+      if (paymentMethod === 'mastercard') {
+        hiddenPayment.value = "Credit"; 
+        dynamicFields.innerHTML = `
+          <div class="form-row">
+            <div class="input-group">
+              <label for="cardNumber">Card Number</label>
+              <input type="text" id="cardNumber" name="cardNumber" required>
+            </div>
+            <div class="input-group">
+              <label for="cardHolderName">Cardholder Name</label>
+              <input type="text" id="cardHolderName" name="cardHolderName" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="input-group">
+              <label for="cvv">CVV</label>
+              <input type="text" id="cvv" name="cvv" required>
+            </div>
+            <div class="input-group">
+              <label for="validity">Validity</label>
+              <input type="text" id="validity" name="validity" required>
+            </div>
+          </div>`;
+      } else if (paymentMethod === 'gcash') {
+        hiddenPayment.value = "Debit"; 
+        dynamicFields.innerHTML = `
+          <div class="form-row">
+            <div class="input-group">
+              <label for="accountNumber">Account Number</label>
+              <input type="text" id="accountNumber" name="accountNumber" required>
+            </div>
+          </div>`;
+      } else if (paymentMethod === 'paycash') {
+        hiddenPayment.value = "Cash"; 
+        dynamicFields.innerHTML = `
+          <div class="form-row">
+            <div class="input-group">
+              <label for="cellphoneNumber">Cellphone No. (+63)</label>
+              <input type="text" id="cellphoneNumber" name="cellphoneNumber" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <label>Go to the nearest FitCheck branch to complete the payment.</label>
+          </div>`;
+      }
     }
-  };
 
-  function showPaymentForm(paymentMethod) {
-    const modal = document.getElementById("paymentModal");
-    modal.style.display = "block";
-
-    document.getElementById("paymentMethod").value = paymentMethod;
-
-    const dynamicFields = document.getElementById("dynamicFields");
-
-    if (paymentMethod === 'mastercard') {
-      dynamicFields.innerHTML = `
-        <div class="form-row">
-          <div class="input-group">
-            <label for="cardNumber">Card Number</label>
-            <input type="text" id="cardNumber" name="cardNumber" required>
-          </div>
-          <div class="input-group">
-            <label for="cardHolderName">Cardholder Name</label>
-            <input type="text" id="cardHolderName" name="cardHolderName" required>
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="input-group">
-            <label for="cvv">CVV</label>
-            <input type="text" id="cvv" name="cvv" required>
-          </div>
-          <div class="input-group">
-            <label for="validity">Validity</label>
-            <input type="text" id="validity" name="validity" required>
-          </div>
-        </div>`;
-    } else if (paymentMethod === 'gcash') {
-      dynamicFields.innerHTML = `
-        <div class="form-row">
-          <div class="input-group">
-            <label for="accountNumber">Account Number</label>
-            <input type="text" id="accountNumber" name="accountNumber" required>
-          </div>
-        </div>`;
-    } else if (paymentMethod === 'paycash') {
-      dynamicFields.innerHTML = `
-        <div class="form-row">
-          <div class="input-group">
-            <label for="cellphoneNumber">Cellphone No. (+63)</label>
-            <input type="text" id="cellphoneNumber" name="cellphoneNumber" required>
-          </div>
-        </div>
-        <div class="form-row">
-          <label>Go to the nearest FitCheck branch to complete the payment.</label>
-        </div>`;
+    function closePaymentForm() {
+      document.getElementById("paymentModal").style.display = "none";
     }
-  }
 
-  function closePaymentForm() {
-    document.getElementById("paymentModal").style.display = "none";
-  }
-
-  function showThankYouMessage(event) {
-    event.preventDefault();
-    closePaymentForm();
-    document.getElementById("thankYouModal").style.display = "block";
-  }
-
-  function closeThankYouMessage() {
-    document.getElementById("thankYouModal").style.display = "none";
-  }
-</script>
+    function closeThankYouMessage() {
+      document.getElementById("thankYouModal").style.display = "none";
+    }
+  </script>
 
 <link rel="stylesheet" href="/css/PaymentMethod.css">
 

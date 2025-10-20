@@ -45,6 +45,7 @@ namespace FitCheckWebApp.Controllers
             if (account != null)
             {
                 account.MemberID = Helpers.Helpers.MemberIdGenerator();
+                account.MembershipPlan = newtransaction.MembershipPlan;
 
                 AccountManager.UpdateAccount(account);
             }
