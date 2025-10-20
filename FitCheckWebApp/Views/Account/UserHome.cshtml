@@ -1,5 +1,9 @@
 @model FitCheckWebApp.ViewModels.MembershipPassViewModel
 
+@{
+    Layout = null;
+}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,11 +19,14 @@
             <h1 class="brand">FITCHECK</h1>
         </div>
         <nav class="navbar">
-            <a href="">Home</a>
-            <a href="Membership(user).html">Membership</a>
-            <a href="">Classes</a>
-            <a href="LogInPage.html">Log out</a>
-        </nav> 
+            <a asp-controller="Account" asp-action="UserHome">Home</a>
+            <a asp-controller="Transaction" asp-action="Membership">Membership</a>
+            <a asp-controller="Account" asp-action="ClassesUser">Classes</a>
+            <form asp-controller="Account" asp-action="Logout" method="post" id="logoutForm">
+                <button type="submit" class="logout-btn">Log Out</button>
+            </form>
+
+        </nav>   
     </header>
 
     <main>
