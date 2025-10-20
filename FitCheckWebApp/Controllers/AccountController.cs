@@ -26,7 +26,7 @@ namespace FitCheckWebApp.Controllers
 
             if (account != null && verifyPassword(model.Password!, account.PasswordHash!))
             {
-                
+
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.NameIdentifier, account.Id.ToString()),
@@ -35,17 +35,17 @@ namespace FitCheckWebApp.Controllers
                     new Claim(ClaimTypes.Role, account.Role)
                 };
 
-                
+
                 var claimsIdentity = new ClaimsIdentity(
                     claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
                 var authProperties = new AuthenticationProperties
                 {
-                    IsPersistent = true, 
+                    IsPersistent = true,
                     ExpiresUtc = DateTimeOffset.UtcNow.AddHours(1)
                 };
 
-                
+
                 await HttpContext.SignInAsync(
                     CookieAuthenticationDefaults.AuthenticationScheme,
                     new ClaimsPrincipal(claimsIdentity),
@@ -121,8 +121,8 @@ namespace FitCheckWebApp.Controllers
 
             int accountId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 
-            var account = AccountManager.FindById(accountId); 
-            var transaction = TransactionManager.FindById(accountId); 
+            var account = AccountManager.FindById(accountId);
+            var transaction = TransactionManager.FindById(accountId);
 
             if (account == null)
                 return RedirectToAction("Login", "Account");
@@ -149,6 +149,12 @@ namespace FitCheckWebApp.Controllers
 
         [Authorize]
         public IActionResult ClassesUser() => View();
+
+
+
+        public IActionResult AboutUs() => View();
+
+        public IActionResult Classes() => View();
 
 
     }
