@@ -25,10 +25,14 @@
         <nav class="navbar">
             <a asp-controller="Account" asp-action="UserHome">Home</a>
             <a asp-controller="Transaction" asp-action="UserMembership">Membership</a>
-            <a href="#">Classes</a>
+            <a asp-controller="Account" asp-action="ClassesUser">Classes</a>
             <a href="#">Products</a>
             <a href="#">Account</a>
-            <a href="#">Log Out</a>
+
+            <form asp-controller="Account" asp-action="Logout" method="post" style="display:inline;">
+                <button type="submit" class="logout-btn">Logout</button>
+            </form>
+
         </nav>
     </header>
 
