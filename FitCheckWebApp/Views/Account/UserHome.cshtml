@@ -4,105 +4,125 @@
     Layout = null;
 }
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Fitcheck — Select Payment Method</title>
-  <link rel="stylesheet" href="~/css/UserHome.css" asp-append-version="true" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSS - FIXED -->
+    <link rel="stylesheet" href="~/css/UserHome.css" asp-append-version="true" />
+    <!-- Favicon -->
+    <link rel="icon" href="~/images_fitcheck/fitcheckicon.png" />
+    <title>Home | FitCheck Gym</title>
 </head>
 <body>
-  <header>
+    <header>
+
         <div class="brand-container">
-            <img alt="logo" class="logo" src="IMAGES/LOGO.png">
+            <img asp-append-version="true" src="~/images_fitcheck/fitcheckicon.png" alt="logo" class="logo" />
             <h1 class="brand">FITCHECK</h1>
         </div>
+
         <nav class="navbar">
             <a asp-controller="Account" asp-action="UserHome">Home</a>
-            <a asp-controller="Transaction" asp-action="Membership">Membership</a>
-            <a asp-controller="Account" asp-action="ClassesUser">Classes</a>
-            <form asp-controller="Account" asp-action="Logout" method="post" id="logoutForm">
-                <button type="submit" class="logout-btn">Log Out</button>
-            </form>
-
-        </nav>   
+            <a href="#">Membership</a>
+            <a href="#">Classes</a>
+            <a href="#">Products</a>
+            <a href="#">Account</a>
+            <a href="#">Log Out</a>
+        </nav>
     </header>
 
     <main>
         <section class="welcome">
-            <h2>WELCOME Member,</h2>
+            <h2>WELCOME @Model.FullName</h2>
         </section>
 
-        <section class="membership-overview">
-            <h3>MEMBERSHIP OVERVIEW</h3>
-            <div class="overview-box">
-
-                <p><strong>Status:</strong> <span class="active">@Model.Status</span></p>
-                <p><strong>Last Payment Date:</strong> @Model.TransactionDate.ToString("MMMM d, yyyy")</p>
-                <p><strong>Payment Status: </strong> <span class="paid">Paid</span></p>
-                <p><strong>Membership Type:</strong>  @Model.MembershipPlan</p>
-                <p><strong>Next Payment Due:</strong> @Model.EndDate.ToString("MMMM d, yyyy")</p>
-
-            </div>
-        </section>
-
-        <section class="membership-pass">
-            <div class="pass-card">
-                <div class="photo"></div>
-                <div class="pass-details">
-
-                    <h3>MEMBERSHIP PASS</h3>
-                    <p><span>Name :</span> @Model.FullName</p>
-                    <p><span>Member ID :</span> @Model.MemberID</p>
-                    <p><span>Plan Type :</span> @Model.MembershipPlan</p>
-                    <p><span>Valid until :</span> @Model.EndDate.ToString("MMMM d, yyyy")</p>
-
+        <div class="content-container">
+            <section class="membership-overview">
+                <h3>MEMBERSHIP OVERVIEW</h3>
+                <div class="overview-box">
+                    <p><strong>Status:</strong> <span class="active">@Model.Status</span></p>
+                    <p><strong>Last Payment Date:</strong> @Model.TransactionDate.ToString("MMMM d, yyyy")</p>
+                    <p><strong>Payment Status: </strong> <span class="paid">Paid</span></p>
+                    <p><strong>Membership Type:</strong>  @Model.MembershipPlan</p>
+                    <p><strong>Next Payment Due:</strong> @Model.EndDate.ToString("MMMM d, yyyy")</p>
                 </div>
-            </div>
-        </section>
+            </section>
+
+            <section class="membership-pass">
+                <div class="pass-card">
+                    <div class="pass-header">
+                        <img src="~/images_fitcheck/fitcheckicon.png" alt="FitCheck Logo">
+                        <h3>MEMBERSHIP PASS</h3>
+                    </div>
+
+                    <div class="pass-body">
+                        <div class="photo"></div>
+                        <div class="pass-details">
+                            <p>
+                                <span class="label">Name :</span>
+                                <span class="value">@Model.FullName</span>
+                            </p>
+                            <p>
+                                <span class="label">Member ID :</span>
+                                <span class="value">@Model.MemberID</span>
+                            </p>
+                            <p>
+                                <span class="label">Plan Type :</span>
+                                <span class="value">@Model.MembershipPlan</span>
+                            </p>
+                            <p>
+                                <span class="label">Valid until :</span>
+                                <span class="value">@Model.EndDate.ToString("MMMM yyyy")</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="pass-footer"></div>
+                </div>
+            </section>
+        </div>
     </main>
 
 
-<!-- FOOTER -->
-<footer>
-  <div class="footer-container">
+    <div class="hr-container">
+        <hr>
+    </div>
 
-    <!-- LEFT SIDE -->
-    <div class="footer-left">
-      <div class="footer-top">
-        <img src="images/logo.png" alt="FitCheck Logo" class="footer-logo">
-        <p class="footer-desc">
-          Transform your body and mind at FitCheck Gym. 
-          With state-of-the-art equipment, expert trainers, 
-          and a supportive community, we’re here to help 
-          you achieve your fitness goals.
-        </p>
-      </div>
-
-      <div class="footer-bottom">
-        <p class="follow-text">FOLLOW US</p>
-        <div class="social-icons">
-          <a href="#"><i class="fab fa-facebook"></i></a>
-          <a href="#"><i class="fab fa-linkedin"></i></a>
-          <a href="#"><i class="fab fa-youtube"></i></a>
-          <a href="#"><i class="fab fa-instagram"></i></a>
+    <footer>
+        <div class="footer-container">
+            <div class="left-side-footer">
+                <div class="description-footer">
+                    <img class="fitcheck-logo-footer" src="~/images_fitcheck/fitcheckicon.png">
+                    <p>Transform your body and mind at FitCheck Gym. With state-of-the-art equipment, expert trainers, and a supportive community, we're here to help you achieve your fitness goals.</p>
+                </div>
+                <div class="follow-socials-container">
+                    <h4 class="follow-us-footer">FOLLOW US</h4>
+                    <div class="social-media-container">
+                        <a target="_blank" href="https://www.facebook.com/"><img src="~/images_fitcheck/icon_fb-removebg-preview.png"></a>
+                        <a target="_blank" href="https://www.linkedin.com/"><img src="~/images_fitcheck/Icon_linkedin-removebg-preview.png"></a>
+                        <a target="_blank" href="https://www.youtube.com/"><img src="~/images_fitcheck/icon_youtube-removebg-preview.png"></a>
+                        <a target="_blank" href="https://www.instagram.com/"><img src="~/images_fitcheck/icon_instagram-removebg-preview.png"></a>
+                    </div>
+                </div>
+            </div>
+            <div class="right-side-footer">
+                <div class="address">
+                    <img src="~/images_fitcheck/icon_location-removebg-preview.png">
+                    <p>Street 1, Congressional Rd Caloocan City</p>
+                </div>
+                <div class="email-address">
+                    <img src="~/images_fitcheck/icon_email-removebg-preview.png">
+                    <p>info@fitcheckgym.com</p>
+                </div>
+                <div class="contact-number">
+                    <img src="~/images_fitcheck/icon_mobile-removebg-preview.png">
+                    <p>09192344890 / 09365144587</p>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-
-    <!-- RIGHT SIDE -->
-    <div class="footer-right">
-      <p><i class="fas fa-map-marker-alt"></i> Street 1, Congressional Rd Caloocan City</p>
-      <p><i class="fas fa-envelope"></i> info@fitcheckgym.com</p>
-      <p><i class="fas fa-mobile-alt"></i> 09192344890 / 09365414587</p>
-    </div>
-
-  </div>
-</footer>
-
-<!-- Font Awesome -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+    </footer>
 </body>
 </html>
