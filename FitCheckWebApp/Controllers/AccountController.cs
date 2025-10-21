@@ -127,20 +127,27 @@ namespace FitCheckWebApp.Controllers
             if (account == null)
                 return RedirectToAction("Login", "Account");
 
-            if (transaction == null)
-            {
-                return RedirectToAction("Membership", "Transaction");
-            }
-
             MembershipPassViewModel model = new MembershipPassViewModel
             {
                 FullName = $"{account.FirstName} {account.LastName}",
                 MemberID = account.MemberID,
-                MembershipPlan = account.MembershipPlan.ToString(),
-                TransactionDate = transaction!.TransactionDate,
-                EndDate = transaction.EndDate,
-                Status = transaction.Status.ToString()
+                
             };
+
+            if (transaction != null)
+            {
+                model.MembershipPlan = account.MembershipPlan.ToString();
+                model.TransactionDate = transaction!.TransactionDate;
+                model.EndDate = transaction.EndDate;
+                model.Status = transaction.Status.ToString();
+            }
+            else
+            {
+                model.MembershipPlan = "N/A";
+                model.TransactionDate = DateTime.Now;
+                model.EndDate = DateTime.Now.AddMonths(1); 
+                model.Status = "N/A";
+            }
 
 
             return View(model);
