@@ -1,8 +1,8 @@
-@model FitCheckWebApp.ViewModels.MembershipPassViewModel
-
-@{
+﻿@{
     Layout = null;
 }
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -10,10 +10,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- CSS - FIXED -->
-    <link rel="stylesheet" href="~/css/UserHome.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/AboutUs.css" asp-append-version="true" />
     <!-- Favicon -->
     <link rel="icon" href="~/images_fitcheck/fitcheckicon.png" />
-    <title>FitCheck Gym</title>
+    <title>About Us | FitCheck Gym</title>
 </head>
 <body>
     <header>
@@ -24,53 +24,33 @@
         </div>
 
         <nav class="navbar">
-           <nav class="navbar">
-            <a href="">Home</a>
-            <a href="">Membership</a>
-            <a href="">Classes</a>
-             <a href="">Products</a>
-            <a href="">Log out</a>
-        </nav>
+            <a asp-controller="Home" asp-action="Index">Home</a>
+            <a asp-controller="Transaction" asp-action="Membership">Membership</a>
+            <a asp-controller="Account" asp-action="Classes">Classes</a>
+            <a asp-controller="Account" asp-action="AboutUs">About Us</a>
+            <a asp-controller="Account" asp-action="Login">Log In</a>
         </nav>
     </header>
 
-
     <main>
-        <section class="welcome">
-            <h2>WELCOME Member,</h2>
-        </section>
-
-        <section class="membership-overview">
-            <h3>MEMBERSHIP OVERVIEW</h3>
-            <div class="overview-box">
-
-                <p><strong>Status:</strong> <span class="active">@Model.Status</span></p>
-                <p><strong>Last Payment Date:</strong> @Model.TransactionDate.ToString("MMMM d, yyyy")</p>
-                <p><strong>Payment Status: </strong> <span class="paid">Paid</span></p>
-                <p><strong>Membership Type:</strong>  @Model.MembershipPlan</p>
-                <p><strong>Next Payment Due:</strong> @Model.EndDate.ToString("MMMM d, yyyy")</p>
-
+        <div class="parent-container">
+            <img src="~/images_fitcheck/runningman.png" alt="Running figure" class="runner-image">
+            <div class="about-us-container">
+                <h1 class="txt-about-us">ABOUT US</h1>
+                <p class="about-us-content">
+                    At FitCheck, we believe fitness is more than just lifting weights — it's about building strength, discipline, and confidence that extends beyond the gym. Founded with a passion to make health and wellness accessible to everyone, our mission is to create a space where people of all ages and fitness levels feel welcome, motivated, and empowered.
+                </p>
+                <p class="about-us-content">
+                    With 24/7 access, state-of-the-art equipment, and a wide range of group classes like HIIT, Yoga, Zumba, and Spin, we make it easy to fit workouts into your lifestyle. Our dedicated team is here to guide, support, and inspire you every step of the way.
+                </p>
+                <p class="about-us-content">
+                    More than just a gym, FitCheck is a community. A place where goals are achieved, friendships are built, and transformations happen. Whether you're starting your fitness journey or pushing toward new limits, we're here to help you become your best self.
+                </p>
             </div>
-        </section>
-
-        <section class="membership-pass">
-            <div class="pass-card">
-                <div class="photo"></div>
-                <div class="pass-details">
-
-                    <h3>MEMBERSHIP PASS</h3>
-                    <p><span>Name :</span> @Model.FullName</p>
-                    <p><span>Member ID :</span> @Model.MemberID</p>
-                    <p><span>Plan Type :</span> @Model.MembershipPlan</p>
-                    <p><span>Valid until :</span> @Model.EndDate.ToString("MMMM d, yyyy")</p>
-
-                </div>
-            </div>
-        </section>
+        </div>
     </main>
 
-
- <div class="hr-container">
+    <div class="hr-container">
         <hr>
     </div>
 
