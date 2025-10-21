@@ -40,7 +40,7 @@ namespace FitCheckWebApp.Controllers
 
             TransactionManager.PostTransaction(transaction);
 
-            var account = AccountManager.FindById(accountId); 
+            var account = AccountManager.FindById(accountId);
 
             if (account != null)
             {
@@ -58,6 +58,8 @@ namespace FitCheckWebApp.Controllers
         // ===== PAGES =====
         public IActionResult Membership() => View();
 
-    
+        public IActionResult UserMembership() => View();
+
+
     }
 }
