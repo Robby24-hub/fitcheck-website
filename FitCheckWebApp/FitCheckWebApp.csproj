@@ -18,10 +18,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\Admin\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="Views\Account\Products.cshtml" />
   </ItemGroup>
 
