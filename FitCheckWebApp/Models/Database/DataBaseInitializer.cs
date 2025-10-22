@@ -76,6 +76,7 @@ namespace FitCheckWebApp.Models.Database
                             VALUES ('ADM001', 'admin', @PasswordHash, 'admin@fitcheck.com', 'admin', 'System', 'Admin');
                         ";
                         tableCmd.Parameters.AddWithValue("@PasswordHash", Helpers.Helpers.HashingPassword("admin123"));
+
                         tableCmd.ExecuteNonQuery();
                     }
 

@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Fitcheck</title>
-  <link rel="stylesheet" href="AdminPayment.css" asp-append-version="true" />
+  <link rel="stylesheet" href="AdminClass.css" asp-append-version="true" />
 </head>
 <body>
   <header>
@@ -27,29 +27,37 @@
     
     <!-- Main -->
 
-
-      <main>
+<!-- MAIN -->
+  <main>
     <h2>WELCOME Admin,</h2>
-    <h3>PENDING MEMBERSHIP</h3>
+    <h3>CLASS OVERVIEW</h3>
+
+    <div class="add-class-btn">
+      <button class="add-class" id="openFormBtn">+ Add Class</button>
+    </div>
 
     <div class="table-container">
       <table>
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Plan</th>
-            <th>Payment</th>
+            <th>Instructor</th>
+            <th>Type</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Participant</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>Juan Dela Cruz</td>
-            <td>FitElite</td>
-            <td>1,499</td>
+            <td>Shaira Sollano</td>
+            <td>YOGA</td>
+            <td>11-30-25</td>
+            <td>10:00AM</td>
+            <td>20</td>
             <td>
-              <button class="approve">Approve</button>
-              <button class="decline">Decline</button>
+              <button class="edit">Edit</button>
+              <button class="delete">Delete</button>
             </td>
           </tr>
         </tbody>
@@ -57,8 +65,62 @@
     </div>
   </main>
 
+  <!-- POPUP FORM -->
+  <div class="popup-overlay" id="popupForm">
+    <div class="popup">
+      <h3>CLASS DETAIL</h3>
+      <form>
+        <label>Instructor</label>
+        <input type="text" placeholder="Enter instructor name">
+
+        <label>Type</label>
+        <input type="text" placeholder="Enter class type">
+
+        <div class="form-row">
+          <div>
+            <label>Date</label>
+            <input type="date">
+          </div>
+          <div>
+            <label>Time</label>
+            <input type="time">
+          </div>
+        </div>
+
+        <label>Participant Limit</label>
+        <input type="text" id="participantLimit" name="participantLimit">
+
+        <button type="submit" class="submit-btn">ADD CLASS</button>
+      </form>
+      <span class="close-btn" id="closeFormBtn">&times;</span>
+    </div>
+  </div>
+
+
+  <!-- SCRIPT -->
+  <script>
+    const openBtn = document.getElementById('openFormBtn');
+    const closeBtn = document.getElementById('closeFormBtn');
+    const popup = document.getElementById('popupForm');
+
+    openBtn.addEventListener('click', () => {
+      popup.style.display = 'flex';
+    });
+
+    closeBtn.addEventListener('click', () => {
+      popup.style.display = 'none';
+    });
+
+    window.addEventListener('click', (e) => {
+      if (e.target === popup) {
+        popup.style.display = 'none';
+      }
+    });
+  </script>
     
-  <div class="hr-container">
+
+
+   <div class="hr-container">
         <hr>
     </div>
 
