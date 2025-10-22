@@ -10,13 +10,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Fitcheck — Select Payment Method</title>
-  <link rel="stylesheet" href="wwwroot/css/AdminHome.css" asp-append-version="true" />
+  <title>Fitcheck</title>
+  <link rel="stylesheet" href="AdminHome.css" asp-append-version="true" />
 </head>
 <body>
   <header>
         <div class="brand-container">
-            <img alt="logo" class="logo" src="~/images_fitcheck/fitcheckicon.png">
+            <img alt="logo" class="logo" src="IMAGES/LOGO.png">
             <h1 class="brand">FITCHECK</h1>
         </div>
         <nav class="navbar">
@@ -36,8 +36,8 @@
 
 
      <main>
-        <h2>WELCOME Admin,</h2>
-        <p>Here’s an overview of your gym’s status today,</p>
+    <h2>WELCOME Admin,</h2>
+    <h3>PENDING MEMBERSHIP</h3>
 
         <div class="status-cards">
             <div class="card">
@@ -56,45 +56,47 @@
     </main>
 
 
-    <!-- FOOTER -->
-<footer>
-  <div class="footer-container">
+    <div class="hr-container">
+        <hr>
+    </div>
 
-    <!-- LEFT SIDE -->
-    <div class="footer-left">
-      <div class="footer-top">
-        <img src="~/images_fitcheck/fitcheckicon.png" alt="FitCheck Logo" class="footer-logo">
-        <p class="footer-desc">
-          Transform your body and mind at FitCheck Gym. 
-          With state-of-the-art equipment, expert trainers, 
-          and a supportive community, we’re here to help 
-          you achieve your fitness goals.
-        </p>
-      </div>
 
-      <div class="footer-bottom">
-        <p class="follow-text">FOLLOW US</p>
-        <div class="social-icons">
-          <a href="#"><i class="fab fa-facebook"></i></a>
-          <a href="#"><i class="fab fa-linkedin"></i></a>
-          <a href="#"><i class="fab fa-youtube"></i></a>
-          <a href="#"><i class="fab fa-instagram"></i></a>
+  <div class="hr-container">
+        <hr>
+    </div>
+
+    <footer>
+        <div class="footer-container">
+            <div class="left-side-footer">
+                <div class="description-footer">
+                    <img class="fitcheck-logo-footer" src="~/images_fitcheck/fitcheckicon.png">
+                    <p>Transform your body and mind at FitCheck Gym. With state-of-the-art equipment, expert trainers, and a supportive community, we're here to help you achieve your fitness goals.</p>
+                </div>
+                <div class="follow-socials-container">
+                    <h4 class="follow-us-footer">FOLLOW US</h4>
+                    <div class="social-media-container">
+                        <a target="_blank" href="https://www.facebook.com/"><img src="~/images_fitcheck/icon_fb-removebg-preview.png"></a>
+                        <a target="_blank" href="https://www.linkedin.com/"><img src="~/images_fitcheck/Icon_linkedin-removebg-preview.png"></a>
+                        <a target="_blank" href="https://www.youtube.com/"><img src="~/images_fitcheck/icon_youtube-removebg-preview.png"></a>
+                        <a target="_blank" href="https://www.instagram.com/"><img src="~/images_fitcheck/icon_instagram-removebg-preview.png"></a>
+                    </div>
+                </div>
+            </div>
+            <div class="right-side-footer">
+                <div class="address">
+                    <img src="~/images_fitcheck/icon_location-removebg-preview.png">
+                    <p>Street 1, Congressional Rd Caloocan City</p>
+                </div>
+                <div class="email-address">
+                    <img src="~/images_fitcheck/icon_email-removebg-preview.png">
+                    <p>info@fitcheckgym.com</p>
+                </div>
+                <div class="contact-number">
+                    <img src="~/images_fitcheck/icon_mobile-removebg-preview.png">
+                    <p>09192344890 / 09365144587</p>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-
-    <!-- RIGHT SIDE -->
-    <div class="footer-right">
-      <p><i class="fas fa-map-marker-alt"></i> Street 1, Congressional Rd Caloocan City</p>
-      <p><i class="fas fa-envelope"></i> info@fitcheckgym.com</p>
-      <p><i class="fas fa-mobile-alt"></i> 09192344890 / 09365414587</p>
-    </div>
-
-  </div>
-</footer>
-
-<!-- Font Awesome -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+    </footer>
 </body>
 </html>
