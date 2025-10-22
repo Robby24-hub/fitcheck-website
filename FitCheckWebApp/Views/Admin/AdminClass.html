@@ -96,6 +96,37 @@
     </div>
   </div>
 
+  <!-- EDIT POPUP FORM -->
+<div class="popup-overlay" id="editForm">
+  <div class="popup">
+    <h3>EDIT CLASS DETAIL</h3>
+    <form>
+      <label>Instructor</label>
+      <input type="text" placeholder="Enter instructor name">
+
+      <label>Type</label>
+      <input type="text" placeholder="Enter class type">
+
+      <div class="form-row">
+        <div>
+          <label>Date</label>
+          <input type="date">
+        </div>
+        <div>
+          <label>Time</label>
+          <input type="time">
+        </div>
+      </div>
+
+      <label>Participant Limit</label>
+      <input type="text" id="editParticipantLimit" name="editParticipantLimit">
+
+      <button type="submit" class="submit-btn">UPDATE CLASS</button>
+    </form>
+    <span class="close-btn" id="closeEditBtn">&times;</span>
+  </div>
+</div>
+
 
   <!-- SCRIPT -->
   <script>
@@ -117,6 +148,31 @@
       }
     });
   </script>
+
+  <script>
+  const editButtons = document.querySelectorAll('.edit');
+  const editPopup = document.getElementById('editForm');
+  const closeEditBtn = document.getElementById('closeEditBtn');
+
+  // Show edit form when "Edit" is clicked
+  editButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      editPopup.style.display = 'flex';
+    });
+  });
+
+  // Close edit form when X is clicked
+  closeEditBtn.addEventListener('click', () => {
+    editPopup.style.display = 'none';
+  });
+
+  // Close edit form when clicking outside
+  window.addEventListener('click', (e) => {
+    if (e.target === editPopup) {
+      editPopup.style.display = 'none';
+    }
+  });
+</script>
     
 
 
