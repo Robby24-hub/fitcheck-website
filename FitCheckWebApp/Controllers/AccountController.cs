@@ -168,6 +168,8 @@ namespace FitCheckWebApp.Controllers
 
         public IActionResult Classes() => View();
 
+        public IActionResult Products() => View();
+
 
     }
 }
