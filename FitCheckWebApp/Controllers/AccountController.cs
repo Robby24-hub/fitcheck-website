@@ -51,6 +51,11 @@ namespace FitCheckWebApp.Controllers
                     new ClaimsPrincipal(claimsIdentity),
                     authProperties);
 
+                if (account.Role == "admin")
+                {
+                    return RedirectToAction("AdminHome", "Admin");
+                }
+
                 return RedirectToAction("UserHome");
             }
 

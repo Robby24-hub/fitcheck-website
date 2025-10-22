@@ -65,6 +65,21 @@ namespace FitCheckWebApp.Models.Database
                         );";
                     tableCmd.ExecuteNonQuery();
 
+
+                    tableCmd.CommandText = "SELECT COUNT(*) FROM Account WHERE Username = 'admin'";
+                    long count = (long)tableCmd.ExecuteScalar();
+
+                    if (count == 0)
+                    {
+                        tableCmd.CommandText = @"
+                            INSERT INTO Account (MemberID, Username, PasswordHash, Email, Role, FirstName, LastName)
+                            VALUES ('ADM001', 'admin', @PasswordHash, 'admin@fitcheck.com', 'admin', 'System', 'Admin');
+                        ";
+                        tableCmd.Parameters.AddWithValue("@PasswordHash", Helpers.Helpers.HashingPassword("admin123"));
+                        tableCmd.ExecuteNonQuery();
+                    }
+
+
                 }
 
                 connection.Close();
