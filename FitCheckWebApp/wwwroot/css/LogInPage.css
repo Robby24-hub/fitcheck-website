@@ -144,33 +144,22 @@ button {
 
 /*register section*/
 .bottom-links {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    text-align:center;
     width: 100%;
     font-size: .9rem;
 }
 
-    .bottom-links a {
+    .txt-register-here a {
         color: white;
         text-decoration: none;
     }
 
-        .bottom-links a:hover {
+        .txt-register-here a:hover {
             text-decoration: underline;
             color: #d2f801;
             cursor: pointer;
+            
         }
-
-.txt-register-here {
-    text-align: right;
-}
-
-    .txt-register-here a {
-        color: white;
-    }
-
-
 
 
 /*===========================================*/

@@ -3,28 +3,34 @@
 }
 
 
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Fitcheck — Select Payment Method</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSS - FIXED -->
     <link rel="stylesheet" href="~/css/ClassesUser.css" asp-append-version="true" />
+    <!-- Favicon -->
+    <link rel="icon" href="~/images_fitcheck/fitcheckicon.png" />
+    <title>Classes | FitCheck Gym</title>
 </head>
-
 <body>
-  <header>
+    <header>
+
         <div class="brand-container">
-            <img alt="logo" class="logo" src="IMAGES/LOGO.png">
+            <img asp-append-version="true" src="~/images_fitcheck/fitcheckicon.png" alt="logo" class="logo" />
             <h1 class="brand">FITCHECK</h1>
         </div>
-        <nav class="navbar">
 
+        <nav class="navbar">
             <a asp-controller="Account" asp-action="UserHome">Home</a>
             <a asp-controller="Transaction" asp-action="UserMembership">Membership</a>
             <a asp-controller="Account" asp-action="ClassesUser">Classes</a>
             <a href="#">Products</a>
             <a href="#">Account</a>
+
             <form asp-controller="Account" asp-action="Logout" method="post" style="display:inline;">
                 <button type="submit" class="logout-btn">Logout</button>
             </form>
@@ -33,211 +39,245 @@
     </header>
 
 <!-- MAIN CONTENT -->
-    <main class="classes-section">
-        <h1 class="title">CLASSES</h1>
-        <p class="subtitle">NEW CLASSES EVERY WEEK TO KEEP YOU MOTIVATED AND ON TRACK!</p>
 
-        <div class="schedule-grid">
+    <main>
+        <div class="classes-header">
+            <h1>CLASSES</h1>
+            <p>NEW CLASSES EVERY WEEK TO KEEP YOU MOTIVATED AND ON TRACK!</p>
+        </div>
 
+        <div class="schedule-container">
             <!-- MONDAY -->
             <div class="day-column">
                 <div class="day-header">MONDAY</div>
+
                 <div class="class-card">
-                    <p class="time">6:00 AM</p>
-                    <h4>MORNING YOGA</h4>
-                    <p class="instructor">with Shaira Solano</p>
-                    <p class="details">60 min | Max 15</p>
-                    <button class="join-btn">JOIN CLASS</button>
+                    <div class="class-time">6:00 AM</div>
+                    <h3 class="class-name">MORNING YOGA</h3>
+                    <p class="class-instructor">with Shaira Sollano</p>
+                    <p class="class-duration">60 min | Max 15</p>
+
+                    <button class="join-btn">JOIN</button>
                 </div>
+
                 <div class="class-card">
-                    <p class="time">1:00 PM</p>
-                    <h4>ZUMBA DANCE</h4>
-                    <p class="instructor">with Michael Liang</p>
-                    <p class="details">45 min | Max 25</p>
-                    <button class="join-btn">JOIN CLASS</button>
+                    <div class="class-time">1:00 PM</div>
+                    <h3 class="class-name">ZUMBA DANCE</h3>
+                    <p class="class-instructor">with Michael Lising</p>
+                    <p class="class-duration">45 min | Max 25</p>
+
+                    <button class="join-btn">JOIN</button>
                 </div>
+
                 <div class="class-card">
-                    <p class="time">6:00 PM</p>
-                    <h4>STRENGTH & ENDURANCE TRAINING</h4>
-                    <p class="instructor">with Rex Tazca</p>
-                    <p class="details">90 min | Max 10</p>
-                    <button class="join-btn">JOIN CLASS</button>
+                    <div class="class-time">6:00 PM</div>
+                    <h3 class="class-name">STRENGTH & ENDURANCE TRAINING</h3>
+                    <p class="class-instructor">with Rex Tacio</p>
+                    <p class="class-duration">90 min | Max 10</p>
+
+                    <button class="join-btn">JOIN</button>
                 </div>
             </div>
 
             <!-- TUESDAY -->
             <div class="day-column">
                 <div class="day-header">TUESDAY</div>
+
                 <div class="class-card">
-                    <p class="time">8:00 AM</p>
-                    <h4>PILATES</h4>
-                    <p class="instructor">with Maria Garcia</p>
-                    <p class="details">60 min | Max 16</p>
-                    <button class="join-btn">JOIN CLASS</button>
+                    <div class="class-time">8:00 AM</div>
+                    <h3 class="class-name">PILATES</h3>
+                    <p class="class-instructor">with Maria Garcia</p>
+                    <p class="class-duration">60 min | Max 15</p>
+
+                    <button class="join-btn">JOIN</button>
                 </div>
+
                 <div class="class-card">
-                    <p class="time">2:00 PM</p>
-                    <h4>BOXING FUNDAMENTALS</h4>
-                    <p class="instructor">with Burado Marcelo</p>
-                    <p class="details">90 min | Max 12</p>
-                    <button class="join-btn">JOIN CLASS</button>
+                    <div class="class-time">2:00 PM</div>
+                    <h3 class="class-name">BOXING FUNDAMENTALS</h3>
+                    <p class="class-instructor">with Bartudo Marcelo</p>
+                    <p class="class-duration">90 min | Max 12</p>
+
+                    <button class="join-btn">JOIN</button>
                 </div>
+
                 <div class="class-card">
-                    <p class="time">6:00 PM</p>
-                    <h4>CROSSFIT TRAINING</h4>
-                    <p class="instructor">with Robby Cardano</p>
-                    <p class="details">90 min | Max 10</p>
-                    <button class="join-btn">JOIN CLASS</button>
+                    <div class="class-time">6:00 PM</div>
+                    <h3 class="class-name">CROSSFIT TRAINING</h3>
+                    <p class="class-instructor">with Bobby Candano</p>
+                    <p class="class-duration">90 min | Max 10</p>
+
+                    <button class="join-btn">JOIN</button>
                 </div>
             </div>
 
             <!-- WEDNESDAY -->
             <div class="day-column">
                 <div class="day-header">WEDNESDAY</div>
+
                 <div class="class-card">
-                    <p class="time">7:00 AM</p>
-                    <h4>HIIT BOOTCAMP</h4>
-                    <p class="instructor">with Mike Rodriguez</p>
-                    <p class="details">60 min | Max 15</p>
-                    <button class="join-btn">JOIN CLASS</button>
+                    <div class="class-time">7:00 AM</div>
+                    <h3 class="class-name">HIIT BOOTCAMP</h3>
+                    <p class="class-instructor">with Mike Rodriguez</p>
+                    <p class="class-duration">60 min | Max 15</p>
+
+                    <button class="join-btn">JOIN</button>
                 </div>
+
                 <div class="class-card">
-                    <p class="time">1:00 PM</p>
-                    <h4>BASICS OF MUAY THAI</h4>
-                    <p class="instructor">with Rotkang Ittimangon</p>
-                    <p class="details">120 min | Max 18</p>
-                    <button class="join-btn">JOIN CLASS</button>
+                    <div class="class-time">1:00 PM</div>
+                    <h3 class="class-name">BASICS OF MUAY THAI</h3>
+                    <p class="class-instructor">with Bantog Jumangkon</p>
+                    <p class="class-duration">120 min | Max 18</p>
+
+                    <button class="join-btn">JOIN</button>
                 </div>
+
                 <div class="class-card">
-                    <p class="time">8:00 PM</p>
-                    <h4>HYPERTROPHY LESSON</h4>
-                    <p class="instructor">with Diddy</p>
-                    <p class="details">60 min | Max 20</p>
-                    <button class="join-btn">JOIN CLASS</button>
+                    <div class="class-time">8:00 PM</div>
+                    <h3 class="class-name">HYPERTROPHY LESSON</h3>
+                    <p class="class-instructor">with Diddy</p>
+                    <p class="class-duration">60 min | Max 20</p>
+
+                    <button class="join-btn">JOIN</button>
                 </div>
             </div>
 
             <!-- THURSDAY -->
             <div class="day-column">
                 <div class="day-header">THURSDAY</div>
+
                 <div class="class-card">
-                    <p class="time">6:00 AM</p>
-                    <h4>MORNING YOGA</h4>
-                    <p class="instructor">with Shaira Solano</p>
-                    <p class="details">60 min | Max 15</p>
-                    <button class="join-btn">JOIN CLASS</button>
+                    <div class="class-time">6:00 AM</div>
+                    <h3 class="class-name">MORNING YOGA</h3>
+                    <p class="class-instructor">with Shaira Sollano</p>
+                    <p class="class-duration">60 min | Max 15</p>
+
+                    <button class="join-btn">JOIN</button>
                 </div>
+
                 <div class="class-card">
-                    <p class="time">1:00 PM</p>
-                    <h4>ZUMBA DANCE</h4>
-                    <p class="instructor">with Michael Liang</p>
-                    <p class="details">45 min | Max 25</p>
-                    <button class="join-btn">JOIN CLASS</button>
+                    <div class="class-time">1:00 PM</div>
+                    <h3 class="class-name">ZUMBA DANCE</h3>
+                    <p class="class-instructor">with Michael Lising</p>
+                    <p class="class-duration">45 min | Max 25</p>
+
+                    <button class="join-btn">JOIN</button>
                 </div>
+
                 <div class="class-card">
-                    <p class="time">6:00 PM</p>
-                    <h4>STRENGTH & ENDURANCE TRAINING</h4>
-                    <p class="instructor">with Rex Tazca</p>
-                    <p class="details">90 min | Max 10</p>
-                    <button class="join-btn">JOIN CLASS</button>
+                    <div class="class-time">6:00 PM</div>
+                    <h3 class="class-name">STRENGTH & ENDURANCE TRAINING</h3>
+                    <p class="class-instructor">with Rex Tacio</p>
+                    <p class="class-duration">90 min | Max 10</p>
+
+                    <button class="join-btn">JOIN</button>
                 </div>
             </div>
 
             <!-- FRIDAY -->
             <div class="day-column">
                 <div class="day-header">FRIDAY</div>
+
                 <div class="class-card">
-                    <p class="time">8:00 AM</p>
-                    <h4>PILATES</h4>
-                    <p class="instructor">with Maria Garcia</p>
-                    <p class="details">60 min | Max 16</p>
-                    <button class="join-btn">JOIN CLASS</button>
+                    <div class="class-time">8:00 AM</div>
+                    <h3 class="class-name">PILATES</h3>
+                    <p class="class-instructor">with Maria Garcia</p>
+                    <p class="class-duration">60 min | Max 15</p>
+
+                    <button class="join-btn">JOIN</button>
                 </div>
+
                 <div class="class-card">
-                    <p class="time">2:00 PM</p>
-                    <h4>BOXING FUNDAMENTALS</h4>
-                    <p class="instructor">with Burado Marcelo</p>
-                    <p class="details">90 min | Max 12</p>
-                    <button class="join-btn">JOIN CLASS</button>
+                    <div class="class-time">2:00 PM</div>
+                    <h3 class="class-name">BOXING FUNDAMENTALS</h3>
+                    <p class="class-instructor">with Bartudo Marcelo</p>
+                    <p class="class-duration">90 min | Max 12</p>
+
+                    <button class="join-btn">JOIN</button>
                 </div>
+
                 <div class="class-card">
-                    <p class="time">6:00 PM</p>
-                    <h4>CROSSFIT TRAINING</h4>
-                    <p class="instructor">with Robby Cardano</p>
-                    <p class="details">90 min | Max 10</p>
-                    <button class="join-btn">JOIN CLASS</button>
+                    <div class="class-time">6:00 PM</div>
+                    <h3 class="class-name">CROSSFIT TRAINING</h3>
+                    <p class="class-instructor">with Bobby Candano</p>
+                    <p class="class-duration">90 min | Max 10</p>
+
+                    <button class="join-btn">JOIN</button>
                 </div>
             </div>
 
             <!-- SATURDAY -->
             <div class="day-column">
                 <div class="day-header">SATURDAY</div>
+
                 <div class="class-card">
-                    <p class="time">7:00 AM</p>
-                    <h4>HIIT BOOTCAMP</h4>
-                    <p class="instructor">with Mike Rodriguez</p>
-                    <p class="details">60 min | Max 15</p>
-                    <button class="join-btn">JOIN CLASS</button>
+                    <div class="class-time">7:00 AM</div>
+                    <h3 class="class-name">HIIT BOOTCAMP</h3>
+                    <p class="class-instructor">with Mike Rodriguez</p>
+                    <p class="class-duration">60 min | Max 15</p>
+
+                    <button class="join-btn">JOIN</button>
                 </div>
+
                 <div class="class-card">
-                    <p class="time">1:00 PM</p>
-                    <h4>BASICS OF MUAY THAI</h4>
-                    <p class="instructor">with Rotkang Ittimangon</p>
-                    <p class="details">120 min | Max 18</p>
-                    <button class="join-btn">JOIN CLASS</button>
+                    <div class="class-time">1:00 PM</div>
+                    <h3 class="class-name">BASICS OF MUAY THAI</h3>
+                    <p class="class-instructor">with Bantog Jumangkon</p>
+                    <p class="class-duration">120 min | Max 18</p>
+
+                    <button class="join-btn">JOIN</button>
                 </div>
+
                 <div class="class-card">
-                    <p class="time">8:00 PM</p>
-                    <h4>HYPERTROPHY LESSON</h4>
-                    <p class="instructor">with Diddy</p>
-                    <p class="details">60 min | Max 20</p>
-                    <button class="join-btn">JOIN CLASS</button>
+                    <div class="class-time">8:00 PM</div>
+                    <h3 class="class-name">HYPERTROPHY LESSON</h3>
+                    <p class="class-instructor">with Diddy</p>
+                    <p class="class-duration">60 min | Max 20</p>
+
+                    <button class="join-btn">JOIN</button>
                 </div>
             </div>
-
         </div>
     </main>
 
 
-    <!-- FOOTER -->
-<footer>
-  <div class="footer-container">
+    <div class="hr-container">
+        <hr>
+    </div>
 
-    <!-- LEFT SIDE -->
-    <div class="footer-left">
-      <div class="footer-top">
-        <img src="images/logo.png" alt="FitCheck Logo" class="footer-logo">
-        <p class="footer-desc">
-          Transform your body and mind at FitCheck Gym. 
-          With state-of-the-art equipment, expert trainers, 
-          and a supportive community, we’re here to help 
-          you achieve your fitness goals.
-        </p>
-      </div>
-
-      <div class="footer-bottom">
-        <p class="follow-text">FOLLOW US</p>
-        <div class="social-icons">
-          <a href="#"><i class="fab fa-facebook"></i></a>
-          <a href="#"><i class="fab fa-linkedin"></i></a>
-          <a href="#"><i class="fab fa-youtube"></i></a>
-          <a href="#"><i class="fab fa-instagram"></i></a>
+    <footer>
+        <div class="footer-container">
+            <div class="left-side-footer">
+                <div class="description-footer">
+                    <img class="fitcheck-logo-footer" src="~/images_fitcheck/fitcheckicon.png">
+                    <p>Transform your body and mind at FitCheck Gym. With state-of-the-art equipment, expert trainers, and a supportive community, we're here to help you achieve your fitness goals.</p>
+                </div>
+                <div class="follow-socials-container">
+                    <h4 class="follow-us-footer">FOLLOW US</h4>
+                    <div class="social-media-container">
+                        <a target="_blank" href="https://www.facebook.com/"><img src="~/images_fitcheck/icon_fb-removebg-preview.png"></a>
+                        <a target="_blank" href="https://www.linkedin.com/"><img src="~/images_fitcheck/Icon_linkedin-removebg-preview.png"></a>
+                        <a target="_blank" href="https://www.youtube.com/"><img src="~/images_fitcheck/icon_youtube-removebg-preview.png"></a>
+                        <a target="_blank" href="https://www.instagram.com/"><img src="~/images_fitcheck/icon_instagram-removebg-preview.png"></a>
+                    </div>
+                </div>
+            </div>
+            <div class="right-side-footer">
+                <div class="address">
+                    <img src="~/images_fitcheck/icon_location-removebg-preview.png">
+                    <p>Street 1, Congressional Rd Caloocan City</p>
+                </div>
+                <div class="email-address">
+                    <img src="~/images_fitcheck/icon_email-removebg-preview.png">
+                    <p>info@fitcheckgym.com</p>
+                </div>
+                <div class="contact-number">
+                    <img src="~/images_fitcheck/icon_mobile-removebg-preview.png">
+                    <p>09192344890 / 09365144587</p>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-
-    <!-- RIGHT SIDE -->
-    <div class="footer-right">
-      <p><i class="fas fa-map-marker-alt"></i> Street 1, Congressional Rd Caloocan City</p>
-      <p><i class="fas fa-envelope"></i> info@fitcheckgym.com</p>
-      <p><i class="fas fa-mobile-alt"></i> 09192344890 / 09365414587</p>
-    </div>
-
-  </div>
-</footer>
-
-<!-- Font Awesome -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+    </footer>
 </body>
 </html>

@@ -1,3 +1,4 @@
+/* Reset */
 * {
     margin: 0;
     padding: 0;
@@ -29,7 +30,6 @@ header {
     gap: 1rem;
 }
 
-
 .logo {
     width: 5rem;
     margin: .5rem;
@@ -59,224 +59,271 @@ header {
             color: #d2f801;
         }
 
-/* TITLE SECTION */
-.classes-section {
+/*=====================================================================*/
+
+main {
+    background: linear-gradient(to top, #1C1C1C, black);
+    color: white;
+    padding: 4rem 2rem;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.classes-header {
     text-align: center;
-    margin-top: 30px;
-    color: #fff;
+    margin-bottom: 4rem;
 }
 
-.title {
-    font-size: 2.5rem;
-    font-weight: 700;
-    letter-spacing: 1px;
-}
+    .classes-header h1 {
+        font-size: 3.5rem;
+        font-weight: bold;
+        margin-bottom: 1rem;
+        letter-spacing: 2px;
+        background: linear-gradient(0deg, rgba(210, 248, 1, 1) 18%, rgba(97, 97, 97, 1) 94%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
 
-.subtitle {
-    font-size: 1rem;
-    font-weight: 300;
-    color: #ccc;
-    margin-top: 5px;
-    letter-spacing: 0.5px;
-}
+    .classes-header p {
+        font-size: 1rem;
+        letter-spacing: 1px;
+        color: #e0e0e0;
+    }
 
-/* GRID LAYOUT */
-.schedule-grid {
+.schedule-container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 40px;
-    justify-items: center;
-    margin-top: 50px;
+    gap: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
 }
 
-/* DAY COLUMN */
 .day-column {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    gap: 1.5rem;
 }
 
 .day-header {
-    background-color: #c7ff00;
-    color: #000;
-    font-weight: 700;
-    width: 300px;
+    background-color: #d2f801;
+    color: black;
+    font-size: 1.5rem;
+    font-weight: bold;
     text-align: center;
-    padding: 12px 0;
-    font-size: 1.1rem;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
+    padding: 1rem;
+    letter-spacing: 1px;
 }
 
-/* CLASS CARD */
 .class-card {
-    background: #0e0e0e;
-    border-radius: 0 0 8px 8px;
-    width: 300px;
-    padding: 15px 20px 25px;
-    text-align: left;
-    margin-bottom: 25px;
-    border: 1px solid #222;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    background-color: #252525;
+    padding: 1.5rem;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+    position: relative; 
+    overflow: hidden; 
 }
 
-.time {
-    color: #ccc;
-    font-size: 0.9rem;
-}
 
-h4 {
-    font-size: 1.1rem;
-    color: #fff;
-    margin: 5px 0;
-}
-
-.instructor {
-    color: #bbb;
-    font-size: 0.9rem;
-}
-
-.details {
-    font-size: 0.8rem;
-    color: #888;
-    margin: 5px 0 10px;
-}
-
-/* BUTTON */
-.join-btn {
-    background-color: #c7ff00;
-    color: #000;
-    border: none;
-    font-weight: 600;
-    padding: 8px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-    .join-btn:hover {
-        background-color: #a6db00;
+    .class-card:hover {
+        transform: translateY(-5px);
+        background-color: #3f4a00;
     }
 
-/* RESPONSIVE DESIGN */
-@media (max-width: 1200px) {
-    .schedule-grid {
+.class-time {
+    font-size: 0.9rem;
+    color: #d2f801;
+    margin-bottom: 0.5rem;
+}
+
+.class-name {
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    color: white;
+}
+
+.class-instructor {
+    font-size: 0.9rem;
+    color: #b0b0b0;
+    margin-bottom: 0.5rem;
+}
+
+.class-duration {
+    font-size: 0.85rem;
+    color: #808080;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .schedule-container {
         grid-template-columns: repeat(2, 1fr);
     }
 }
 
 @media (max-width: 768px) {
-    .schedule-grid {
+    .schedule-container {
         grid-template-columns: 1fr;
     }
 
-    .day-header, .class-card {
-        width: 90%;
+    .classes-header h1 {
+        font-size: 2.5rem;
     }
 }
 
+/* Join button styling */
+.join-btn {
+    background-color: #D2F801;
+    color: black;
+    border: none;
+    border-radius: 8px;
+    padding: 0.5rem 1.2rem;
+    font-weight: bold;
+    font-size: 0.9rem;
+    cursor: pointer;
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    transition: all 0.3s ease;
+}
 
-/* ====== Footer ====== */
-/* FOOTER */
+    /* Button hover effect */
+    .join-btn:hover {
+        background-color: #e8ff4d;
+        transform: scale(1.05);
+        box-shadow: 0 4px 15px rgba(210, 248, 1, 0.4);
+    }
+
+
+
+
+/*===========================================*/
+
 footer {
-    background: #000;
-    color: #fff;
-    padding: 40px 60px;
-    font-family: Arial, sans-serif;
+    background-color: black;
+    color: white;
+    padding: 3rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* HR line */
+.hr-container {
+    display: flex;
+    justify-content: center;
+    background-color: black;
+}
+
+hr {
+    width: 80%;
+    border: 1px solid rgb(98, 98, 98);
+}
+
+/* Footer content container */
+.left-side-footer,
+.right-side-footer {
+    display: flex;
+}
+
+/* Space out left & right evenly */
+footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .footer-container {
-    max-width: 1200px;
-    margin: auto;
     display: flex;
+    flex-direction: row;
     justify-content: space-between;
-    flex-wrap: wrap;
-    align-items: flex-start;
+    gap: 10rem;
 }
 
-/* LEFT SIDE */
-.footer-left {
-    flex: 1.5;
-    min-width: 350px;
-}
-
-.footer-top {
+footer .left-side-footer,
+footer .right-side-footer {
+    width: 80%;
     display: flex;
-    align-items: flex-start;
-    gap: 20px;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 2rem;
 }
 
-.footer-logo {
-    max-width: 120px;
-}
-
-.footer-desc {
-    font-size: 14px;
-    color: #bbb;
-    line-height: 1.5;
-    max-width: 300px;
+/*================ Left side =================*/
+.description-footer {
+    display: flex;
     align-items: center;
-    margin-top: 50px;
-}
-
-.footer-bottom {
-    margin-top: 20px;
-}
-
-.follow-text {
-    color: #ccff00;
-    font-weight: bold;
-    margin-bottom: 8px;
-}
-
-.social-icons a {
-    margin-right: 12px;
-    font-size: 18px;
-    color: #fff;
-    transition: 0.3s;
-}
-
-    .social-icons a:hover {
-        color: #ccff00;
-    }
-
-/* RIGHT SIDE */
-.footer-right {
+    gap: 1rem;
     flex: 1;
-    min-width: 280px;
 }
 
-    .footer-right p {
-        margin: 12px 0;
-        font-size: 14px;
-        color: #ccc;
-    }
-
-    .footer-right i {
-        margin-right: 8px;
-        color: #ccff00;
-    }
-
-
-
-/* Responsive */
-@media (max-width: 1000px) {
-    body {
-        padding: 0 5%;
-    }
-
-    .overview-box {
-        width: 100%;
-    }
-
-    .pass-card {
-        flex-direction: column;
+    .description-footer img {
+        width: 6rem;
         height: auto;
-        width: 100%;
-        padding: 30px 20px;
     }
 
-    .photo {
-        margin: 0 0 25px 0;
+    .description-footer p {
+        color: white;
+        font-size: 0.95rem;
+        line-height: 1.4;
+        max-width: 400px;
     }
+
+/* Social follow */
+.follow-socials-container {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 1rem;
 }
+
+.follow-us-footer {
+    color: #d2f801;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.social-media-container {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+    .social-media-container img {
+        width: 20px;
+        height: auto;
+        cursor: pointer;
+        transition: transform 0.2s;
+    }
+
+        .social-media-container img:hover {
+            transform: scale(1.1);
+        }
+
+/*================ Right side =================*/
+.right-side-footer {
+    flex-direction: column;
+    gap: 1rem;
+    flex: 1;
+}
+
+
+    .right-side-footer div {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+    }
+
+    .right-side-footer p {
+        color: white;
+        font-size: 0.95rem;
+        width: 300px;
+    }
+
+    .right-side-footer img {
+        width: 25px;
+        height: auto;
+    }
