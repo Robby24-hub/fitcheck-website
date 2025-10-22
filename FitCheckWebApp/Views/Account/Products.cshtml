@@ -10,19 +10,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Fitcheck — Select Payment Method</title>
-    <link rel="stylesheet" href="~/css/Products.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSS - FIXED -->
+    <link rel="stylesheet" href="~/css/Products.css" asp-append-version="true" />
+    <!-- Favicon -->
+    <link rel="icon" href="~/images_fitcheck/fitcheckicon.png" />
+    <title>Products | FitCheck Gym</title>
 </head>
 <body>
     <header>
+
         <div class="brand-container">
-            <img alt="logo" class="logo" src="~/images_fitcheck/fitcheckicon.png">
+            <img asp-append-version="true" src="~/images_fitcheck/fitcheckicon.png" alt="logo" class="logo" />
             <h1 class="brand">FITCHECK</h1>
         </div>
-        <nav class="navbar">
 
+        <nav class="navbar">
             <a asp-controller="Account" asp-action="UserHome">Home</a>
             <a asp-controller="Transaction" asp-action="UserMembership">Membership</a>
             <a asp-controller="Account" asp-action="ClassesUser">Classes</a>
@@ -35,73 +39,92 @@
         </nav>
     </header>
 
+
     <!-- MAIN SECTION -->
-    <main class="product-section">
-        <h2>Our Products Are Available Exclusively In Our Physical Store</h2>
+	<main>
+		<div class="product-section">
+		    <h1>PRODUCTS</h1>
+            <p>OUR PRODUCTS ARE AVAILABLE EXCLUSIVELY IN OUR PHYSICAL STORE</p>
+	    </div>
 
         <div class="product-grid">
-            <!-- Product Cards -->
+            <!-- Product 1 -->
             <div class="product-card">
-                <img src="~/images_fitcheck/products_images/PROTEIN.jpg" />
+                <img src="@Url.Content("~/images_fitcheck/products_images/WHEY PROTEIN.jpg")" alt="Whey Protein" />
                 <div class="product-info">
-                    <p class="name">ON WHEY PROTEIN</p>
-                    <p class="price">3,599</p>
+                    <p class="name">ON Whey Protein</p>
+                    <p class="desc">High-quality protein to boost muscle recovery and growth.</p>
+                    <p class="price">₱3,599</p>
                 </div>
             </div>
 
+            <!-- Product 2 -->
             <div class="product-card">
-                <img src="~/images_fitcheck/products_images/CASEIN.png" />
+                <img src="@Url.Content("~/images_fitcheck/products_images/CASEIN.png")" alt="Casein" />
                 <div class="product-info">
-                    <p class="name">GS CASEIN</p>
-                    <p class="price">4,100</p>
+                    <p class="name">GS Casein</p>
+                    <p class="desc">Slow-digesting protein for overnight muscle repair.</p>
+                    <p class="price">₱4,100</p>
                 </div>
             </div>
 
+            <!-- Product 3 -->
             <div class="product-card">
-                <img src="~/images_fitcheck/products_images/ISOLATE.jpg" />
+                <img src="@Url.Content("~/images_fitcheck/products_images/ISOLATE.jpg")" alt="Isolate" />
                 <div class="product-info">
-                    <p class="name">GS ISOLATE</p>
-                    <p class="price">4,653</p>
+                    <p class="name">GS Isolate</p>
+                    <p class="desc">Ultra-pure protein isolate for lean muscle growth.</p>
+                    <p class="price">₱4,653</p>
                 </div>
             </div>
 
+            <!-- Product 4 -->
             <div class="product-card">
-                <img src="~/images_fitcheck/products_images/MULTIVITAMINS.webp" />
+                <img src="@Url.Content("~/images_fitcheck/products_images/MULTIVITAMINS.webp")" alt="Multivitamins" />
                 <div class="product-info">
-                    <p class="name">MULTIVITAMINS</p>
-                    <p class="price">799</p>
+                    <p class="name">Multivitamins</p>
+                    <p class="desc">Essential daily vitamins to boost energy and immunity.</p>
+                    <p class="price">₱799</p>
                 </div>
             </div>
 
+            <!-- Product 5 -->
             <div class="product-card">
-                <img src="~/images_fitcheck/products_images/OPTI-WOMEN.png" alt="Fuentra Workout" />
+                <img src="@Url.Content("~/images_fitcheck/products_images/OPTI-WOMEN.png")" alt="Opti-Women" />
                 <div class="product-info">
-                    <p class="name">OPTI-WOMEN</p>
-                    <p class="price">2,599</p>
+                    <p class="name">Opti-Women</p>
+                    <p class="desc">Balanced formula designed for women’s nutritional needs.</p>
+                    <p class="price">₱2,599</p>
                 </div>
             </div>
 
+            <!-- Product 6 -->
             <div class="product-card">
-                <img src="~/images_fitcheck/products_images/PROTEIN SHAKE.png" alt="Fuentra Workout" />
+                <img src="@Url.Content("~/images_fitcheck/products_images/PROTEIN SHAKE.png")" alt="Protein Shake" />
                 <div class="product-info">
-                    <p class="name">PROTEIN SHAKE</p>
-                    <p class="price">599</p>
+                    <p class="name">Protein Shake</p>
+                    <p class="desc">Ready-to-drink shake for quick energy and recovery.</p>
+                    <p class="price">₱599</p>
                 </div>
             </div>
 
+            <!-- Product 7 -->
             <div class="product-card">
-                <img src="~/images_fitcheck/products_images/PRE-WORKOUT.webp" alt="Fuentra Workout" />
+                <img src="@Url.Content("~/images_fitcheck/products_images/PRE-WORKOUT.webp")" alt="Pre-Workout" />
                 <div class="product-info">
-                    <p class="name">ON PRE-WORKOUT</p>
-                    <p class="price">1,250</p>
+                    <p class="name">ON Pre-Workout</p>
+                    <p class="desc">Boost energy and focus before every intense session.</p>
+                    <p class="price">₱1,250</p>
                 </div>
             </div>
 
+            <!-- Product 8 -->
             <div class="product-card">
-                <img src="~/images_fitcheck/products_images/GAINER.webp" alt="Fuentra Workout" />
+                <img src="@Url.Content("~/images_fitcheck/products_images/GAINER.webp")" alt="Gainer" />
                 <div class="product-info">
-                    <p class="name">ON GAINER 10 POUND</p>
-                    <p class="price">5,816</p>
+                    <p class="name">ON Gainer 10 Pound</p>
+                    <p class="desc">High-calorie formula to help you gain size and strength.</p>
+                    <p class="price">₱5,816</p>
                 </div>
             </div>
         </div>
@@ -109,46 +132,42 @@
 
 
 <!-- FOOTER -->
-<footer>
-    <div class="footer-container">
+    <div class="hr-container">
+        <hr>
+    </div>
 
-        <!-- LEFT SIDE -->
-        <div class="footer-left">
-            <div class="footer-top">
-                <img src="~/images_fitcheck/fitcheckicon.png" alt="FitCheck Logo" class="footer-logo">
-                <p class="footer-desc">
-                    Transform your body and mind at FitCheck Gym.
-                    With state-of-the-art equipment, expert trainers,
-                    and a supportive community, we’re here to help
-                    you achieve your fitness goals.
-                </p>
+    <footer>
+        <div class="footer-container">
+            <div class="left-side-footer">
+                <div class="description-footer">
+                    <img class="fitcheck-logo-footer" src="~/images_fitcheck/fitcheckicon.png">
+                    <p>Transform your body and mind at FitCheck Gym. With state-of-the-art equipment, expert trainers, and a supportive community, we're here to help you achieve your fitness goals.</p>
+                </div>
+                <div class="follow-socials-container">
+                    <h4 class="follow-us-footer">FOLLOW US</h4>
+                    <div class="social-media-container">
+                        <a target="_blank" href="https://www.facebook.com/"><img src="~/images_fitcheck/icon_fb-removebg-preview.png"></a>
+                        <a target="_blank" href="https://www.linkedin.com/"><img src="~/images_fitcheck/Icon_linkedin-removebg-preview.png"></a>
+                        <a target="_blank" href="https://www.youtube.com/"><img src="~/images_fitcheck/icon_youtube-removebg-preview.png"></a>
+                        <a target="_blank" href="https://www.instagram.com/"><img src="~/images_fitcheck/icon_instagram-removebg-preview.png"></a>
+                    </div>
+                </div>
             </div>
-
-            <div class="footer-bottom">
-                <p class="follow-text">FOLLOW US</p>
-                <div class="social-icons">
-                    <a href="#"><i class="fab fa-facebook"></i></a>
-                    <a href="#"><i class="fab fa-linkedin"></i></a>
-                    <a href="#"><i class="fab fa-youtube"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
+            <div class="right-side-footer">
+                <div class="address">
+                    <img src="~/images_fitcheck/icon_location-removebg-preview.png">
+                    <p>Street 1, Congressional Rd Caloocan City</p>
+                </div>
+                <div class="email-address">
+                    <img src="~/images_fitcheck/icon_email-removebg-preview.png">
+                    <p>info@fitcheckgym.com</p>
+                </div>
+                <div class="contact-number">
+                    <img src="~/images_fitcheck/icon_mobile-removebg-preview.png">
+                    <p>09192344890 / 09365144587</p>
                 </div>
             </div>
         </div>
-
-        <!-- RIGHT SIDE -->
-        <div class="footer-right">
-            <p><i class="fas fa-map-marker-alt"></i> Street 1, Congressional Rd Caloocan City</p>
-            <p><i class="fas fa-envelope"></i> info@fitcheckgym.com</p>
-            <p><i class="fas fa-mobile-alt"></i> 09192344890 / 09365414587</p>
-        </div>
-
-    </div>
-</footer>
-
-<!-- Font Awesome -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+    </footer>
 </body>
-
 </html>
-
