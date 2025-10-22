@@ -161,12 +161,15 @@ namespace FitCheckWebApp.Controllers
 
         [Authorize]
         public IActionResult ClassesUser() => View();
+        
 
 
 
         public IActionResult AboutUs() => View();
 
         public IActionResult Classes() => View();
+        public IActionResult Products() => View();
+
 
 
     }
