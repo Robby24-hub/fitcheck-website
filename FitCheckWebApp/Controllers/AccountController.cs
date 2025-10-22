@@ -171,7 +171,6 @@ namespace FitCheckWebApp.Controllers
         public IActionResult Products() => View();
 
 
-        public IActionResult Products() => View();
 
 
     }
