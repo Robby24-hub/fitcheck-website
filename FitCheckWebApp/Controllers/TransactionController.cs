@@ -50,7 +50,7 @@ namespace FitCheckWebApp.Controllers
                 AccountManager.UpdateAccount(account);
             }
 
-            return RedirectToAction("Membership");
+            return RedirectToAction("UserMembership");
         }
 
 
@@ -59,6 +59,7 @@ namespace FitCheckWebApp.Controllers
         public IActionResult Membership() => View();
 
         public IActionResult UserMembership() => View();
+
         public IActionResult TransactionHistoryUser() => View();
 
     }
