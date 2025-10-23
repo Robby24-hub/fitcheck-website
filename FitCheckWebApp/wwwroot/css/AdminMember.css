@@ -1,0 +1,318 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    background-color: black;
+}
+
+/* Header */
+header {
+    background-color: black;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+/* Brand section*/
+.brand-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.logo {
+    width: 5rem;
+    margin: .5rem;
+}
+
+.brand {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #d2f801;
+}
+
+/* Navbar */
+.navbar {
+    display: flex;
+    gap: 3rem;
+}
+
+    .navbar a {
+        text-decoration: none;
+        color: white;
+        font-size: 1.2rem;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+        .navbar a:hover {
+            color: #d2f801;
+        }
+
+/* ====== Add new here ====== */
+
+/* Main */
+main {
+    flex: 1;
+    min-height: 100vh;
+    text-align: left;
+    padding: 60px 80px;
+    background: linear-gradient(to top, #1C1C1C, black);
+}
+
+main h2 {
+    color: #D2F801;
+    margin-bottom: 10px;
+    font-weight: bold;
+    text-align: left;     
+}
+
+h3 {
+  color: #D2F801;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  letter-spacing: 1px;
+  text-align: center;
+}
+
+/* ====== Add new here ====== */
+
+/* ===== Add Button ===== */
+.add-class-btn {
+  display: flex;
+  justify-content: flex-start;
+  margin: 25px 0;
+}
+
+.add-class {
+  background-color: #3ebd3e;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 5px;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.add-class:hover {
+  opacity: 0.85;
+}
+
+/* ===== Search Bar ===== */
+.search-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+
+.search-container input {
+  padding: 10px;
+  width: 250px;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  background-color: #eaeaea;
+  font-size: 0.95rem;
+}
+
+/* ===== Table ===== */
+.table-container {
+  display: flex;
+  justify-content: center;
+}
+
+table {
+  width: 90%;
+  background-color: #0f0f0f;
+  border-collapse: collapse;
+  border-radius: 12px;
+  overflow: hidden;
+  color: white;
+}
+
+th, td {
+  padding: 15px;
+  text-align: left;
+}
+
+th {
+  color: #D2F801;
+  border-bottom: 1px solid #333;
+}
+
+td {
+  border-bottom: 1px solid #222;
+}
+
+.active-status {
+  color: #3ebd3e;
+  font-weight: bold;
+}
+
+button {
+  border: none;
+  border-radius: 5px;
+  padding: 6px 14px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.edit {
+  background-color: #D2F801;
+  color: black;
+}
+
+.delete {
+  background-color: #c23a2a;
+  color: white;
+  margin-left: 5px;
+}
+
+button:hover {
+  opacity: 0.85;
+}
+
+
+
+
+
+
+/* ====== Footer ====== */
+/*===========================================*/
+
+footer {
+    background-color: black;
+    color: white;
+    padding: 3rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* HR line */
+.hr-container {
+    display: flex;
+    justify-content: center;
+    background-color: black;
+}
+
+hr {
+    width: 80%;
+    border: 1px solid rgb(98, 98, 98);
+}
+
+/* Footer content container */
+.left-side-footer,
+.right-side-footer {
+    display: flex;
+}
+
+/* Space out left & right evenly */
+footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.footer-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 10rem;
+}
+
+footer .left-side-footer,
+footer .right-side-footer {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 2rem;
+}
+
+/*================ Left side =================*/
+.description-footer {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex: 1;
+}
+
+    .description-footer img {
+        width: 6rem;
+        height: auto;
+    }
+
+    .description-footer p {
+        color: white;
+        font-size: 0.95rem;
+        line-height: 1.4;
+        max-width: 400px;
+    }
+
+/* Social follow */
+.follow-socials-container {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.follow-us-footer {
+    color: #d2f801;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.social-media-container {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+    .social-media-container img {
+        width: 20px;
+        height: auto;
+        cursor: pointer;
+        transition: transform 0.2s;
+    }
+
+        .social-media-container img:hover {
+            transform: scale(1.1);
+        }
+
+/*================ Right side =================*/
+.right-side-footer {
+    flex-direction: column;
+    gap: 1rem;
+    flex: 1;
+}
+
+
+    .right-side-footer div {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+    }
+
+    .right-side-footer p {
+        color: white;
+        font-size: 0.95rem;
+        width: 300px;
+    }
+
+    .right-side-footer img {
+        width: 25px;
+        height: auto;
+    }
