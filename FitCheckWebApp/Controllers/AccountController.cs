@@ -132,6 +132,8 @@ namespace FitCheckWebApp.Controllers
         [Authorize]
         public IActionResult UserHome()
         {
+            Helpers.Helpers.ExpireOldMemberships();
+
             if (!User.Identity!.IsAuthenticated)
             {
                 return RedirectToAction("Login", "Account");
@@ -158,6 +160,20 @@ namespace FitCheckWebApp.Controllers
                 model.TransactionDate = transaction!.TransactionDate;
                 model.EndDate = transaction.EndDate;
                 model.Status = transaction.Status.ToString();
+
+                if (transaction.EndDate <= DateTime.Now)
+                {
+                    model.WarningMessage = "Your membership has expired. Please renew to continue access.";
+                }
+                else if ((transaction.EndDate - DateTime.Now).TotalDays <= 3)
+                {
+                    model.WarningMessage = $"Your membership will expire in {(transaction.EndDate - DateTime.Now).Days} days.";
+                }
+                else
+                {
+                    model.WarningMessage = null; 
+                }
+
             }
             else
             {

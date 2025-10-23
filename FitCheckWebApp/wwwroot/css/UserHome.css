@@ -23,6 +23,16 @@ header {
     z-index: 1000;
 }
 
+.membership-warning {
+    background-color: #ffcc00;
+    color: #222;
+    text-align: center;
+    padding: 10px 0;
+    font-weight: bold;
+    border-bottom: 2px solid #d4a017;
+}
+
+
 /* Brand section*/
 .brand-container {
     display: flex;

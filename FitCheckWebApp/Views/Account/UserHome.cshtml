@@ -19,6 +19,14 @@
 <body>
     <header>
 
+        @if (!string.IsNullOrEmpty(Model.WarningMessage))
+        {
+            <div class="membership-warning">
+                <p>@Model.WarningMessage</p>
+            </div>
+        }
+
+
         <div class="brand-container">
             <img asp-append-version="true" src="~/images_fitcheck/fitcheckicon.png" alt="logo" class="logo" />
             <h1 class="brand">FITCHECK</h1>
@@ -46,13 +54,37 @@
             <section class="membership-overview">
                 <h3>MEMBERSHIP OVERVIEW</h3>
                 <div class="overview-box">
-                    <p><strong>Status:</strong> <span class="active">@Model?.Status ?? "N/A"</span></p>
-                    <p><strong>Last Payment Date:</strong> @(Model?.TransactionDate != null ? Model.TransactionDate.ToString("MMMM d, yyyy") : "N/A")</p>
-                    <p><strong>Payment Status: </strong> <span class="paid">@((Model?.Status?.ToLower() == "paid") ? "Paid" : "Unpaid")</span></p>
-                    <p><strong>Membership Type:</strong> @Model?.MembershipPlan ?? "N/A"</p>
-                    <p><strong>Next Payment Due:</strong> @(Model?.EndDate != null ? Model.EndDate.ToString("MMMM d, yyyy") : "N/A")</p>
+                    <p>
+                        <strong>Status:</strong>
+                        <span class="active">@((Model?.Status != null) ? Model.Status : "N/A")</span>
+                    </p>
+
+                    <p>
+                        <strong>Last Payment Date:</strong>
+                        @(Model?.TransactionDate != null ? Model.TransactionDate.ToString("MMMM d, yyyy") : "N/A")
+                    </p>
+
+                    <p>
+                        <strong>Payment Status:</strong>
+                        <span class="paid">
+                            @(Model?.Status == null || Model.Status == "N/A"
+                                                        ? "N/A"
+                                                        : (Model.Status.ToLower() == "paid" ? "Paid" : "Unpaid"))
+                        </span>
+                    </p>
+
+                    <p>
+                        <strong>Membership Type:</strong>
+                        @((Model?.MembershipPlan != null) ? Model.MembershipPlan : "N/A")
+                    </p>
+
+                    <p>
+                        <strong>Next Payment Due:</strong>
+                        @(Model?.EndDate != null ? Model.EndDate.ToString("MMMM d, yyyy") : "N/A")
+                    </p>
                 </div>
             </section>
+
 
             <section class="membership-pass">
                 <div class="pass-card">
