@@ -13,5 +13,10 @@ namespace FitCheckWebApp.Controllers
         [Authorize(Roles = "admin")]
         public IActionResult AdminPayment() => View();
 
+
+
+        [Authorize(Roles = "admin")]
+        public IActionResult AdminClass() => View();
+
     }
 }

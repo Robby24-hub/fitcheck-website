@@ -24,9 +24,8 @@
         </div>
         <nav class="navbar">
             <a asp-controller="Admin" asp-action="AdminHome">Home</a>
-            <a asp-controller="Transaction" asp-action="Membership">Payment</a>
-            <a asp-controller="Account" asp-action="ClassesUser">Member</a>
-            <a asp-controller="Account" asp-action="Products">Classes</a>
+            <a asp-controller="Admin" asp-action="AdminPayment">Payment</a>
+            <a asp-controller="Admin" asp-action="AdminClass">Classes</a>
 
             <form asp-controller="Account" asp-action="Logout" method="post" style="display:inline;">
                 <button type="submit" class="logout-btn">Logout</button>
