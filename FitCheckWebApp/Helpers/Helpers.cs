@@ -38,18 +38,36 @@ namespace FitCheckWebApp.Helpers
             return BCrypt.Net.BCrypt.EnhancedVerify(passwordInput, storedHash);
 
         }
-        
+
         public static int CalculateAge(RegistrationViewModel model)
         {
+            
+            if (!model.Birthday.HasValue)
+                return 0; 
 
-            int birthYear = model.Birthday.Year;
-            int currentYear = DateTime.Now.Year;
-            int age = birthYear - currentYear;
+            var birthDate = model.Birthday.Value.Date;
+            var today = DateTime.Today;
 
-            return birthYear;
+            int age = today.Year - birthDate.Year;
 
 
+            if (birthDate > today.AddYears(-age))
+                age--;
+
+            return age < 0 ? 0 : age; 
         }
+
+
+        public static bool IsBirthdayValid(DateTime? birthday)
+        {
+            if (!birthday.HasValue)
+                return false; 
+
+
+            return birthday.Value.Date <= DateTime.Today;
+        }
+
+
 
         public static string? MemberIdGenerator()
         {

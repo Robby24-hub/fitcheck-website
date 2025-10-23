@@ -46,11 +46,11 @@
             <section class="membership-overview">
                 <h3>MEMBERSHIP OVERVIEW</h3>
                 <div class="overview-box">
-                    <p><strong>Status:</strong> <span class="active">@Model.Status</span></p>
-                    <p><strong>Last Payment Date:</strong> @Model.TransactionDate.ToString("MMMM d, yyyy")</p>
-                    <p><strong>Payment Status: </strong> <span class="paid">Paid</span></p>
-                    <p><strong>Membership Type:</strong>  @Model.MembershipPlan</p>
-                    <p><strong>Next Payment Due:</strong> @Model.EndDate.ToString("MMMM d, yyyy")</p>
+                    <p><strong>Status:</strong> <span class="active">@Model?.Status ?? "N/A"</span></p>
+                    <p><strong>Last Payment Date:</strong> @(Model?.TransactionDate != null ? Model.TransactionDate.ToString("MMMM d, yyyy") : "N/A")</p>
+                    <p><strong>Payment Status: </strong> <span class="paid">@((Model?.Status?.ToLower() == "paid") ? "Paid" : "Unpaid")</span></p>
+                    <p><strong>Membership Type:</strong> @Model?.MembershipPlan ?? "N/A"</p>
+                    <p><strong>Next Payment Due:</strong> @(Model?.EndDate != null ? Model.EndDate.ToString("MMMM d, yyyy") : "N/A")</p>
                 </div>
             </section>
 
@@ -66,7 +66,7 @@
                         <div class="pass-details">
                             <p>
                                 <span class="label">Name :</span>
-                                <span class="value">@Model.FullName</span>
+                                <span class="value">@Model!.FullName</span>
                             </p>
                             <p>
                                 <span class="label">Member ID :</span>

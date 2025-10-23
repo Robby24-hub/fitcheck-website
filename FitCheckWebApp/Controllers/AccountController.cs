@@ -81,7 +81,19 @@ namespace FitCheckWebApp.Controllers
         [HttpPost]
         public IActionResult Register(RegistrationViewModel model)
         {
-            model.Age = CalculateAge(model);
+            if (!Helpers.Helpers.IsBirthdayValid(model.Birthday))
+            {
+                ModelState.AddModelError("Birthday", "Birthday cannot be a future date.");
+                return View(model);
+            }
+
+            model.Age = Helpers.Helpers.CalculateAge(model);
+
+            if (model.Age < 0)
+            {
+                ModelState.AddModelError("Age", "Invalid age calculated from birthday.");
+                return View(model);
+            }
 
             if (!ModelState.IsValid)
                 return View(model);
@@ -174,7 +186,44 @@ namespace FitCheckWebApp.Controllers
         public IActionResult AboutFitcheckUser() => View();
         public IActionResult PrivacyPolicyUser() => View();
         public IActionResult TermsConditionsUser() => View(); 
-        public IActionResult MembershipPassUser() => View();
+        public IActionResult MembershipPassUser()
+        {
+            if (!User.Identity!.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            int accountId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+
+            var account = AccountManager.FindById(accountId);
+            var transaction = TransactionManager.FindById(accountId);
+
+            if (account == null)
+                return RedirectToAction("Login", "Account");
+
+            var model = new MembershipPassViewModel
+            {
+                FullName = $"{account.FirstName} {account.LastName}",
+                MemberID = account.MemberID,
+            };
+
+            if (transaction != null)
+            {
+                model.MembershipPlan = account.MembershipPlan.ToString();
+                model.TransactionDate = transaction.TransactionDate;
+                model.EndDate = transaction.EndDate;
+                model.Status = transaction.Status.ToString();
+            }
+            else
+            {
+                model.MembershipPlan = "N/A";
+                model.TransactionDate = DateTime.Now;
+                model.EndDate = DateTime.Now.AddMonths(1);
+                model.Status = "N/A";
+            }
+
+            return View(model); 
+        }
 
 
     }

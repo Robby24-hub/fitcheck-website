@@ -55,7 +55,7 @@
                                 <input asp-for="Age" type="number" id="ageOutput" placeholder="Age" class="input-field small" readonly>
 
                                 <select asp-for="Gender" class="input-field small">
-                                    <option value="">Gender</option>
+                                    <option value="" disabled selected hidden>Gender</option>
                                     <option value="Male">Male</option>
                                     <option value="Female">Female</option>
                                     <option value="Other">Other</option>
@@ -168,8 +168,27 @@
             </div>
         </div>
     </footer>
+
+    <script src="~/js/register.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const today = new Date().toISOString().split("T")[0];
+            const birthdayInput = document.querySelector("input[name='Birthday']");
+            if (birthdayInput) {
+                birthdayInput.setAttribute("max", today);
+            }
+        });
+
+    </script>
+
 </body>
 
-<script src="~/js/register.js"></script>
-
 </html>
+
+
+
