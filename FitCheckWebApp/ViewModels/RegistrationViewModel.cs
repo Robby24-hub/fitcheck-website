@@ -42,12 +42,16 @@ namespace FitCheckWebApp.ViewModels
         public string? FullName { get; set; }
 
         [Required(ErrorMessage = "Emergency contact number is required.")]
+        [RegularExpression(@"^(\+63|0)9\d{9}$", ErrorMessage = "Invalid Philippine phone number.")]
         public string? EmergencyContactNumber { get; set; }
 
-        [Range(typeof(bool), "true", "true")]
+
+        [Required(ErrorMessage = "You must agree to the Terms and Conditions.")]
+        [Display(Name = "Agree to Terms")]
         public bool AgreeTerms { get; set; }
 
-        [Range(typeof(bool), "true", "true")]
+        [Required(ErrorMessage = "You must agree to the Privacy Policy.")]
+        [Display(Name = "Agree to Privacy Policy")]
         public bool AgreePrivacy { get; set; }
     }
 }
