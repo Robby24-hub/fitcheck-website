@@ -10,6 +10,7 @@ using static FitCheckWebApp.Helpers.Helpers;
 
 namespace FitCheckWebApp.Controllers
 {
+    [NoCache]
     public class AccountController : Controller
     {
         // ===== LOGIN =====
@@ -171,21 +172,6 @@ namespace FitCheckWebApp.Controllers
         }
 
 
-        [Authorize]
-        public IActionResult ClassesUser() => View();
-
-
-
-
-        public IActionResult AboutUs() => View();
-
-        public IActionResult Classes() => View();
-        public IActionResult Products() => View();
-
-        public IActionResult AccountUser() => View();
-        public IActionResult AboutFitcheckUser() => View();
-        public IActionResult PrivacyPolicyUser() => View();
-        public IActionResult TermsConditionsUser() => View(); 
         public IActionResult MembershipPassUser()
         {
             if (!User.Identity!.IsAuthenticated)
@@ -222,8 +208,25 @@ namespace FitCheckWebApp.Controllers
                 model.Status = "N/A";
             }
 
-            return View(model); 
+            return View(model);
         }
+
+        [Authorize]
+        public IActionResult ClassesUser() => View();
+
+
+
+
+        public IActionResult AboutUs() => View();
+
+        public IActionResult Classes() => View();
+        public IActionResult Products() => View();
+
+        public IActionResult AccountUser() => View();
+        public IActionResult AboutFitcheckUser() => View();
+        public IActionResult PrivacyPolicyUser() => View();
+        public IActionResult TermsConditionsUser() => View(); 
+        
 
 
     }
