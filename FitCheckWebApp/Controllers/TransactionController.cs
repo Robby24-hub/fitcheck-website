@@ -59,7 +59,7 @@ namespace FitCheckWebApp.Controllers
         public IActionResult Membership() => View();
 
         public IActionResult UserMembership() => View();
-
+        public IActionResult TransactionHistoryUser() => View();
 
     }
 }

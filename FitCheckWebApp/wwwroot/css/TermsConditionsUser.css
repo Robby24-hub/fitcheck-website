@@ -59,91 +59,100 @@ header {
             color: #d2f801;
         }
 
-/*=====================================================================*/
-/*MAIN*/
-
-main {
-    min-height: 90vh;
-    color: white;
-    background: linear-gradient(to top, #1C1C1C, black);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    padding: 20px;
-
-}
-
-
-/* ===================== Account Buttons ===================== */
-.grid-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 2rem;
-    width: 80%;
-    max-width: 900px;
-    margin: 3rem auto;
-    justify-items: center;
-}
-
-.grid-container a {
-    text-decoration: none;
-}
-
-.btn-container {
-    display: flex;
-    justify-content: center;
-}
-
-    .btn-container button {
-        width: 160px;
-        height: 160px;
-        background-color: #0d0d0d;
-        border: 2px solid #d2f801;
-        color: #d2f801;
-        font-size: 1rem;
-        font-weight: bold;
-        text-transform: uppercase;
-        border-radius: 20px;
-        cursor: pointer;
-        transition: all 0.3s ease;
+    /* Back link style */
+    .navbar .back-link {
         display: flex;
-        flex-direction: column;
         align-items: center;
-        justify-content: center;
-        gap: 10px;
-        letter-spacing: 0.5px;
-        text-align: center;
-        
+        gap: 8px;
+        color: white;
+        text-decoration: none;
+        font-size: 1.2rem;
+        font-weight: bold;
+        transition: color 0.3s ease;
     }
 
-        .btn-container button i {
-            width: 40px;
-            height: 40px;
+        .navbar .back-link i {
+            width: 24px;
+            height: 24px;
             color: #d2f801;
-            transition: transform 0.3s ease, color 0.3s ease;
+            transition: transform 0.3s ease;
         }
 
-        /* Hover effects */
-        .btn-container button:hover {
-            background-color: #d2f801;
-            color: black;
-            transform: translateY(-5px);
-            box-shadow: 0 0 20px #d2f801;
+        .navbar .back-link:hover {
+            color: #d2f801;
         }
 
-            .btn-container button:hover i {
-                color: black;
-                transform: scale(1.1);
+            .navbar .back-link:hover i {
+                transform: translateX(-4px);
             }
 
-        /* Active effect */
-        .btn-container button:active {
-            transform: scale(0.97);
-            box-shadow: 0 0 10px #a5c400;
+
+/*=====================================================================*/
+
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background: linear-gradient(to top, #1C1C1C, black);
+    min-height: 100vh;
+    padding: 3rem 2rem;
+    color: white;
+    gap: 2rem;
+}
+
+.t-and-c-container {
+    color: white;
+    max-width: 800px;
+    text-align: left;
+    margin: 0 auto;
+}
+
+    /* Target only list elements for white color, NOT h1 */
+    .t-and-c-container ol,
+    .t-and-c-container ul,
+    .t-and-c-container li {
+        color: white !important;
+    }
+
+    .t-and-c-container h1 {
+        text-align: left;
+        margin-bottom: 2rem;
+        background: linear-gradient(0deg, rgba(210, 248, 1, 1) 18%, rgba(97, 97, 97, 1) 94%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-size: 2rem;
+    }
+
+    .t-and-c-container ol {
+        list-style-type: decimal;
+        margin-left: 1.5rem;
+        line-height: 1.8;
+        padding-left: 1rem;
+    }
+
+        .t-and-c-container ol > li {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            font-weight: bold;
+            padding-left: 0.5rem;
         }
 
+    .t-and-c-container ul {
+        list-style-type: disc;
+        margin-left: 2rem;
+        margin-top: 0.5rem;
+        line-height: 1.6;
+        padding-left: 1rem;
+    }
 
+        .t-and-c-container ul li {
+            margin-bottom: 0.5rem;
+            font-weight: normal;
+            font-size: 1rem;
+            padding-left: 0.5rem;
+        }
 
 /*===========================================*/
 
@@ -273,4 +282,3 @@ footer .right-side-footer {
         width: 25px;
         height: auto;
     }
-

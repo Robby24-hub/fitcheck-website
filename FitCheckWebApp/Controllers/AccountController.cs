@@ -171,7 +171,10 @@ namespace FitCheckWebApp.Controllers
         public IActionResult Products() => View();
 
         public IActionResult AccountUser() => View();
-
+        public IActionResult AboutFitcheckUser() => View();
+        public IActionResult PrivacyPolicyUser() => View();
+        public IActionResult TermsConditionsUser() => View(); 
+        public IActionResult MembershipPassUser() => View();
 
 
     }

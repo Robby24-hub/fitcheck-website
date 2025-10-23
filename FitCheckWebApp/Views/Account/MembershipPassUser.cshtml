@@ -1,4 +1,6 @@
-﻿@{
+﻿@model FitCheckWebApp.ViewModels.MembershipPassViewModel
+
+@{
     Layout = null;
 }
 
@@ -9,74 +11,66 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- CSS - FIXED -->
-    <link rel="stylesheet" href="~/css/AccountUser.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/MembershipPassUser.css" asp-append-version="true" />
     <!-- Favicon -->
     <link rel="icon" href="~/images_fitcheck/fitcheckicon.png" />
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <title>Account | FitCheck Gym</title>
+    <title>Membership Pass | FitCheck Gym</title>
 </head>
 <body>
     <header>
-
         <div class="brand-container">
             <img asp-append-version="true" src="~/images_fitcheck/fitcheckicon.png" alt="logo" class="logo" />
             <h1 class="brand">FITCHECK</h1>
         </div>
 
         <nav class="navbar">
-            <a asp-controller="Account" asp-action="UserHome">Home</a>
-            <a asp-controller="Transaction" asp-action="UserMembership">Membership</a>
-            <a asp-controller="Account" asp-action="ClassesUser">Classes</a>
-            <a asp-controller="Account" asp-action="Products">Products</a>
-            <a asp-controller="Account" asp-action="AccountUser">Account</a>
-            <form asp-controller="Account" asp-action="Logout" method="post" style="display:inline;">
-                <button type="submit" class="logout-btn">Logout</button>
-            </form>
-
+            <a asp-controller="Account" asp-action="AccountUser" class="back-link">
+                <i data-lucide="arrow-left"></i>
+                <span>Back</span>
+            </a>
         </nav>
     </header>
+
+
     <main>
-        <div class="grid-container">
-            <div class="btn-container">
-                <a asp-controller="Account" asp-action="UserProfileUser">
-                    <button><i data-lucide="user"></i><span>User Profile</span></button>
-                </a>
+        <section class="membership-pass">
+            <div class="pass-card">
+                <div class="pass-header">
+                    <img src="~/images_fitcheck/fitcheckicon.png" alt="FitCheck Logo">
+                    <h3>MEMBERSHIP PASS</h3>
+                </div>
+
+                <div class="pass-body">
+                    <div class="photo"></div>
+                    <div class="pass-details">
+                        <p>
+                            <span class="label">Name :</span>
+                            <span class="value">@Model.FullName</span>
+                        </p>
+                        <p>
+                            <span class="label">Member ID :</span>
+                            <span class="value">@Model.MemberID</span>
+                        </p>
+                        <p>
+                            <span class="label">Plan Type :</span>
+                            <span class="value">@Model.MembershipPlan</span>
+                        </p>
+                        <p>
+                            <span class="label">Valid until :</span>
+                            <span class="value">@Model.EndDate.ToString("MMMM yyyy")</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="pass-footer"></div>
             </div>
-            <div class="btn-container">
-                <a asp-controller="Account" asp-action="ChangePasswordUser">
-                    <button><i data-lucide="lock"></i><span>Change Password</span></button>
-                </a>
-            </div>
-            <div class="btn-container">
-                <a asp-controller="Account" asp-action="MembershipPassUser">
-                    <button><i data-lucide="badge-check"></i><span>Membership Pass</span></button>
-                </a>
-            </div>
-            <div class="btn-container">
-                <a asp-controller="Transaction" asp-action="TransactionHistoryUser">
-                    <button><i data-lucide="history"></i><span>Transaction History</span></button>
-                </a>
-            </div>
-            <div class="btn-container">
-                <a asp-controller="Account" asp-action="TermsConditionsUser">
-                    <button><i data-lucide="file-text"></i><span>Terms & Conditions</span></button>
-                </a>
-            </div>
-            <div class="btn-container">
-                <a asp-controller="Account" asp-action="PrivacyPolicyUser">
-                    <button><i data-lucide="shield"></i><span>Privacy Policy</span></button>
-                </a>
-            </div>
-            <div class="btn-container">
-                <a asp-controller="Account" asp-action="AboutFitcheckUser">
-                    <button><i data-lucide="info"></i><span>About FitCheck</span></button>
-                </a>
-            </div>
+        </section>
+
+        <div class="btn-container">
+            <a><button class="print-btn">Print</button></a>
         </div>
 
-        <script>
-            lucide.createIcons();
-        </script>
+        
     </main>
 
     <div class="hr-container">
@@ -116,5 +110,11 @@
             </div>
         </div>
     </footer>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+
 </body>
 </html>
