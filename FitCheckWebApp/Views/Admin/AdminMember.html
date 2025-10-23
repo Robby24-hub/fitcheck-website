@@ -1,5 +1,5 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+@*
+    
 *@
 @{
 
@@ -7,15 +7,13 @@
 
 }
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Fitcheck</title>
-
-   <link rel="stylesheet" href="~/css/AdminPayment.css" asp-append-version="true" />
+  <link rel="stylesheet" href="AdminMember.css" asp-append-version="true" />
 </head>
 <body>
   <header>
@@ -24,53 +22,63 @@
             <h1 class="brand">FITCHECK</h1>
         </div>
         <nav class="navbar">
-
-            <a asp-controller="Admin" asp-action="AdminHome">Home</a>
-            <a asp-controller="Admin" asp-action="AdminPayment">Payment</a>
-            <a asp-controller="Admin" asp-action="AdminClass">Classes</a>
-
-            <form asp-controller="Account" asp-action="Logout" method="post" style="display:inline;">
-                <button type="submit" class="logout-btn">Logout</button>
-            </form>
+            <a asp-controller="Account" asp-action="UserHome">Home</a>
+            <a asp-controller="Transaction" asp-action="Membership">Payment</a>
+            <a asp-controller="Account" asp-action="ClassesUser">Member</a>
+            <a asp-controller="Account" asp-action="Products">Classes</a>
+             <a asp-controller="Account" asp-action="Products">Log out</a>
               
+            </form>
 
         </nav>   
     </header>
     
     <!-- Main -->
 
-
-      <main>
+<!-- MAIN -->
+  <main>
     <h2>WELCOME Admin,</h2>
-    <h3>PENDING MEMBERSHIP</h3>
+    <h3>MEMBER OVERVIEW</h3>
+
 
     <div class="table-container">
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Plan</th>
-            <th>Payment</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Juan Dela Cruz</td>
-            <td>FitElite</td>
-            <td>1,499</td>
-            <td>
-              <button class="approve">Approve</button>
-              <button class="decline">Decline</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+  <table>
+    <thead>
+      <tr>
+        <th>Member ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Plan</th>
+        <th>Status</th>
+        <th>Payment due</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>23810 - FEL</td>
+        <td>Juan Dela Cruz</td>
+        <td>juandelacruz@gmail.com</td>
+        <td>FitElite</td>
+        <td class="active-status">Active</td>
+        <td>11-30-25</td>
+        <td>
+          <button class="delete">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+
   </main>
 
-    
-  <div class="hr-container">
+
+    <!-- FOOTER -->
+
+
+   <div class="hr-container">
         <hr>
     </div>
 
