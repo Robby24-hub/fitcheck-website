@@ -136,7 +136,7 @@ namespace FitCheckWebApp.Controllers
             {
                 FullName = $"{account.FirstName} {account.LastName}",
                 MemberID = account.MemberID,
-                
+
             };
 
             if (transaction != null)
@@ -150,7 +150,7 @@ namespace FitCheckWebApp.Controllers
             {
                 model.MembershipPlan = "N/A";
                 model.TransactionDate = DateTime.Now;
-                model.EndDate = DateTime.Now.AddMonths(1); 
+                model.EndDate = DateTime.Now.AddMonths(1);
                 model.Status = "N/A";
             }
 
@@ -161,7 +161,7 @@ namespace FitCheckWebApp.Controllers
 
         [Authorize]
         public IActionResult ClassesUser() => View();
-        
+
 
 
 
@@ -170,6 +170,7 @@ namespace FitCheckWebApp.Controllers
         public IActionResult Classes() => View();
         public IActionResult Products() => View();
 
+        public IActionResult AccountUser() => View();
 
 
 
