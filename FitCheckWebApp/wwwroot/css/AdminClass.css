@@ -172,58 +172,76 @@ button:hover {
   z-index: 1000;
 }
 
-/* Popup Box */
+/* ===== Popup Form Fixes ===== */
 .popup {
   background-color: #0D0D0D;
-  padding: 30px;
+  padding: 30px 35px;
   border-radius: 15px;
-  width: 450px;
+  width: 400px;
   position: relative;
-
+  animation: fadeIn 0.3s ease-in-out;
 }
 
 .popup h3 {
   color: #D2F801;
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
+  font-size: 1.4rem;
+  letter-spacing: 1px;
 }
 
 .popup label {
   display: block;
-  color: white;
+  color: #EAEAEA;
   margin: 8px 0 5px;
-  font-size: 14px;
+  font-size: 0.9rem;
 }
 
-.popup input {
+.popup input,
+.popup select {
   width: 100%;
-  padding: 8px;
+  padding: 10px;
   border: none;
-  border-radius: 5px;
-  margin-bottom: 10px;
-  background-color: #ddd;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  background-color: #1f1f1f;
+  color: white;
+  font-size: 0.95rem;
+  outline: none;
+}
+
+.popup input:focus,
+.popup select:focus {
+  border: 1px solid #D2F801;
+  background-color: #252525;
 }
 
 .form-row {
   display: flex;
+  justify-content: space-between;
   gap: 10px;
+}
+
+.form-row div {
+  flex: 1;
 }
 
 .submit-btn {
   background-color: #D2F801;
   border: none;
   width: 100%;
-  padding: 10px;
-  border-radius: 5px;
+  padding: 12px;
+  border-radius: 6px;
   font-weight: 700;
   cursor: pointer;
+  transition: 0.2s;
+  color: black;
 }
 
 .submit-btn:hover {
-  opacity: 0.85;
+  background-color: #b9e200;
 }
 
-/* Close Button */
 .close-btn {
   position: absolute;
   top: 8px;
@@ -231,8 +249,17 @@ button:hover {
   font-size: 22px;
   color: #D2F801;
   cursor: pointer;
+  transition: 0.2s;
 }
 
+.close-btn:hover {
+  color: #b9e200;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
 
 
 /* ====== Footer ====== */
