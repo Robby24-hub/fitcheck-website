@@ -56,10 +56,13 @@
                             <span class="label">Plan Type :</span>
                             <span class="value">@Model?.MembershipPlan ?? "N/A"</span>
                         </p>
+                            
                         <p>
                             <span class="label">Valid until :</span>
-                            <span class="value">@(Model?.EndDate != null ? Model.EndDate.ToString("MMMM yyyy") : "N/A")</span>
+                            <span class="value">@((Model?.EndDate)?.ToString("MMMM yyyy") ?? "N/A")</span>
                         </p>
+
+
                     </div>
                 </div>
 

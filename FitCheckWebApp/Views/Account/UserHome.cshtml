@@ -61,7 +61,7 @@
 
                     <p>
                         <strong>Last Payment Date:</strong>
-                        @(Model?.TransactionDate != null ? Model.TransactionDate.ToString("MMMM d, yyyy") : "N/A")
+                        @(Model?.TransactionDate != null ? Model.TransactionDate.Value.ToString("MMMM d, yyyy") : "N/A")
                     </p>
 
                     <p>
@@ -80,8 +80,9 @@
 
                     <p>
                         <strong>Next Payment Due:</strong>
-                        @(Model?.EndDate != null ? Model.EndDate.ToString("MMMM d, yyyy") : "N/A")
+                        @(Model?.EndDate != null ? Model.EndDate.Value.ToString("MMMM d, yyyy") : "N/A")
                     </p>
+
                 </div>
             </section>
 
@@ -110,7 +111,7 @@
                             </p>
                             <p>
                                 <span class="label">Valid until :</span>
-                                <span class="value">@Model.EndDate.ToString("MMMM yyyy")</span>
+                                <span class="value">@Model?.EndDate != null ? Model.EndDate.Value.ToString("MMMM yyyy")</span>
                             </p>
                         </div>
                     </div>

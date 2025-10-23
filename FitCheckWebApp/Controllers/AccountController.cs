@@ -132,7 +132,7 @@ namespace FitCheckWebApp.Controllers
         [Authorize]
         public IActionResult UserHome()
         {
-            Helpers.Helpers.ExpireOldMemberships();
+            TransactionManager.ExpireOldMemberships();
 
             if (!User.Identity!.IsAuthenticated)
             {
@@ -178,10 +178,11 @@ namespace FitCheckWebApp.Controllers
             else
             {
                 model.MembershipPlan = "N/A";
-                model.TransactionDate = DateTime.Now;
-                model.EndDate = DateTime.Now.AddMonths(1);
+                model.TransactionDate = null;
+                model.EndDate = null;
                 model.Status = "N/A";
             }
+
 
 
             return View(model);

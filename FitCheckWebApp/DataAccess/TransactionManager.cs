@@ -103,5 +103,24 @@ namespace FitCheckWebApp.DataAccess
             }
 
         }
+
+        public static void ExpireOldMemberships()
+        {
+            using (var connection = new MySqlConnection(connectionString))
+            {
+                connection.Open();
+                string query = @"
+            UPDATE transaction
+            SET Status = 'Expired'
+            WHERE EndDate < NOW() AND Status != 'Expired';
+        ";
+
+                using (var cmd = new MySqlCommand(query, connection))
+                {
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
     }
 }
