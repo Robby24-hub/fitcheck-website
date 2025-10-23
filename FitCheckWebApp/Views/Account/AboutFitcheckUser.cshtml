@@ -9,74 +9,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- CSS - FIXED -->
-    <link rel="stylesheet" href="~/css/AccountUser.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/AboutFitcheckUser.css" asp-append-version="true" />
     <!-- Favicon -->
     <link rel="icon" href="~/images_fitcheck/fitcheckicon.png" />
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <title>Account | FitCheck Gym</title>
+    <title>About FitCheck | FitCheck Gym</title>
 </head>
 <body>
     <header>
-
         <div class="brand-container">
             <img asp-append-version="true" src="~/images_fitcheck/fitcheckicon.png" alt="logo" class="logo" />
             <h1 class="brand">FITCHECK</h1>
         </div>
 
         <nav class="navbar">
-            <a asp-controller="Account" asp-action="UserHome">Home</a>
-            <a asp-controller="Transaction" asp-action="UserMembership">Membership</a>
-            <a asp-controller="Account" asp-action="ClassesUser">Classes</a>
-            <a asp-controller="Account" asp-action="Products">Products</a>
-            <a asp-controller="Account" asp-action="AccountUser">Account</a>
-            <form asp-controller="Account" asp-action="Logout" method="post" style="display:inline;">
-                <button type="submit" class="logout-btn">Logout</button>
-            </form>
-
+            <a asp-controller="Account" asp-action="AccountUser" class="back-link">
+                <i data-lucide="arrow-left"></i>
+                <span>Back</span>
+            </a>
         </nav>
     </header>
+
+
     <main>
-        <div class="grid-container">
-            <div class="btn-container">
-                <a asp-controller="Account" asp-action="UserProfileUser">
-                    <button><i data-lucide="user"></i><span>User Profile</span></button>
-                </a>
-            </div>
-            <div class="btn-container">
-                <a asp-controller="Account" asp-action="ChangePasswordUser">
-                    <button><i data-lucide="lock"></i><span>Change Password</span></button>
-                </a>
-            </div>
-            <div class="btn-container">
-                <a asp-controller="Account" asp-action="MembershipPassUser">
-                    <button><i data-lucide="badge-check"></i><span>Membership Pass</span></button>
-                </a>
-            </div>
-            <div class="btn-container">
-                <a asp-controller="Transaction" asp-action="TransactionHistoryUser">
-                    <button><i data-lucide="history"></i><span>Transaction History</span></button>
-                </a>
-            </div>
-            <div class="btn-container">
-                <a asp-controller="Account" asp-action="TermsConditionsUser">
-                    <button><i data-lucide="file-text"></i><span>Terms & Conditions</span></button>
-                </a>
-            </div>
-            <div class="btn-container">
-                <a asp-controller="Account" asp-action="PrivacyPolicyUser">
-                    <button><i data-lucide="shield"></i><span>Privacy Policy</span></button>
-                </a>
-            </div>
-            <div class="btn-container">
-                <a asp-controller="Account" asp-action="AboutFitcheckUser">
-                    <button><i data-lucide="info"></i><span>About FitCheck</span></button>
-                </a>
+        <div class="parent-container">
+            <img src="~/images_fitcheck/runningman.png" alt="Running figure" class="runner-image">
+            <div class="about-us-container">
+                <h1 class="txt-about-us">ABOUT US</h1>
+                <p class="about-us-content">
+                    At FitCheck, we believe fitness is more than just lifting weights — it's about building strength, discipline, and confidence that extends beyond the gym. Founded with a passion to make health and wellness accessible to everyone, our mission is to create a space where people of all ages and fitness levels feel welcome, motivated, and empowered.
+                </p>
+                <p class="about-us-content">
+                    With 24/7 access, state-of-the-art equipment, and a wide range of group classes like HIIT, Yoga, Zumba, and Spin, we make it easy to fit workouts into your lifestyle. Our dedicated team is here to guide, support, and inspire you every step of the way.
+                </p>
+                <p class="about-us-content">
+                    More than just a gym, FitCheck is a community. A place where goals are achieved, friendships are built, and transformations happen. Whether you're starting your fitness journey or pushing toward new limits, we're here to help you become your best self.
+                </p>
             </div>
         </div>
-
-        <script>
-            lucide.createIcons();
-        </script>
     </main>
 
     <div class="hr-container">
@@ -116,5 +85,11 @@
             </div>
         </div>
     </footer>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+
 </body>
 </html>

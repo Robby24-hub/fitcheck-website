@@ -59,90 +59,183 @@ header {
             color: #d2f801;
         }
 
-/*=====================================================================*/
-/*MAIN*/
-
-main {
-    min-height: 90vh;
-    color: white;
-    background: linear-gradient(to top, #1C1C1C, black);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    padding: 20px;
-
-}
-
-
-/* ===================== Account Buttons ===================== */
-.grid-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 2rem;
-    width: 80%;
-    max-width: 900px;
-    margin: 3rem auto;
-    justify-items: center;
-}
-
-.grid-container a {
-    text-decoration: none;
-}
-
-.btn-container {
-    display: flex;
-    justify-content: center;
-}
-
-    .btn-container button {
-        width: 160px;
-        height: 160px;
-        background-color: #0d0d0d;
-        border: 2px solid #d2f801;
-        color: #d2f801;
-        font-size: 1rem;
-        font-weight: bold;
-        text-transform: uppercase;
-        border-radius: 20px;
-        cursor: pointer;
-        transition: all 0.3s ease;
+    /* Back link style */
+    .navbar .back-link {
         display: flex;
-        flex-direction: column;
         align-items: center;
-        justify-content: center;
-        gap: 10px;
-        letter-spacing: 0.5px;
-        text-align: center;
-        
+        gap: 8px;
+        color: white;
+        text-decoration: none;
+        font-size: 1.2rem;
+        font-weight: bold;
+        transition: color 0.3s ease;
     }
 
-        .btn-container button i {
-            width: 40px;
-            height: 40px;
+        .navbar .back-link i {
+            width: 24px;
+            height: 24px;
             color: #d2f801;
-            transition: transform 0.3s ease, color 0.3s ease;
+            transition: transform 0.3s ease;
         }
 
-        /* Hover effects */
-        .btn-container button:hover {
-            background-color: #d2f801;
-            color: black;
-            transform: translateY(-5px);
-            box-shadow: 0 0 20px #d2f801;
+        .navbar .back-link:hover {
+            color: #d2f801;
         }
 
-            .btn-container button:hover i {
-                color: black;
-                transform: scale(1.1);
+            .navbar .back-link:hover i {
+                transform: translateX(-4px);
             }
 
-        /* Active effect */
-        .btn-container button:active {
-            transform: scale(0.97);
-            box-shadow: 0 0 10px #a5c400;
+
+/*=====================================================================*/
+/*MAIN*/
+main {
+    min-height: 60vh;
+    background-color: black;
+    padding: 3rem 2rem;
+}
+
+.transaction-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.page-title {
+    background: linear-gradient(0deg, rgba(210, 248, 1, 1) 18%, rgba(97, 97, 97, 1) 94%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-size: 2.5rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 3rem;
+    letter-spacing: 2px;
+}
+
+.table-wrapper {
+    overflow-x: auto;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.02);
+}
+
+.transaction-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: transparent;
+}
+
+    .transaction-table thead {
+        background-color: rgba(210, 248, 1, 0.1);
+    }
+
+    .transaction-table th {
+        padding: 1.5rem 2rem;
+        text-align: left;
+        color: #d2f801;
+        font-size: 1.1rem;
+        font-weight: bold;
+        border-bottom: 2px solid #d2f801;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .transaction-table td {
+        padding: 1.5rem 2rem;
+        border-bottom: 1px solid rgba(98, 98, 98, 0.5);
+        color: white;
+        font-size: 1rem;
+    }
+
+    .transaction-table tbody tr {
+        transition: background-color 0.3s ease;
+    }
+
+        .transaction-table tbody tr:hover {
+            background-color: rgba(210, 248, 1, 0.05);
         }
 
+        .transaction-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+.order-number {
+    color: #d2f801;
+    font-weight: bold;
+    font-family: 'Courier New', monospace;
+}
+
+.plan-badge {
+    display: inline-block;
+    padding: 0.5rem 1.2rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.plan-fitelite {
+    background-color: rgba(52, 152, 219, 0.15);
+    color: #3498db;
+    border: 1px solid #3498db;
+}
+
+.plan-fitpro {
+    background-color: rgba(155, 89, 182, 0.15);
+    color: #9b59b6;
+    border: 1px solid #9b59b6;
+}
+
+.plan-fitbasic {
+    background-color: rgba(46, 204, 113, 0.15);
+    color: #2ecc71;
+    border: 1px solid #2ecc71;
+}
+
+.total-amount {
+    color: #d2f801;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.empty-icon {
+    margin-bottom: 1rem;
+}
+
+    .empty-icon i {
+        width: 64px;
+        height: 64px;
+        color: rgba(210, 248, 1, 0.3);
+    }
+
+.empty-state p {
+    font-size: 1.2rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .page-title {
+        font-size: 2rem;
+    }
+
+    .transaction-table th,
+    .transaction-table td {
+        padding: 1rem;
+        font-size: 0.9rem;
+    }
+
+    .plan-badge {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.8rem;
+    }
+}
 
 
 /*===========================================*/
@@ -273,4 +366,3 @@ footer .right-side-footer {
         width: 25px;
         height: auto;
     }
-
