@@ -80,8 +80,9 @@
 
                     <p>
                         <strong>Next Payment Due:</strong>
-                        @(Model?.EndDate != null ? Model.EndDate.Value.ToString("MMMM d, yyyy") : "N/A")
+                        @(Model?.EndDate.HasValue == true ? Model.EndDate.Value.ToString("MMMM d, yyyy") : "N/A")
                     </p>
+
 
                 </div>
             </section>
@@ -111,8 +112,9 @@
                             </p>
                             <p>
                                 <span class="label">Valid until :</span>
-                                <span class="value">@Model?.EndDate != null ? Model.EndDate.Value.ToString("MMMM yyyy")</span>
+                                <span class="value">@(Model?.EndDate.HasValue == true ? Model.EndDate.Value.ToString("MMMM yyyy") : "N/A")</span>
                             </p>
+
                         </div>
                     </div>
 

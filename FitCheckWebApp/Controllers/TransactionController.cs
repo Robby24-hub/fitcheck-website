@@ -14,7 +14,7 @@ namespace FitCheckWebApp.Controllers
         [HttpGet, Authorize]
         public IActionResult PaymentMethod() => View();
 
-        [HttpPost]
+        [HttpPost, Authorize]
         public IActionResult PaymentMethod(TransactionViewModel newtransaction)
         {
 
