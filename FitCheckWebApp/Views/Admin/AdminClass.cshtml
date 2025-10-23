@@ -75,66 +75,121 @@
     </main>
 
     <!-- POPUP FORM -->
-    <div class="popup-overlay" id="popupForm">
-        <div class="popup">
-            <h3>CLASS DETAIL</h3>
-            <form>
-                <label>Instructor</label>
-                <input type="text" placeholder="Enter instructor name">
+<div class="popup-overlay" id="popupForm">
+  <div class="popup">
+    <h3>CLASS DETAIL</h3>
+    <form>
+      <label>Instructor</label>
+      <select>
+        <option value="" disabled selected>Select instructor</option>
+        <option>Shaira Sollano</option>
+        <option>Michael Reyes</option>
+        <option>Angela Cruz</option>
+        <option>Rico Santos</option>
+        <option>Maria Dela Cruz</option>
+        <option>John Villanueva</option>
+        <option>Kim Bautista</option>
+      </select>
 
-                <label>Type</label>
-                <input type="text" placeholder="Enter class type">
+      <label>Type</label>
+      <select>
+        <option value="" disabled selected>Select class type</option>
+        <option>Yoga</option>
+        <option>Zumba</option>
+        <option>Pilates</option>
+        <option>CrossFit</option>
+        <option>HIIT</option>
+        <option>Strength Training</option>
+        <option>Cardio</option>
+        <option>Dance Fitness</option>
+      </select>
 
-                <div class="form-row">
-                    <div>
-                        <label>Date</label>
-                        <input type="date">
-                    </div>
-                    <div>
-                        <label>Time</label>
-                        <input type="time">
-                    </div>
-                </div>
-
-                <label>Participant Limit</label>
-                <input type="text" id="participantLimit" name="participantLimit">
-
-                <button type="submit" class="submit-btn">ADD CLASS</button>
-            </form>
-            <span class="close-btn" id="closeFormBtn">&times;</span>
+      <div class="form-row">
+        <div>
+          <label>Date</label>
+          <input type="date">
         </div>
-    </div>
-
-    <!-- EDIT POPUP FORM -->
-    <div class="popup-overlay" id="editForm">
-        <div class="popup">
-            <h3>EDIT CLASS DETAIL</h3>
-            <form>
-                <label>Instructor</label>
-                <input type="text" placeholder="Enter instructor name">
-
-                <label>Type</label>
-                <input type="text" placeholder="Enter class type">
-
-                <div class="form-row">
-                    <div>
-                        <label>Date</label>
-                        <input type="date">
-                    </div>
-                    <div>
-                        <label>Time</label>
-                        <input type="time">
-                    </div>
-                </div>
-
-                <label>Participant Limit</label>
-                <input type="text" id="editParticipantLimit" name="editParticipantLimit">
-
-                <button type="submit" class="submit-btn">UPDATE CLASS</button>
-            </form>
-            <span class="close-btn" id="closeEditBtn">&times;</span>
+        <div>
+          <label>Time</label>
+          <input type="time">
         </div>
-    </div>
+      </div>
+
+      <label>Participant Limit</label>
+      <select id="participantLimit" name="participantLimit">
+        <option value="" disabled selected>Select limit</option>
+        <!-- Generate 1–30 -->
+        <script>
+          for (let i = 1; i <= 30; i++) {
+            document.write(`<option value="${i}">${i}</option>`);
+          }
+        </script>
+      </select>
+
+      <button type="submit" class="submit-btn">ADD CLASS</button>
+    </form>
+    <span class="close-btn" id="closeFormBtn">&times;</span>
+  </div>
+</div>
+
+
+  <!-- EDIT POPUP FORM -->
+<div class="popup-overlay" id="editForm">
+  <div class="popup">
+    <h3>EDIT CLASS DETAIL</h3>
+    <form>
+      <label>Instructor</label>
+      <select>
+        <option value="" disabled selected>Select instructor</option>
+        <option>Shaira Sollano</option>
+        <option>Michael Reyes</option>
+        <option>Angela Cruz</option>
+        <option>Rico Santos</option>
+        <option>Maria Dela Cruz</option>
+        <option>John Villanueva</option>
+        <option>Kim Bautista</option>
+      </select>
+
+      <label>Type</label>
+      <select>
+        <option value="" disabled selected>Select class type</option>
+        <option>Yoga</option>
+        <option>Zumba</option>
+        <option>Pilates</option>
+        <option>CrossFit</option>
+        <option>HIIT</option>
+        <option>Strength Training</option>
+        <option>Cardio</option>
+        <option>Dance Fitness</option>
+      </select>
+
+      <div class="form-row">
+        <div>
+          <label>Date</label>
+          <input type="date">
+        </div>
+        <div>
+          <label>Time</label>
+          <input type="time">
+        </div>
+      </div>
+
+      <label>Participant Limit</label>
+      <select id="editParticipantLimit" name="editParticipantLimit">
+        <option value="" disabled selected>Select limit</option>
+        <script>
+          for (let i = 1; i <= 30; i++) {
+            document.write(`<option value="${i}">${i}</option>`);
+          }
+        </script>
+      </select>
+
+      <button type="submit" class="submit-btn">UPDATE CLASS</button>
+    </form>
+    <span class="close-btn" id="closeEditBtn">&times;</span>
+  </div>
+</div>
+
 
 
     <!-- SCRIPT -->
