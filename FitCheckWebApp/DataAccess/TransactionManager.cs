@@ -259,7 +259,51 @@ namespace FitCheckWebApp.DataAccess
             }
         }
 
+        // -------------------------
+        // COUNT ACTIVE MEMBERS BLEHH
+        // -------------------------
 
+        public static int CountActiveMembers()
+        {
+            using (var connection = new MySqlConnection(connectionString))
+            {
+                connection.Open();
+                using (var cmd = connection.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        SELECT COUNT(*) FROM transaction WHERE Status = @status";
+
+                    cmd.Parameters.AddWithValue("@status", "Active");
+
+                    var result = cmd.ExecuteScalar();
+
+                    return Convert.ToInt32(result);
+                }
+            }
+        }
+
+        // -------------------------
+        // COUNT PENDING PAYMENTS RAAAA
+        // -------------------------
+
+        public static int CountPendingPayment()
+        {
+            using (var connection = new MySqlConnection(connectionString))
+            {
+                connection.Open();
+                using (var cmd = connection.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        SELECT COUNT(*) FROM transaction WHERE Status = @status";
+
+                    cmd.Parameters.AddWithValue("@status", "Pending");
+
+                    var result = cmd.ExecuteScalar();
+
+                    return Convert.ToInt32(result);
+                }
+            }
+        }
 
     }
 }

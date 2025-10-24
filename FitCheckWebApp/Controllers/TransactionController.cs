@@ -43,16 +43,22 @@ namespace FitCheckWebApp.Controllers
             DateTime startDate;
             if (isExtension)
             {
-                // Extend active membership by 1 month
+                
                 startDate = lastTransaction.EndDate.AddDays(1);
             }
             else
             {
-                // Start new or renew expired membership today
+                
                 startDate = DateTime.Now;
             }
 
             DateTime endDate = startDate.AddMonths(1);
+
+
+            
+            var status = newtransaction.PaymentMethod.ToString() == "Cash"
+                ? TransactionStatus.Pending
+                : TransactionStatus.Active;
 
             var transaction = new Transaction
             {
@@ -62,23 +68,26 @@ namespace FitCheckWebApp.Controllers
                 StartDate = startDate,
                 EndDate = endDate,
                 TransactionDate = DateTime.Now,
-                Status = TransactionStatus.Active
+                Status = status
             };
 
             TransactionManager.PostTransaction(transaction);
 
-            var account = AccountManager.FindById(accountId);
-            if (account != null)
+
+            if (transaction.Status == TransactionStatus.Active)
             {
-                if (string.IsNullOrEmpty(account.MemberID))
+                var account = AccountManager.FindById(accountId);
+                if (account != null)
                 {
-                    account.MemberID = Helpers.Helpers.MemberIdGenerator();
+                    if (string.IsNullOrEmpty(account.MemberID))
+                    {
+                        account.MemberID = Helpers.Helpers.MemberIdGenerator();
+                    }
+
+                    account.MembershipPlan = newtransaction.MembershipPlan;
+                    AccountManager.UpdateAccount(account);
                 }
-
-                account.MembershipPlan = newtransaction.MembershipPlan;
-                AccountManager.UpdateAccount(account);
             }
-
             return RedirectToAction("UserMembership");
         }
 
@@ -130,6 +139,9 @@ namespace FitCheckWebApp.Controllers
         public IActionResult UserMembership() => View();
 
         public IActionResult TransactionHistoryUser() => View();
+
+
+
 
     }
 }
