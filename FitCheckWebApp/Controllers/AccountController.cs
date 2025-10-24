@@ -268,6 +268,7 @@ namespace FitCheckWebApp.Controllers
         public IActionResult PrivacyPolicyUser() => View();
         public IActionResult TermsConditionsUser() => View();
         public IActionResult ChangePasswordUser() => View();
+        public IActionResult UserProfileUser() => View();
 
 
     }

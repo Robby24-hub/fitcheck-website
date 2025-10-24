@@ -1,4 +1,4 @@
-﻿/* Reset */
+﻿/* RESET */
 * {
     margin: 0;
     padding: 0;
@@ -10,7 +10,7 @@ body {
     background-color: black;
 }
 
-/* Header */
+/* HEADER */
 header {
     background-color: black;
     color: white;
@@ -23,7 +23,6 @@ header {
     z-index: 1000;
 }
 
-/* Brand section*/
 .brand-container {
     display: flex;
     align-items: center;
@@ -36,13 +35,12 @@ header {
 }
 
 .brand {
-    font-family: Arial, Helvetica, sans-serif;
     font-size: 2rem;
     font-weight: bold;
     color: #d2f801;
 }
 
-/* Navbar */
+/* NAVBAR */
 .navbar {
     display: flex;
     gap: 3rem;
@@ -52,21 +50,16 @@ header {
         text-decoration: none;
         color: white;
         font-size: 1.2rem;
-        font-family: Arial, Helvetica, sans-serif;
     }
 
         .navbar a:hover {
             color: #d2f801;
         }
 
-    /* Back link style */
     .navbar .back-link {
         display: flex;
         align-items: center;
         gap: 8px;
-        color: white;
-        text-decoration: none;
-        font-size: 1.2rem;
         font-weight: bold;
         transition: color 0.3s ease;
     }
@@ -78,36 +71,19 @@ header {
             transition: transform 0.3s ease;
         }
 
-        .navbar .back-link:hover {
-            color: #d2f801;
+        .navbar .back-link:hover i {
+            transform: translateX(-4px);
         }
 
-            .navbar .back-link:hover i {
-                transform: translateX(-4px);
-            }
-
-
-/*=====================================================================*/
-
+/* =========================== MAIN =========================== */
 main {
     min-height: 100vh;
     color: white;
     background: linear-gradient(to top, #1C1C1C, black);
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    flex-direction:column;
-
-}
-
-/* Form Section */
-.form-section {
-    text-align: center;
-    padding: 4rem 2rem;
-    background: linear-gradient(to top, #1C1C1C, black);
-    border-radius: 15px;
-    box-shadow: 0 0 30px rgba(210, 248, 1, 0.15);
-    width: 400px;
 }
 
 .page-title {
@@ -115,20 +91,38 @@ main {
     background: linear-gradient(0deg, rgba(210, 248, 1, 1) 18%, rgba(97, 97, 97, 1) 94%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    background-clip: text;
     font-size: 2rem;
 }
 
-/* Form Inputs */
+/* FORM CONTAINER */
+.form-section {
+    text-align: center;
+    padding: 3rem 2rem;
+    background: linear-gradient(to top, #1C1C1C, black);
+    border-radius: 15px;
+    box-shadow: 0 0 30px rgba(210, 248, 1, 0.15);
+    width: 400px;
+    margin-bottom: 3rem;
+}
+
 .form {
     display: flex;
     flex-direction: column;
     gap: 1.2rem;
-    display: flex;
 }
 
+/* SECTION TITLES */
+.section-title {
+    color: #d2f801;
+    text-align: left;
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-top: 1rem;
+    border-bottom: 1px solid rgba(210, 248, 1, 0.3);
+    padding-bottom: 0.3rem;
+}
 
-
+/* INPUT FIELDS */
 .input-field {
     background-color: #222;
     border: 2px solid #3a3a3a;
@@ -146,30 +140,20 @@ main {
         box-shadow: 0 0 10px rgba(210, 248, 1, 0.6);
     }
 
-
-.forgot-password {
-    text-decoration: none;
+select.input-field {
     color: white;
-    font-size: 0.9rem;
-    align-self: flex-end;
+    background-color: #222;
 }
 
-    .forgot-password:hover {
-        text-decoration: underline;
-        color: #d2f801;
-        cursor: pointer;
-    }
-
-/* Buttons */
+/* BUTTONS */
 .button-group {
     display: flex;
     justify-content: space-between;
-    align-items: center;
     margin-top: 2rem;
     gap: 1rem;
 }
 
-.btn-change,
+.btn-save,
 .btn-cancel {
     display: flex;
     align-items: center;
@@ -180,18 +164,18 @@ main {
     font-weight: bold;
     cursor: pointer;
     border: none;
-    transition: all 0.3s ease;
     text-decoration: none;
     width: 48%;
     height: 3rem;
+    transition: all 0.3s ease;
 }
 
-.btn-change {
+.btn-save {
     background-color: #d2f801;
     color: black;
 }
 
-    .btn-change:hover {
+    .btn-save:hover {
         box-shadow: 0 0 20px #d2f801;
         transform: scale(1.03);
     }
@@ -206,9 +190,6 @@ main {
         background-color: #555;
         transform: scale(1.03);
     }
-
-
-
 
 /*===========================================*/
 

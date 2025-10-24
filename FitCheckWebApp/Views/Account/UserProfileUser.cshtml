@@ -2,17 +2,14 @@
     Layout = null;
 }
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- CSS - FIXED -->
-    <link rel="stylesheet" href="~/css/PrivacyPolicyUser.css" asp-append-version="true" />
-    <!-- Favicon -->
+    <link rel="stylesheet" href="~/css/UserProfileUser.css" asp-append-version="true" />
     <link rel="icon" href="~/images_fitcheck/fitcheckicon.png" />
-    <title>Privacy Policy | FitCheck Gym</title>
+    <title>User Profile | FitCheck Gym</title>
 </head>
 <body>
     <header>
@@ -29,61 +26,38 @@
         </nav>
     </header>
 
-
     <main>
-        <div class="p-and-p-container">
-            <h1>Privacy Policy</h1>
-            <ol>
-                <li>
-                    Information We Collect
-                    <ul>
-                        <li>Personal details (name, date of birth, gender, address, contact number, email).</li>
-                        <li>Membership details (plan type, start/end dates, payment history).</li>
-                        <li>Health & safety information voluntarily provided (medical conditions, injuries).</li>
-                        <li>Emergency contact information.</li>
-                    </ul>
-                </li>
-                <li>
-                    How We Use Your Information
-                    <ul>
-                        <li>To process memberships and payments.</li>
-                        <li>To contact you regarding gym updates, classes, and account status.</li>
-                        <li>To ensure member safety in case of emergencies.</li>
-                        <li>To comply with billing and legal obligations.</li>
-                    </ul>
-                </li>
-                <li>
-                    Data Sharing & Security
-                    <ul>
-                        <li>We do not sell or rent your personal information to third parties.</li>
-                        <li>Data may be shared with payment processors and service providers strictly for operational purposes.</li>
-                        <li>Reasonable measures are taken to protect your data from unauthorized access.</li>
-                    </ul>
-                </li>
-                <li>
-                    Marketing & Communication
-                    <ul>
-                        <li>With your consent, we may send promotions, offers, or newsletters.</li>
-                        <li>You can opt out of marketing communications at any time.</li>
-                    </ul>
-                </li>
-                <li>
-                    Your Rights
-                    <ul>
-                        <li>You may request access, correction, or deletion of your personal data.</li>
-                        <li>You may withdraw consent for data processing (subject to legal and contractual obligations).</li>
-                    </ul>
-                </li>
-                <li>
-                    Policy Updates
-                    <ul>
-                        <li>The gym may update this Privacy Policy as needed.</li>
-                        <li>Members will be notified of significant changes.</li>
-                    </ul>
-                </li>
-            </ol>
-            
-        </div>
+        <h2 class="page-title">USER PROFILE</h2>
+
+        <section class="form-section">
+            <form class="form">
+                <!-- PERSONAL INFORMATION -->
+                <h3 class="section-title">PERSONAL INFORMATION</h3>
+                <input type="text" placeholder="First Name" class="input-field full" required>
+                <input type="text" placeholder="Last Name" class="input-field full" required>
+                <input type="date" class="input-field full" required>
+                <input type="number" placeholder="Age" class="input-field full" required>
+                <select class="input-field full" required>
+                    <option value="">Select Gender</option>
+                    <option>Male</option>
+                    <option>Female</option>
+                    <option>Other</option>
+                </select>
+                <input type="text" placeholder="Contact Number" class="input-field full" required>
+                <input type="email" placeholder="Email Address" class="input-field full" required>
+
+                <!-- EMERGENCY CONTACT -->
+                <h3 class="section-title">EMERGENCY CONTACT</h3>
+                <input type="text" placeholder="Full Name" class="input-field full" required>
+                <input type="text" placeholder="Contact Number" class="input-field full" required>
+
+                <!-- BUTTONS -->
+                <div class="button-group">
+                    <button type="submit" class="btn-save">SAVE</button>
+                    <a asp-controller="Account" asp-action="AccountUser" class="btn-cancel">CANCEL</a>
+                </div>
+            </form>
+        </section>
     </main>
 
     <div class="hr-container">
@@ -128,7 +102,6 @@
     <script>
         lucide.createIcons();
     </script>
-
 
 </body>
 </html>
