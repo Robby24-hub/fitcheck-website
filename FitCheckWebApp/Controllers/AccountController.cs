@@ -142,7 +142,8 @@ namespace FitCheckWebApp.Controllers
             int accountId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 
             var account = AccountManager.FindById(accountId);
-            var transaction = TransactionManager.FindById(accountId);
+            var transaction = TransactionManager.FindLatestActiveByAccount(accountId);
+
 
             if (account == null)
                 return RedirectToAction("Login", "Account");
@@ -189,8 +190,12 @@ namespace FitCheckWebApp.Controllers
             }
 
 
+            Console.WriteLine($"ACCOUNT: {account.Id}, PLAN: {account.MembershipPlan}");
+            Console.WriteLine($"TRANSACTION: {(transaction == null ? "NULL" : transaction.MembershipPlan.ToString())}");
 
             return View(model);
+
+
         }
 
 
