@@ -1,4 +1,7 @@
-﻿@*
+﻿@model FitCheckWebApp.ViewModels.AdminMemberViewModel
+
+
+@*
     
 *@
 @{
@@ -58,18 +61,25 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>23810 - FEL</td>
-                        <td>Juan Dela Cruz</td>
-                        <td>juandelacruz@gmail.com</td>
-                        <td>FitElite</td>
-                        <td class="active-status">Active</td>
-                        <td>11-30-25</td>
-                        <td>
-                            <button class="delete">Delete</button>
-                        </td>
-                    </tr>
+                    @foreach (var m in Model.Members)
+                    {
+                        <tr>
+                            <td>@m.MemberID</td>
+                            <td>@m.Name</td>
+                            <td>@m.Email</td>
+                            <td>@m.MembershipPlan</td>
+                            <td class="@(m.Status == "Active" ? "active-status" : "inactive-status")">@m.Status</td>
+                            <td>@m.PaymentDue?.ToString("MM-dd-yy")</td>
+                            <td>
+                                <form asp-controller="Admin" asp-action="DeleteMember" method="post">
+                                    <input type="hidden" name="id" value="@m.AccountID" />
+                                    <button type="submit" class="delete">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
                 </tbody>
+
             </table>
         </div>
 
