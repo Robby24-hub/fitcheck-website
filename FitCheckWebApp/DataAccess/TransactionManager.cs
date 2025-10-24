@@ -32,7 +32,8 @@ namespace FitCheckWebApp.DataAccess
                     cmd.Parameters.AddWithValue("@transactionDate", transaction.TransactionDate);
                     cmd.Parameters.AddWithValue("@startDate", transaction.StartDate);
                     cmd.Parameters.AddWithValue("@endDate", transaction.EndDate);
-                    cmd.Parameters.AddWithValue("@status", transaction.Status);
+                    cmd.Parameters.AddWithValue("@status", transaction.Status.ToString());
+
 
                     cmd.ExecuteNonQuery();
                 }

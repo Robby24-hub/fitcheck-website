@@ -17,28 +17,18 @@ namespace FitCheckWebApp.Controllers
         [HttpPost, Authorize]
         public IActionResult PaymentMethod(TransactionViewModel newtransaction)
         {
-
             int accountId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 
             if (!ModelState.IsValid)
                 return View(newtransaction);
 
-
             if (!User.Identity!.IsAuthenticated)
-            {
                 return RedirectToAction("Login", "Account");
-            }
 
             var lastTransaction = TransactionManager.FindLatestActiveByAccount(accountId);
-
-
             bool isRenewal = lastTransaction != null && lastTransaction.EndDate > DateTime.Now;
 
-            DateTime startDate = DateTime.Now;
-            if (isRenewal)
-            {
-                startDate = lastTransaction!.EndDate.AddDays(1);
-            }
+            DateTime startDate = isRenewal ? lastTransaction!.EndDate.AddDays(1) : DateTime.Now;
             DateTime endDate = startDate.AddMonths(1);
 
 
@@ -48,23 +38,31 @@ namespace FitCheckWebApp.Controllers
                 MembershipPlan = newtransaction.MembershipPlan,
                 PaymentMethod = newtransaction.PaymentMethod,
                 StartDate = startDate,
-                EndDate = endDate
+                EndDate = endDate,
+                TransactionDate = DateTime.Now,
+                Status = TransactionStatus.Active 
             };
+
 
             TransactionManager.PostTransaction(transaction);
 
             var account = AccountManager.FindById(accountId);
-
             if (account != null)
             {
-                account.MemberID ??= Helpers.Helpers.MemberIdGenerator();
-                account.MembershipPlan = newtransaction.MembershipPlan;
 
+                if (string.IsNullOrEmpty(account.MemberID))
+                {
+                    account.MemberID = Helpers.Helpers.MemberIdGenerator();
+                }
+
+                account.MembershipPlan = newtransaction.MembershipPlan;
                 AccountManager.UpdateAccount(account);
             }
 
             return RedirectToAction("UserMembership");
         }
+
+
 
         [Authorize]
         [HttpPost]

@@ -1,5 +1,6 @@
 ﻿using FitCheckWebApp.Models;
 using FitCheckWebApp.ViewModels;
+using MySql.Data.MySqlClient;
 
 namespace FitCheckWebApp.Helpers
 {
@@ -69,17 +70,22 @@ namespace FitCheckWebApp.Helpers
 
 
 
-        public static string? MemberIdGenerator()
+        public static string MemberIdGenerator()
         {
             string todaysDate = DateTime.Now.ToString("yyyyMMdd");
 
-            int dailyCount = 1;
-
-            string memberID = $"{todaysDate}-{dailyCount:D3}";
-
-            return memberID;
-
+            using (var connection = new MySqlConnection("server=localhost;user id=root;password=;database=fitcheckdb;"))
+            {
+                connection.Open();
+                using (var cmd = new MySqlCommand("SELECT COUNT(*) FROM account WHERE MemberID LIKE @datePrefix", connection))
+                {
+                    cmd.Parameters.AddWithValue("@datePrefix", $"{todaysDate}-%");
+                    int dailyCount = Convert.ToInt32(cmd.ExecuteScalar()) + 1;
+                    return $"{todaysDate}-{dailyCount:D3}";
+                }
+            }
         }
+
 
 
 
