@@ -67,6 +67,7 @@ namespace FitCheckWebApp.Models.Database
                             TransactionDate DATETIME DEFAULT CURRENT_TIMESTAMP,
                             StartDate DATETIME NOT NULL,
                             EndDate DATETIME NOT NULL,
+                            Amount DECIMAL(10,2) NOT NULL,
                             Status ENUM('Active','Expired','Cancelled', 'Pending') DEFAULT 'Active',
                             FOREIGN KEY (AccountID) REFERENCES Account(Id)
                         );";

@@ -55,10 +55,19 @@ namespace FitCheckWebApp.Controllers
             DateTime endDate = startDate.AddMonths(1);
 
 
-            
+            decimal amount = newtransaction.MembershipPlan switch
+            {
+                MembershipPlan.FitStart => 999m,
+                MembershipPlan.FitPro => 1499m,
+                MembershipPlan.FitElite => 2499m,
+                _ => 0m
+            };
+
+
             var status = newtransaction.PaymentMethod.ToString() == "Cash"
                 ? TransactionStatus.Pending
                 : TransactionStatus.Active;
+
 
             var transaction = new Transaction
             {
@@ -68,8 +77,10 @@ namespace FitCheckWebApp.Controllers
                 StartDate = startDate,
                 EndDate = endDate,
                 TransactionDate = DateTime.Now,
-                Status = status
+                Status = status,
+                Amount = amount
             };
+
 
             TransactionManager.PostTransaction(transaction);
 

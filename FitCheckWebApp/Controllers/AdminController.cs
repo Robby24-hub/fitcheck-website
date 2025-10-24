@@ -27,7 +27,31 @@ namespace FitCheckWebApp.Controllers
 
 
         [Authorize(Roles = "admin")]
-        public IActionResult AdminPayment() => View();
+        public IActionResult AdminPayment()
+        {
+            var pendingTransactions = TransactionManager.GetPendingTransactions();
+
+            var pendingViewModels = pendingTransactions.Select(t => new PendingTransactionViewModel
+            {
+                TransactionId = t.TransactionID,
+                AccountName = t.AccountName,
+                MembershipPlan = t.MembershipPlan.ToString(),
+                PaymentMethod = t.PaymentMethod.ToString(),
+                Amount = t.Amount,
+                TransactionDate = t.TransactionDate
+            }).ToList();
+
+            var model = new AdminPaymentViewModel
+            {
+                PendingTransactions = pendingViewModels
+            };
+
+            return View(model);
+
+        }
+
+
+
 
 
 
