@@ -13,24 +13,28 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="~/images_fitcheck/fitcheckicon.png" />
   <title>Fitcheck</title>
-  <link rel="stylesheet" href="AdminClass.css" asp-append-version="true" />
+  <link rel="stylesheet" href="/css/AdminClass.css" asp-append-version="true" />
 </head>
 <body>
-  <header>
+   <header>
         <div class="brand-container">
-            <img alt="logo" class="logo" src="IMAGES/LOGO.png">
+            <img alt="logo" class="logo" src="~/images_fitcheck/fitcheckicon.png">
             <h1 class="brand">FITCHECK</h1>
         </div>
         <nav class="navbar">
+            <a asp-controller="Admin" asp-action="AdminHome">Home</a>
+            <a asp-controller="Admin" asp-action="AdminPayment">Payment</a>
+            <a asp-controller="Admin" asp-action="AdminClass">Classes</a>
+            <a asp-controller="Admin" asp-action="AdminMember">Members</a>
 
-            <a asp-controller="Account" asp-action="UserHome">Home</a>
-            <a asp-controller="Transaction" asp-action="Membership">Payment</a>
-            <a asp-controller="Account" asp-action="ClassesUser">Member</a>
-            <a asp-controller="Account" asp-action="Products">Classes</a>
-             <a asp-controller="Account" asp-action="Products">Log out</a>
+            <form asp-controller="Account" asp-action="Logout" method="post" style="display:inline;">
+                <button type="submit" class="logout-btn">Logout</button>
+            </form>
 
-        </nav>   
+
+        </nav>
     </header>
     
     <!-- Main -->
