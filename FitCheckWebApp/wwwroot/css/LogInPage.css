@@ -303,3 +303,20 @@ footer .right-side-footer {
         width: 25px;
         height: auto;
     }
+
+.error-message {
+    background-color: rgba(255, 59, 59, 0.1);
+    color: #ff4d4d;
+    border: 1px solid rgba(255, 59, 59, 0.3);
+    padding: 10px 15px;
+    border-radius: 8px;
+    text-align: center;
+    margin-bottom: 15px;
+    font-size: 0.95rem;
+    width: 100%;
+    box-shadow: 0 4px 10px rgba(255, 0, 0, 0.05);
+}
+
+
+
+

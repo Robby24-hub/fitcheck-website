@@ -1,4 +1,4 @@
-@{
+﻿@{
     Layout = null;
 }
 @model FitCheckWebApp.ViewModels.LoginViewModel
@@ -29,11 +29,23 @@
         </nav>
     </header>
 
+
     <main>
         <h1 class="txt-welcome">WELCOME TO FITCHECK</h1>
         <form asp-controller="Account" asp-action="Login" method="post">
             <div class="form-container">
                 <h2 class="txt-sign-in">Sign in to your account</h2>
+
+                <!-- 🔴 Error message section -->
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <div class="error-message">
+                        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                        {
+                            <p>@error.ErrorMessage</p>
+                        }
+                    </div>
+                }
 
                 <div>
                     <input asp-for="Email" type="email" class="email-field" placeholder="Email" required />
