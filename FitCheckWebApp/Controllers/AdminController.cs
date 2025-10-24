@@ -18,5 +18,9 @@ namespace FitCheckWebApp.Controllers
         [Authorize(Roles = "admin")]
         public IActionResult AdminClass() => View();
 
+
+        [Authorize(Roles = "admin")]
+        public IActionResult AdminMember() => View(); 
+
     }
 }

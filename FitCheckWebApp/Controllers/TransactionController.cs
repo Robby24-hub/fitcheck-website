@@ -29,13 +29,26 @@ namespace FitCheckWebApp.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
+            var lastTransaction = TransactionManager.FindLatestActiveByAccount(accountId);
+
+
+            bool isRenewal = lastTransaction != null && lastTransaction.EndDate > DateTime.Now;
+
+            DateTime startDate = DateTime.Now;
+            if (isRenewal)
+            {
+                startDate = lastTransaction!.EndDate.AddDays(1);
+            }
+            DateTime endDate = startDate.AddMonths(1);
+
+
             var transaction = new Transaction
             {
                 AccountID = accountId,
                 MembershipPlan = newtransaction.MembershipPlan,
                 PaymentMethod = newtransaction.PaymentMethod,
-                StartDate = DateTime.Now,
-                EndDate = DateTime.Now.AddMonths(1)
+                StartDate = startDate,
+                EndDate = endDate
             };
 
             TransactionManager.PostTransaction(transaction);
@@ -44,7 +57,7 @@ namespace FitCheckWebApp.Controllers
 
             if (account != null)
             {
-                account.MemberID = Helpers.Helpers.MemberIdGenerator();
+                account.MemberID ??= Helpers.Helpers.MemberIdGenerator();
                 account.MembershipPlan = newtransaction.MembershipPlan;
 
                 AccountManager.UpdateAccount(account);
@@ -52,6 +65,43 @@ namespace FitCheckWebApp.Controllers
 
             return RedirectToAction("UserMembership");
         }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult CancelMembership(int transactionId)
+        {
+            int accountId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+
+            var transaction = TransactionManager.FindById(transactionId);
+
+            if (transaction == null || transaction.AccountID != accountId || transaction.Status != TransactionStatus.Active)
+            {
+                return BadRequest("Cannot cancel this transaction.");
+            }
+
+            transaction.Status = TransactionStatus.Cancelled;
+            TransactionManager.UpdateTransaction(transaction);
+
+            var latestActive = TransactionManager.FindLatestActiveByAccount(accountId);
+
+            var account = AccountManager.FindById(accountId);
+            if (account != null)
+            {
+                if (latestActive != null)
+                {
+                    account.MembershipPlan = latestActive.MembershipPlan;
+                }
+                else
+                {
+                    account.MembershipPlan = MembershipPlan.None;
+                }
+
+                AccountManager.UpdateAccount(account);
+            }
+
+            return RedirectToAction("UserMembership");
+        }
+
 
 
 

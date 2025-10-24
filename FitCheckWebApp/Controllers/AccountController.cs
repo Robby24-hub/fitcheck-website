@@ -161,6 +161,11 @@ namespace FitCheckWebApp.Controllers
                 model.EndDate = transaction.EndDate;
                 model.Status = transaction.Status.ToString();
 
+                model.PaymentStatus = transaction.Status == TransactionStatus.Active ||
+                          transaction.Status == TransactionStatus.Expired
+                          ? "Paid"
+                          : "Unpaid";
+
                 if (transaction.EndDate <= DateTime.Now)
                 {
                     model.WarningMessage = "Your membership has expired. Please renew to continue access.";
@@ -171,7 +176,7 @@ namespace FitCheckWebApp.Controllers
                 }
                 else
                 {
-                    model.WarningMessage = null; 
+                    model.WarningMessage = null;
                 }
 
             }

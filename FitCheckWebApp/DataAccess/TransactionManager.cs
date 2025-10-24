@@ -1,5 +1,9 @@
-﻿using FitCheckWebApp.Models;
+﻿using System.Collections.Generic;
+using System.Transactions;
+using FitCheckWebApp.Models;
 using MySql.Data.MySqlClient;
+using Mysqlx.Crud;
+using Transaction = FitCheckWebApp.Models.Transaction;
 
 namespace FitCheckWebApp.DataAccess
 {
@@ -45,11 +49,12 @@ namespace FitCheckWebApp.DataAccess
                 using( var cmd = connection.CreateCommand())
                 {
                     cmd.CommandText =
-                        @"SELECT TransactionID, AccountID, MembershipPlan, PaymentMethod, TransactionDate, StartDate, EndDate, Status
-                            FROM Transaction
-                            WHERE AccountID = @accountId";
+                    @"SELECT TransactionID, AccountID, MembershipPlan, PaymentMethod, TransactionDate, StartDate, EndDate, Status
+                      FROM Transaction
+                      WHERE TransactionID = @transactionId";
 
-                    cmd.Parameters.AddWithValue("@accountId", id);
+                    cmd.Parameters.AddWithValue("@transactionId", id);
+
 
                     using var reader = cmd.ExecuteReader();
 
@@ -64,7 +69,7 @@ namespace FitCheckWebApp.DataAccess
 
                         PaymentMethod paymentMethod; 
 
-                        TransactionStatus status;
+                        Models.TransactionStatus status;
 
 
 
@@ -80,7 +85,7 @@ namespace FitCheckWebApp.DataAccess
 
                         if(!Enum.TryParse(statusValue, out status))
                         {
-                            status = TransactionStatus.Active;
+                            status = Models.TransactionStatus.Active;
                         }
 
                         return new Transaction
@@ -121,6 +126,97 @@ namespace FitCheckWebApp.DataAccess
                 }
             }
         }
+
+        public static Transaction? FindLatestActiveByAccount(int accountId)
+        {
+            using var connection = new MySqlConnection(connectionString);
+            connection.Open();
+
+            using var cmd = connection.CreateCommand();
+
+            cmd.CommandText = @"
+                SELECT TransactionID, AccountID, MembershipPlan, PaymentMethod, TransactionDate, StartDate, EndDate, Status
+                FROM transaction
+                WHERE AccountID = @accountId AND Status = 'Active'
+                ORDER BY EndDate DESC
+                LIMIT 1;
+            ";
+
+            cmd.Parameters.AddWithValue("@accountId", accountId);
+
+            using var reader = cmd.ExecuteReader();
+            if (reader.Read())
+            {
+                string? membershipValue = reader["MembershipPlan"]?.ToString();
+                string? paymentValue = reader["PaymentMethod"]?.ToString();
+                string? statusValue = reader["Status"]?.ToString();
+
+                Models.MembershipPlan membershipPlan;
+                Models.PaymentMethod paymentMethod;
+                Models.TransactionStatus status;
+
+                if (!Enum.TryParse(membershipValue, out membershipPlan))
+                    membershipPlan = MembershipPlan.None;
+
+                if (!Enum.TryParse(paymentValue, out paymentMethod))
+                    paymentMethod = PaymentMethod.None;
+
+                if (!Enum.TryParse(statusValue, out status))
+                    status = Models.TransactionStatus.Active;
+
+                var transaction = new Transaction
+                {
+                    TransactionID = reader.GetInt32("TransactionID"),
+                    AccountID = reader.GetInt32("AccountID"),
+                    MembershipPlan = membershipPlan,
+                    PaymentMethod = paymentMethod,
+                    TransactionDate = reader.GetDateTime("TransactionDate"),
+                    StartDate = reader.GetDateTime("StartDate"),
+                    EndDate = reader.GetDateTime("EndDate"),
+                    Status = status
+                };
+
+                return transaction;
+            }
+
+            return null;
+        }
+
+         internal static void UpdateTransaction(Transaction transaction)
+         {
+            using (var connection = new MySqlConnection(connectionString))
+            {
+                connection.Open();
+
+                using (var cmd = connection.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                    UPDATE `transaction`
+                    SET
+                        MembershipPlan = @membershipPlan,
+                        PaymentMethod = @paymentMethod,
+                        TransactionDate = @transactionDate,
+                        StartDate = @startDate,
+                        EndDate = @endDate,
+                        Status = @status
+                    WHERE TransactionID = @transactionId
+                    ";
+
+
+                    cmd.Parameters.AddWithValue("@membershipPlan", transaction.MembershipPlan.ToString());
+                    cmd.Parameters.AddWithValue("@paymentMethod", transaction.PaymentMethod.ToString());
+                    cmd.Parameters.AddWithValue("@transactionDate", transaction.TransactionDate);
+                    cmd.Parameters.AddWithValue("@startDate", transaction.StartDate);
+                    cmd.Parameters.AddWithValue("@endDate", transaction.EndDate);
+                    cmd.Parameters.AddWithValue("@status", transaction.Status.ToString());
+                    cmd.Parameters.AddWithValue("@transactionId", transaction.TransactionID);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+
 
     }
 }
