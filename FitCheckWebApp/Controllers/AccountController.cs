@@ -176,7 +176,7 @@ namespace FitCheckWebApp.Controllers
                 }
                 else
                 {
-                    model.WarningMessage = null; 
+                    model.WarningMessage = null;
                 }
 
             }
