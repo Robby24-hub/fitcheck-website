@@ -210,7 +210,77 @@ button:hover {
   opacity: 0.85;
 }
 
+/* Modal Overlay */
+.modal-overlay {
+    display: none; /* hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.7);
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
 
+/* Modal Content */
+.modal-content {
+    background-color: #111;
+    color: white;
+    padding: 25px 35px;
+    border-radius: 12px;
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 0 20px rgba(210, 248, 1, 0.6);
+}
+
+    .modal-content h3 {
+        color: #d2f801;
+        margin-bottom: 15px;
+    }
+
+    .modal-content p {
+        margin-bottom: 25px;
+        font-size: 1rem;
+    }
+
+.modal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.btn-yes, .btn-no {
+    padding: 0.5rem 1.5rem;
+    border: 2px solid #d2f801;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.btn-no {
+    background-color: #d2f801;
+    color: black;
+}
+
+    .btn-no:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 15px #d2f801;
+    }
+
+.btn-yes {
+    background-color: transparent;
+    color: #d2f801;
+}
+
+    .btn-yes:hover {
+        background-color: #d2f801;
+        color: black;
+        transform: scale(1.05);
+    }
 
 
 

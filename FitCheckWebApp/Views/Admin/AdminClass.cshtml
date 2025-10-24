@@ -28,8 +28,8 @@
             <a asp-controller="Admin" asp-action="AdminClass">Classes</a>
             <a asp-controller="Admin" asp-action="AdminMember">Members</a>
 
-            <form asp-controller="Account" asp-action="Logout" method="post" style="display:inline;">
-                <button type="submit" class="logout-btn">Logout</button>
+            <form method="post" style="display:inline;">
+                <button type="button" class="logout-btn" onclick="openLogoutModal()">Logout</button>
             </form>
 
 
@@ -435,6 +435,38 @@
 
         // initialize
         renderTable();
+    </script>
+
+    <!-- Logout Modal -->
+    <div id="logoutModal" class="modal-overlay">
+        <div class="modal-content">
+            <h3>Confirm Log Out</h3>
+            <p>Are you sure you want to log out?</p>
+            <div class="modal-buttons">
+                <form id="logoutForm" asp-controller="Account" asp-action="Logout" method="post">
+                    <button type="submit" class="btn-yes">Yes</button>
+                    <button type="button" class="btn-no" onclick="closeLogoutModal()">No</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+                function openLogoutModal() {
+            document.getElementById("logoutModal").style.display = "flex";
+        }
+
+        function closeLogoutModal() {
+            document.getElementById("logoutModal").style.display = "none";
+        }
+
+        // Optional: close modal if user clicks outside content
+        window.onclick = function(event) {
+            const modal = document.getElementById("logoutModal");
+            if (event.target == modal) {
+                closeLogoutModal();
+            }
+        }
+
     </script>
 
 
