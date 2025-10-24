@@ -56,6 +56,19 @@
         </section>
     </main>
 
+    <!-- SAVE CONFIRMATION MODAL -->
+    <div id="saveModal" class="modal">
+        <div class="modal-content">
+            <h2>CONFIRM CHANGES</h2>
+            <p>Are you sure you want to save the changes to your profile?</p>
+            <div class="modal-buttons">
+                <button class="modal-btn btn-no">NO, NOT NOW</button>
+                <button class="modal-btn btn-yes">YES, SAVE IT</button>
+            </div>
+        </div>
+    </div>
+
+
     <div class="hr-container">
         <hr>
     </div>
@@ -102,5 +115,41 @@
     <script>
         lucide.createIcons();
     </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const saveBtn = document.querySelector(".btn-save");
+            const modal = document.getElementById("saveModal");
+            const yesBtn = document.querySelector(".btn-yes");
+            const noBtn = document.querySelector(".btn-no");
+            const form = document.querySelector(".form");
+
+            // Open modal when clicking SAVE
+            saveBtn.addEventListener("click", (e) => {
+                e.preventDefault();
+                modal.style.display = "flex";
+            });
+
+            // Close modal (No, Not Now)
+            noBtn.addEventListener("click", () => {
+                modal.style.display = "none";
+            });
+
+            // Confirm save
+            yesBtn.addEventListener("click", () => {
+                modal.style.display = "none";
+                form.submit(); // proceed with saving
+            });
+
+            // Close modal if clicked outside
+            window.addEventListener("click", (e) => {
+                if (e.target === modal) {
+                    modal.style.display = "none";
+                }
+            });
+        });
+    </script>
+
+
 </body>
 </html>
