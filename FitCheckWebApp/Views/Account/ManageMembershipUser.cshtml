@@ -1,0 +1,146 @@
+﻿@model FitCheckWebApp.ViewModels.MembershipPassViewModel
+
+@{
+    Layout = null;
+
+}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSS - FIXED -->
+    <link rel="stylesheet" href="~/css/ManageMembershipUser.css" asp-append-version="true" />
+    <!-- Favicon -->
+    <link rel="icon" href="~/images_fitcheck/fitcheckicon.png" />
+    <title>Membership Pass | FitCheck Gym</title>
+</head>
+<body>
+    <header>
+        <div class="brand-container">
+            <img asp-append-version="true" src="~/images_fitcheck/fitcheckicon.png" alt="logo" class="logo" />
+            <h1 class="brand">FITCHECK</h1>
+        </div>
+
+        <nav class="navbar">
+            <a asp-controller="Account" asp-action="AccountUser" class="back-link">
+                <i data-lucide="arrow-left"></i>
+                <span>Back</span>
+            </a>
+        </nav>
+    </header>
+
+
+    <main>
+        <h2 class="section-title">MEMBERSHIP PASS</h2>
+
+        <section class="membership-pass">
+            <div class="pass-card">
+                <div class="pass-header">
+                    <img src="~/images_fitcheck/fitcheckicon.png" alt="FitCheck Logo">
+                    <h3>MEMBERSHIP PASS</h3>
+                </div>
+
+                <div class="pass-body">
+                    <div class="photo"></div>
+                    <div class="pass-details">
+                        <p>
+                            <span class="label">Name :</span>
+                            <span class="value">@Model?.FullName ?? "Unknown"</span>
+                        </p>
+                        <p>
+                            <span class="label">Member ID :</span>
+                            <span class="value">@Model?.MemberID ?? "N/A"</span>
+                        </p>
+                        <p>
+                            <span class="label">Plan Type :</span>
+                            <span class="value">@Model?.MembershipPlan ?? "N/A"</span>
+                        </p>
+                        <p>
+                            <span class="label">Valid until :</span>
+                            <span class="value">@((Model?.EndDate)?.ToString("MMMM yyyy") ?? "N/A")</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="pass-footer"></div>
+            </div>
+
+            <div class="btn-container">
+                <form><button class="print-btn">Print</button></form>
+            </div>
+        </section>
+
+        <hr class="separator">
+
+        <!-- Manage Membership Section -->
+        <h2 class="section-title">MANAGE MEMBERSHIP</h2>
+
+        <section class="manage-membership">
+            <p>You can manage your current membership plan below.</p>
+
+            <div class="manage-options">
+                <form asp-controller="Membership" asp-action="CancelMembership" method="post">
+                    <button type="submit" class="manage-btn cancel">Cancel Membership</button>
+                </form>
+
+                <form asp-controller="Membership" asp-action="RenewMembership" method="post">
+                    <button type="submit" class="manage-btn renew">Renew Membership</button>
+                </form>
+
+                <form asp-controller="Membership" asp-action="UpgradeMembership" method="get">
+                    <button type="submit" class="manage-btn upgrade">Upgrade Plan</button>
+                </form>
+            </div>
+        </section>
+
+        
+    </main>
+
+    <div class="hr-container">
+        <hr>
+    </div>
+
+    <footer>
+        <div class="footer-container">
+            <div class="left-side-footer">
+                <div class="description-footer">
+                    <img class="fitcheck-logo-footer" src="~/images_fitcheck/fitcheckicon.png">
+                    <p>Transform your body and mind at FitCheck Gym. With state-of-the-art equipment, expert trainers, and a supportive community, we're here to help you achieve your fitness goals.</p>
+                </div>
+                <div class="follow-socials-container">
+                    <h4 class="follow-us-footer">FOLLOW US</h4>
+                    <div class="social-media-container">
+                        <a target="_blank" href="https://www.facebook.com/"><img src="~/images_fitcheck/icon_fb-removebg-preview.png"></a>
+                        <a target="_blank" href="https://www.linkedin.com/"><img src="~/images_fitcheck/Icon_linkedin-removebg-preview.png"></a>
+                        <a target="_blank" href="https://www.youtube.com/"><img src="~/images_fitcheck/icon_youtube-removebg-preview.png"></a>
+                        <a target="_blank" href="https://www.instagram.com/"><img src="~/images_fitcheck/icon_instagram-removebg-preview.png"></a>
+                    </div>
+                </div>
+            </div>
+            <div class="right-side-footer">
+                <div class="address">
+                    <img src="~/images_fitcheck/icon_location-removebg-preview.png">
+                    <p>Street 1, Congressional Rd Caloocan City</p>
+                </div>
+                <div class="email-address">
+                    <img src="~/images_fitcheck/icon_email-removebg-preview.png">
+                    <p>info@fitcheckgym.com</p>
+                </div>
+                <div class="contact-number">
+                    <img src="~/images_fitcheck/icon_mobile-removebg-preview.png">
+                    <p>09192344890 / 09365144587</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+
+</body>
+</html>

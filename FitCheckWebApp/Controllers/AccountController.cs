@@ -194,7 +194,7 @@ namespace FitCheckWebApp.Controllers
         }
 
 
-        public IActionResult MembershipPassUser()
+        public IActionResult ManageMembershipUser()
         {
             if (!User.Identity!.IsAuthenticated)
             {
@@ -247,8 +247,8 @@ namespace FitCheckWebApp.Controllers
         public IActionResult AccountUser() => View();
         public IActionResult AboutFitcheckUser() => View();
         public IActionResult PrivacyPolicyUser() => View();
-        public IActionResult TermsConditionsUser() => View(); 
-        
+        public IActionResult TermsConditionsUser() => View();
+        public IActionResult ChangePasswordUser() => View();
 
 
     }
