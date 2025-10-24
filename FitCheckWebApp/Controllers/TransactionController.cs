@@ -77,11 +77,9 @@ namespace FitCheckWebApp.Controllers
                 return BadRequest("Cannot cancel this transaction.");
             }
 
-            // Update transaction status
             transaction.Status = TransactionStatus.Cancelled;
             TransactionManager.UpdateTransaction(transaction);
 
-            // Check for remaining active memberships
             var latestActive = TransactionManager.FindLatestActiveByAccount(accountId);
 
             var account = AccountManager.FindById(accountId);
