@@ -36,16 +36,15 @@
                 <h2 class="txt-sign-in">Sign in to your account</h2>
 
                 <div>
-                    <h5 class="txt-email">Email</h5>
-                    <input asp-for="Email" type="email" class="email-field" required />
+                    <input asp-for="Email" type="email" class="email-field" placeholder="Email" required />
                     <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
 
                 <div>
-                    <h5 class="txt-password">Password</h5>
-                    <input asp-for="Password" type="password" class="password-field" required />
+                    <input asp-for="Password" type="password" class="password-field" placeholder="Password" required />
                     <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
+
 
                 <a asp-controller="Account" asp-action="ForgotPassword" class="forgot-password">
                     <p>Forgot Password?</p>
