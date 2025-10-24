@@ -1,9 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Transactions;
 using FitCheckWebApp.Models;
+using FitCheckWebApp.ViewModels;
 using MySql.Data.MySqlClient;
 using Mysqlx.Crud;
 using Transaction = FitCheckWebApp.Models.Transaction;
+using TransactionStatus = FitCheckWebApp.Models.TransactionStatus;
+
 
 namespace FitCheckWebApp.DataAccess
 {
@@ -17,14 +20,16 @@ namespace FitCheckWebApp.DataAccess
         {
             using (var connection = new MySqlConnection(connectionString))
             {
-
                 connection.Open();
 
-                using(var cmd = connection.CreateCommand())
+                using (var cmd = connection.CreateCommand())
                 {
-                    cmd.CommandText =
-                        @"INSERT INTO `transaction` (AccountID, MembershipPlan, PaymentMethod, TransactionDate, StartDate, EndDate, Status)
-                            VALUES (@accountId, @membershipPlan, @paymentMethod, @transactionDate, @startDate, @endDate, @status)";
+                    cmd.CommandText = @"
+                        INSERT INTO `transaction` 
+                        (AccountID, MembershipPlan, PaymentMethod, TransactionDate, StartDate, EndDate, Amount, Status)
+                        VALUES 
+                        (@accountId, @membershipPlan, @paymentMethod, @transactionDate, @startDate, @endDate, @amount, @status)
+                    ";
 
                     cmd.Parameters.AddWithValue("@accountId", transaction.AccountID);
                     cmd.Parameters.AddWithValue("@membershipPlan", transaction.MembershipPlan.ToString());
@@ -32,47 +37,42 @@ namespace FitCheckWebApp.DataAccess
                     cmd.Parameters.AddWithValue("@transactionDate", transaction.TransactionDate);
                     cmd.Parameters.AddWithValue("@startDate", transaction.StartDate);
                     cmd.Parameters.AddWithValue("@endDate", transaction.EndDate);
+                    cmd.Parameters.AddWithValue("@amount", transaction.Amount); 
                     cmd.Parameters.AddWithValue("@status", transaction.Status.ToString());
-
 
                     cmd.ExecuteNonQuery();
                 }
             }
         }
 
+
         public static Transaction? FindById(int id)
         {
-
             using (var connection = new MySqlConnection(connectionString))
             {
                 connection.Open();
 
-                using( var cmd = connection.CreateCommand())
+                using (var cmd = connection.CreateCommand())
                 {
-                    cmd.CommandText =
-                    @"SELECT TransactionID, AccountID, MembershipPlan, PaymentMethod, TransactionDate, StartDate, EndDate, Status
-                      FROM Transaction
-                      WHERE TransactionID = @transactionId";
+                    cmd.CommandText = @"
+                        SELECT TransactionID, AccountID, MembershipPlan, PaymentMethod, TransactionDate, StartDate, EndDate, Amount, Status
+                        FROM Transaction
+                        WHERE TransactionID = @transactionId
+                    ";
 
                     cmd.Parameters.AddWithValue("@transactionId", id);
-
 
                     using var reader = cmd.ExecuteReader();
 
                     if (reader.Read())
                     {
-
                         string? membershipValue = reader["MembershipPlan"]?.ToString();
                         string? paymentValue = reader["PaymentMethod"]?.ToString();
                         string? statusValue = reader["Status"]?.ToString();
 
                         MembershipPlan membershipPlan;
-
-                        PaymentMethod paymentMethod; 
-
+                        PaymentMethod paymentMethod;
                         Models.TransactionStatus status;
-
-
 
                         if (!Enum.TryParse(membershipValue, out membershipPlan))
                         {
@@ -84,7 +84,7 @@ namespace FitCheckWebApp.DataAccess
                             paymentMethod = PaymentMethod.None;
                         }
 
-                        if(!Enum.TryParse(statusValue, out status))
+                        if (!Enum.TryParse(statusValue, out status))
                         {
                             status = Models.TransactionStatus.Active;
                         }
@@ -98,17 +98,16 @@ namespace FitCheckWebApp.DataAccess
                             TransactionDate = reader.GetDateTime("TransactionDate"),
                             StartDate = reader.GetDateTime("StartDate"),
                             EndDate = reader.GetDateTime("EndDate"),
+                            Amount = reader.GetDecimal("Amount"), 
                             Status = status
                         };
-
                     }
 
                     return null;
-
                 }
             }
-
         }
+
 
         public static Transaction? FindLatestByAccount(int accountId)
         {
@@ -117,11 +116,12 @@ namespace FitCheckWebApp.DataAccess
                 connection.Open();
 
                 string query = @"
-            SELECT * 
-            FROM transaction
-            WHERE AccountID = @AccountID
-            ORDER BY EndDate DESC
-            LIMIT 1;";
+                    SELECT * 
+                    FROM transaction
+                    WHERE AccountID = @AccountID
+                    ORDER BY EndDate DESC
+                    LIMIT 1;
+                ";
 
                 using (var cmd = new MySqlCommand(query, connection))
                 {
@@ -158,10 +158,10 @@ namespace FitCheckWebApp.DataAccess
             {
                 connection.Open();
                 string query = @"
-            UPDATE transaction
-            SET Status = 'Expired'
-            WHERE EndDate < NOW() AND Status != 'Expired';
-        ";
+                    UPDATE transaction
+                    SET Status = 'Expired'
+                    WHERE EndDate < NOW() AND Status != 'Expired';
+                ";
 
                 using (var cmd = new MySqlCommand(query, connection))
                 {
@@ -178,7 +178,7 @@ namespace FitCheckWebApp.DataAccess
             using var cmd = connection.CreateCommand();
 
             cmd.CommandText = @"
-                SELECT TransactionID, AccountID, MembershipPlan, PaymentMethod, TransactionDate, StartDate, EndDate, Status
+                SELECT TransactionID, AccountID, MembershipPlan, PaymentMethod, TransactionDate, StartDate, EndDate, Amount, Status
                 FROM transaction
                 WHERE AccountID = @accountId AND Status = 'Active'
                 ORDER BY EndDate DESC
@@ -216,6 +216,7 @@ namespace FitCheckWebApp.DataAccess
                     TransactionDate = reader.GetDateTime("TransactionDate"),
                     StartDate = reader.GetDateTime("StartDate"),
                     EndDate = reader.GetDateTime("EndDate"),
+                    Amount = reader.GetDecimal("Amount"), 
                     Status = status
                 };
 
@@ -225,8 +226,9 @@ namespace FitCheckWebApp.DataAccess
             return null;
         }
 
-         internal static void UpdateTransaction(Transaction transaction)
-         {
+
+        internal static void UpdateTransaction(Transaction transaction)
+        {
             using (var connection = new MySqlConnection(connectionString))
             {
                 connection.Open();
@@ -234,23 +236,24 @@ namespace FitCheckWebApp.DataAccess
                 using (var cmd = connection.CreateCommand())
                 {
                     cmd.CommandText = @"
-                    UPDATE `transaction`
-                    SET
-                        MembershipPlan = @membershipPlan,
-                        PaymentMethod = @paymentMethod,
-                        TransactionDate = @transactionDate,
-                        StartDate = @startDate,
-                        EndDate = @endDate,
-                        Status = @status
-                    WHERE TransactionID = @transactionId
-                    ";
-
+                UPDATE `transaction`
+                SET
+                    MembershipPlan = @membershipPlan,
+                    PaymentMethod = @paymentMethod,
+                    TransactionDate = @transactionDate,
+                    StartDate = @startDate,
+                    EndDate = @endDate,
+                    Amount = @amount,          
+                    Status = @status
+                WHERE TransactionID = @transactionId
+            ";
 
                     cmd.Parameters.AddWithValue("@membershipPlan", transaction.MembershipPlan.ToString());
                     cmd.Parameters.AddWithValue("@paymentMethod", transaction.PaymentMethod.ToString());
                     cmd.Parameters.AddWithValue("@transactionDate", transaction.TransactionDate);
                     cmd.Parameters.AddWithValue("@startDate", transaction.StartDate);
                     cmd.Parameters.AddWithValue("@endDate", transaction.EndDate);
+                    cmd.Parameters.AddWithValue("@amount", transaction.Amount);    
                     cmd.Parameters.AddWithValue("@status", transaction.Status.ToString());
                     cmd.Parameters.AddWithValue("@transactionId", transaction.TransactionID);
 
@@ -258,6 +261,110 @@ namespace FitCheckWebApp.DataAccess
                 }
             }
         }
+
+
+        // -------------------------
+        // COUNT ACTIVE MEMBERS BLEHH
+        // -------------------------
+
+        public static int CountActiveMembers()
+        {
+            using (var connection = new MySqlConnection(connectionString))
+            {
+                connection.Open();
+                using (var cmd = connection.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        SELECT COUNT(*) FROM transaction WHERE Status = @status";
+
+                    cmd.Parameters.AddWithValue("@status", "Active");
+
+                    var result = cmd.ExecuteScalar();
+
+                    return Convert.ToInt32(result);
+                }
+            }
+        }
+
+        // -------------------------
+        // COUNT PENDING PAYMENTS RAAAA
+        // -------------------------
+
+        public static int CountPendingPayment()
+        {
+            using (var connection = new MySqlConnection(connectionString))
+            {
+                connection.Open();
+                using (var cmd = connection.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        SELECT COUNT(*) FROM transaction WHERE Status = @status";
+
+                    cmd.Parameters.AddWithValue("@status", "Pending");
+
+                    var result = cmd.ExecuteScalar();
+
+                    return Convert.ToInt32(result);
+                }
+            }
+        }
+
+        // -------------------------
+        // COUNT PENDING PAYMENTS RAAAA
+        // -------------------------
+
+        public static List<Transaction> GetPendingTransactions()
+        {
+            var pending = new List<Transaction>();
+
+            using var connection = new MySqlConnection(connectionString);
+            connection.Open();
+
+            using var cmd = connection.CreateCommand();
+            cmd.CommandText = @"
+                SELECT t.TransactionID, t.AccountID, a.FirstName, a.LastName, 
+                       t.MembershipPlan, t.PaymentMethod, t.Amount, t.Status, t.TransactionDate, t.StartDate, t.EndDate
+                FROM transaction t
+                INNER JOIN account a ON t.AccountID = a.Id
+                WHERE t.Status = 'Pending'
+                ORDER BY t.TransactionDate DESC;
+            ";
+
+            using var reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                string? membershipValue = reader["MembershipPlan"]?.ToString();
+                string? paymentValue = reader["PaymentMethod"]?.ToString();
+                string? statusValue = reader["Status"]?.ToString();
+
+                MembershipPlan membershipPlan;
+                PaymentMethod paymentMethod;
+                TransactionStatus status;
+
+                Enum.TryParse(membershipValue, out membershipPlan);
+                Enum.TryParse(paymentValue, out paymentMethod);
+                Enum.TryParse(statusValue, out status);
+
+                pending.Add(new Transaction
+                {
+                    TransactionID = reader.GetInt32("TransactionID"),
+                    AccountID = reader.GetInt32("AccountID"),
+                    AccountName = reader["FirstName"] + " " + reader["LastName"],  
+                    MembershipPlan = membershipPlan,
+                    PaymentMethod = paymentMethod,
+                    Amount = reader.GetDecimal("Amount"),
+                    TransactionDate = reader.GetDateTime("TransactionDate"),
+                    StartDate = reader.GetDateTime("StartDate"),
+                    EndDate = reader.GetDateTime("EndDate"),
+                    Status = status
+                });
+            }
+
+            return pending;
+        }
+
+
+
 
 
 

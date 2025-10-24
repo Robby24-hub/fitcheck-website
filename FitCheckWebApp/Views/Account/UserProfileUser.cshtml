@@ -66,7 +66,87 @@
                 <button class="modal-btn btn-yes">YES, SAVE IT</button>
             </div>
         </div>
+    </div> <section class="form-section">
+            <form class="form">
+                <!-- PERSONAL INFORMATION -->
+                <h3 class="section-title">PERSONAL INFORMATION</h3>
+
+                <div class="form-grid">
+                    <input asp-for="FirstName" type="text" placeholder="First Name" class="input-field" />
+                    <input asp-for="LastName" type="text" placeholder="Last Name" class="input-field"  />
+                    <input asp-for="BirthDate" type="date" placeholder="dd/mm/yyyy" class="input-field"  />
+                    <input asp-for="Age" type="number" placeholder="Age" class="input-field" />
+                    <input asp-for="Gender" type="text" placeholder="Gender" class="input-field"/>
+                    <input asp-for="ContactNumber" type="text" placeholder="Contact Number" class="input-field" />
+                    <input asp-for="Email" type="email" placeholder="Email Address" class="input-field" />
+                </div>
+
+                <!-- EMERGENCY CONTACT -->
+                <h3 class="section-title">EMERGENCY CONTACT</h3>
+                <div class="form-grid emergency">
+                    <input asp-for="EmergencyName" type="text" placeholder="Full Name" class="input-field" />
+                    <input asp-for="EmergencyContact" type="text" placeholder="Cellphone Number" class="input-field" />
+                </div>
+
+               <!-- BUTTONS -->
+                <div class="button-group">
+                    <button type="submit" class="btn-save">Save Changes</button>
+                </div>
+            </form>
+        </section>
+    </main>
+
+
+    <!-- Confirmation Popup -->
+<div id="saveModal" class="modal">
+  <div class="modal-content">
+    <h3>Are you sure you want to make changes?</h3>
+    <div class="modal-buttons">
+      <button type="button" class="btn-yes">Yes</button>
+      <button type="button" class="btn-no">No</button>
     </div>
+  </div>
+</div>
+
+
+     <script src="https://unpkg.com/lucide@0.268.0/dist/umd/lucide.min.js"></script>
+    <script>
+        lucide.createIcons();
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const saveBtn = document.querySelector(".btn-save");
+            const modal = document.getElementById("saveModal");
+            const yesBtn = document.querySelector(".btn-yes");
+            const noBtn = document.querySelector(".btn-no");
+            const closeBtn = document.querySelector(".close-btn");
+            const form = document.querySelector(".form");
+
+            if (!saveBtn || !modal || !yesBtn || !noBtn || !form) return;
+
+
+            // Open modal
+            saveBtn.addEventListener("click", (e) => {
+                e.preventDefault();
+                modal.style.display = "flex";
+            });
+
+            // Close modal (No or X)
+            noBtn.addEventListener("click", () => modal.style.display = "none");
+
+            // Confirm save
+            yesBtn.addEventListener("click", () => {
+                modal.style.display = "none";
+                form.submit();
+            });
+
+            // Click outside to close
+            window.addEventListener("click", (e) => {
+                if (e.target === modal) modal.style.display = "none";
+            });
+        });
+    </script>
+
+
 
 
     <div class="hr-container">
