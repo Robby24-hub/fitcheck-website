@@ -16,6 +16,8 @@
 
         public string? WarningMessage { get; set; }
 
+
+        public int TransactionId { get; set; }
     }
 
 }

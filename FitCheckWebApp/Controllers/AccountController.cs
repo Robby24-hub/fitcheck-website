@@ -199,6 +199,7 @@ namespace FitCheckWebApp.Controllers
         }
 
 
+        [Authorize]
         public IActionResult ManageMembershipUser()
         {
             if (!User.Identity!.IsAuthenticated)
@@ -207,12 +208,13 @@ namespace FitCheckWebApp.Controllers
             }
 
             int accountId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
-
             var account = AccountManager.FindById(accountId);
-            var transaction = TransactionManager.FindById(accountId);
 
             if (account == null)
                 return RedirectToAction("Login", "Account");
+
+            // Fetch the latest active transaction for the account
+            var transaction = TransactionManager.FindLatestActiveByAccount(accountId);
 
             var model = new MembershipPassViewModel
             {
@@ -222,21 +224,33 @@ namespace FitCheckWebApp.Controllers
 
             if (transaction != null)
             {
-                model.MembershipPlan = account.MembershipPlan.ToString();
+                model.TransactionId = transaction.TransactionID; 
+                model.MembershipPlan = transaction.MembershipPlan.ToString();
                 model.TransactionDate = transaction.TransactionDate;
                 model.EndDate = transaction.EndDate;
                 model.Status = transaction.Status.ToString();
+
+                if (transaction.EndDate <= DateTime.Now)
+                {
+                    model.WarningMessage = "Your membership has expired. Please renew to continue access.";
+                }
+                else if ((transaction.EndDate - DateTime.Now).TotalDays <= 3)
+                {
+                    model.WarningMessage = $"Your membership will expire in {(transaction.EndDate - DateTime.Now).Days} days.";
+                }
             }
             else
             {
                 model.MembershipPlan = "N/A";
-                model.TransactionDate = DateTime.Now;
-                model.EndDate = DateTime.Now.AddMonths(1);
+                model.TransactionDate = null;
+                model.EndDate = null;
                 model.Status = "N/A";
+                model.WarningMessage = "You do not have an active membership.";
             }
 
             return View(model);
         }
+
 
         [Authorize]
         public IActionResult ClassesUser() => View();

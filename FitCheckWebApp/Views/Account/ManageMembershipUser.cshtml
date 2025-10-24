@@ -48,19 +48,19 @@
                     <div class="pass-details">
                         <p>
                             <span class="label">Name :</span>
-                            <span class="value">@Model?.FullName ?? "Unknown"</span>
+                            <span class="value">@(!string.IsNullOrEmpty(Model?.FullName) ? Model.FullName : "Unknown")</span>
                         </p>
                         <p>
                             <span class="label">Member ID :</span>
-                            <span class="value">@Model?.MemberID ?? "N/A"</span>
+                            <span class="value">@(!string.IsNullOrEmpty(Model?.MemberID) ? Model.MemberID : "N/A")</span>
                         </p>
                         <p>
                             <span class="label">Plan Type :</span>
-                            <span class="value">@Model?.MembershipPlan ?? "N/A"</span>
+                            <span class="value">@(!string.IsNullOrEmpty(Model?.MembershipPlan) ? Model.MembershipPlan : "N/A")</span>
                         </p>
                         <p>
                             <span class="label">Valid until :</span>
-                            <span class="value">@((Model?.EndDate)?.ToString("MMMM yyyy") ?? "N/A")</span>
+                            <span class="value">@((Model?.EndDate.HasValue == true) ? Model.EndDate.Value.ToString("MMMM yyyy") : "N/A")</span>
                         </p>
                     </div>
                 </div>
@@ -73,6 +73,7 @@
             </div>
         </section>
 
+
         <hr class="separator">
 
         <!-- Manage Membership Section -->
@@ -82,7 +83,8 @@
             <p>You can manage your current membership plan below.</p>
 
             <div class="manage-options">
-                <form asp-controller="Membership" asp-action="CancelMembership" method="post">
+                <form asp-controller="Transaction" asp-action="CancelMembership" method="post">
+                    <input type="hidden" name="transactionId" value="@Model.TransactionId" />
                     <button type="submit" class="manage-btn cancel">Cancel Membership</button>
                 </form>
 
