@@ -26,7 +26,7 @@
             </a>
         </nav>
     </header>
-
+	
     <main>
         <h2 class="page-title">USER PROFILE</h2>
 
@@ -34,51 +34,20 @@
             <form class="form">
                 <!-- PERSONAL INFORMATION -->
                 <h3 class="section-title">PERSONAL INFORMATION</h3>
-                <input asp-for="FirstName" type="text" class="input-field full" readonly />
-                <input asp-for="LastName" type="text" class="input-field full" readonly />
-                <input asp-for="BirthDate" type="date" class="input-field full" readonly />
-                <input asp-for="Age" type="number" class="input-field full" readonly />
-                <input asp-for="Gender" type="text" class="input-field full" readonly />
-                <input asp-for="ContactNumber" type="text" class="input-field full" readonly />
-                <input asp-for="Email" type="email" class="input-field full" readonly />
 
-                <!-- EMERGENCY CONTACT -->
-                <h3 class="section-title">EMERGENCY CONTACT</h3>
-                <input asp-for="EmergencyName" type="text" class="input-field full" readonly />
-                <input asp-for="EmergencyContact" type="text" class="input-field full" readonly />
-
-                <!-- BUTTONS -->
-                <div class="button-group">
-                    <a asp-controller="Account" asp-action="EditProfile" class="btn-save">EDIT</a>
-                    <a asp-controller="Account" asp-action="AccountUser" class="btn-cancel">CANCEL</a>
-                </div>
-            </form>
-        </section>
-    </main>
-
-    <!-- SAVE CONFIRMATION MODAL -->
-    <div id="saveModal" class="modal">
-        <div class="modal-content">
-            <h2>CONFIRM CHANGES</h2>
-            <p>Are you sure you want to save the changes to your profile?</p>
-            <div class="modal-buttons">
-                <button class="modal-btn btn-no">NO, NOT NOW</button>
-                <button class="modal-btn btn-yes">YES, SAVE IT</button>
-            </div>
-        </div>
-    </div> <section class="form-section">
-            <form class="form">
-                <!-- PERSONAL INFORMATION -->
-                <h3 class="section-title">PERSONAL INFORMATION</h3>
-
-                <div class="form-grid">
+                <div class="form-grid single-last">
                     <input asp-for="FirstName" type="text" placeholder="First Name" class="input-field" />
-                    <input asp-for="LastName" type="text" placeholder="Last Name" class="input-field"  />
-                    <input asp-for="BirthDate" type="date" placeholder="dd/mm/yyyy" class="input-field"  />
+                    <input asp-for="LastName" type="text" placeholder="Last Name" class="input-field" />
+                    <input asp-for="BirthDate" type="date" placeholder="dd/mm/yyyy" class="input-field" />
                     <input asp-for="Age" type="number" placeholder="Age" class="input-field" />
-                    <input asp-for="Gender" type="text" placeholder="Gender" class="input-field"/>
+					<select asp-for="Gender" placeholder="Gender" class="input-field">
+                        <option value="" disabled selected hidden>Gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                    </select>
                     <input asp-for="ContactNumber" type="text" placeholder="Contact Number" class="input-field" />
-                    <input asp-for="Email" type="email" placeholder="Email Address" class="input-field" />
+                    <input asp-for="Email" type="email" placeholder="Email Address" class="input-field email-field" />
                 </div>
 
                 <!-- EMERGENCY CONTACT -->
@@ -88,25 +57,52 @@
                     <input asp-for="EmergencyContact" type="text" placeholder="Cellphone Number" class="input-field" />
                 </div>
 
-               <!-- BUTTONS -->
+                <!-- BUTTONS -->
                 <div class="button-group">
-                    <button type="submit" class="btn-save">Save Changes</button>
+                    <button type="submit" class="btn-save" onclick="openVerificationPopup()">Save Changes</button>
+                    <button asp-controller="Account" asp-action="AccountUser" class="btn-cancel">Cancel</button>
                 </div>
             </form>
         </section>
     </main>
 
 
-    <!-- Confirmation Popup -->
-<div id="saveModal" class="modal">
-  <div class="modal-content">
-    <h3>Are you sure you want to make changes?</h3>
-    <div class="modal-buttons">
-      <button type="button" class="btn-yes">Yes</button>
-      <button type="button" class="btn-no">No</button>
+    <!-- Ito yung form -->
+    <!-- Email Verification Popup -->
+    <div id="emailVerificationPopup" class="popup-container">
+        <div class="popup">
+            <button class="close-btn" onclick="closePopup()">&times;</button>
+            <h2 class="popup-title">VERIFY EMAIL</h2>
+            <p class="popup-text">To change your infomations, verify your email. We sent you a 4-digit code.</p>
+
+            <div class="code-inputs">
+                <input type="text" maxlength="1" class="code-box" />
+                <input type="text" maxlength="1" class="code-box" />
+                <input type="text" maxlength="1" class="code-box" />
+                <input type="text" maxlength="1" class="code-box" />
+            </div>
+
+            <button class="btn-continue">CONTINUE</button>
+            <p class="resend-text">Didn’t get the code? <a href="#" class="resend-link">Resend</a></p>
+        </div>
     </div>
-  </div>
-</div>
+
+    <script>
+        function openVerificationPopup() {
+            document.getElementById("emailVerificationPopup").style.display = "flex";
+        }
+
+        function closePopup() {
+            document.getElementById("emailVerificationPopup").style.display = "none";
+        }
+
+        // Ensure popup never shows on reload
+        window.addEventListener('load', function () {
+            document.getElementById("emailVerificationPopup").style.display = "none";
+        });
+    </script>
+
+    <!-- Hanggang js -->
 
 
      <script src="https://unpkg.com/lucide@0.268.0/dist/umd/lucide.min.js"></script>
