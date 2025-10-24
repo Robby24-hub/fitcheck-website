@@ -364,6 +364,55 @@ namespace FitCheckWebApp.DataAccess
         }
 
 
+        public static List<Transaction> GetTransactionsByUser(int accountId)
+        {
+            var transactions = new List<Transaction>();
+
+            using var connection = new MySqlConnection(connectionString);
+            connection.Open();
+
+            using var cmd = connection.CreateCommand();
+            cmd.CommandText = @"
+                SELECT t.TransactionID, t.AccountID, t.MembershipPlan, t.PaymentMethod, 
+                       t.Amount, t.Status, t.TransactionDate, t.StartDate, t.EndDate
+                FROM transaction t
+                WHERE t.AccountID = @accountId
+                ORDER BY t.TransactionDate DESC;
+            ";
+
+            cmd.Parameters.AddWithValue("@accountId", accountId);
+
+            using var reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                string? membershipValue = reader["MembershipPlan"]?.ToString();
+                string? paymentValue = reader["PaymentMethod"]?.ToString();
+                string? statusValue = reader["Status"]?.ToString();
+
+                MembershipPlan membershipPlan;
+                PaymentMethod paymentMethod;
+                TransactionStatus status;
+
+                Enum.TryParse(membershipValue, out membershipPlan);
+                Enum.TryParse(paymentValue, out paymentMethod);
+                Enum.TryParse(statusValue, out status);
+
+                transactions.Add(new Transaction
+                {
+                    TransactionID = reader.GetInt32("TransactionID"),
+                    AccountID = reader.GetInt32("AccountID"),
+                    MembershipPlan = membershipPlan,
+                    PaymentMethod = paymentMethod,
+                    Amount = reader.GetDecimal("Amount"),
+                    TransactionDate = reader.GetDateTime("TransactionDate"),
+                    StartDate = reader.GetDateTime("StartDate"),
+                    EndDate = reader.GetDateTime("EndDate"),
+                    Status = status
+                });
+            }
+
+            return transactions;
+        }
 
 
 
