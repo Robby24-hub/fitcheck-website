@@ -1,4 +1,6 @@
-﻿@{
+﻿@model FitCheckWebApp.ViewModels.TransactionHistoryViewModel
+
+@{
     Layout = null;
 }
 
@@ -45,36 +47,15 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td class="order-number">#ORD-2024-001</td>
-                            <td>Jan 15, 2024 - 10:30 AM</td>
-                            <td><span class="plan-badge plan-fitelite">FitElite</span></td>
-                            <td class="total-amount">₱2,500.00</td>
-                        </tr>
-                        <tr>
-                            <td class="order-number">#ORD-2024-002</td>
-                            <td>Feb 20, 2024 - 2:15 PM</td>
-                            <td><span class="plan-badge plan-fitpro">FitPro</span></td>
-                            <td class="total-amount">₱3,500.00</td>
-                        </tr>
-                        <tr>
-                            <td class="order-number">#ORD-2024-003</td>
-                            <td>Mar 10, 2024 - 9:45 AM</td>
-                            <td><span class="plan-badge plan-fitbasic">FitStart</span></td>
-                            <td class="total-amount">₱1,500.00</td>
-                        </tr>
-                        <tr>
-                            <td class="order-number">#ORD-2024-004</td>
-                            <td>Apr 5, 2024 - 4:20 PM</td>
-                            <td><span class="plan-badge plan-fitelite">FitElite</span></td>
-                            <td class="total-amount">₱2,500.00</td>
-                        </tr>
-                        <tr>
-                            <td class="order-number">#ORD-2024-005</td>
-                            <td>May 18, 2024 - 11:00 AM</td>
-                            <td><span class="plan-badge plan-fitpro">FitPro</span></td>
-                            <td class="total-amount">₱3,500.00</td>
-                        </tr>
+                        @foreach (var transaction in Model.Transactions)
+                        {
+                            <tr>
+                                <td>@transaction.OrderNumber</td>
+                                <td>@transaction.TransactionDate.ToString("MMM dd, yyyy - hh:mm tt")</td>
+                                <td>@transaction.Plan</td>
+                                <td>@transaction.Amount.ToString("C")</td>
+                            </tr>
+                        }
                     </tbody>
                 </table>
             </div>

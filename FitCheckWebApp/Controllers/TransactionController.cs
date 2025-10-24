@@ -149,7 +149,34 @@ namespace FitCheckWebApp.Controllers
 
         public IActionResult UserMembership() => View();
 
-        public IActionResult TransactionHistoryUser() => View();
+
+
+        [Authorize(Roles = "user")]
+        public IActionResult TransactionHistoryUser()
+        {
+            var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userIdClaim))
+                return Unauthorized();
+
+            int userId = int.Parse(userIdClaim);
+
+            var transactions = TransactionManager.GetTransactionsByUser(userId);
+
+            // Map from Transaction -> UserTransactionViewModel
+            var model = new TransactionHistoryViewModel
+            {
+                Transactions = transactions.Select(t => new UserTransactionViewModel
+                {
+                    OrderNumber = $"#ORD-{t.TransactionID:D3}",
+                    TransactionDate = t.TransactionDate,
+                    Plan = t.MembershipPlan.ToString(),
+                    Amount = t.Amount
+                }).ToList()
+            };
+
+            return View(model);
+        }
+
 
 
 
