@@ -56,6 +56,7 @@ header {
 .navbar {
     display: flex;
     gap: 3rem;
+    align-items: center;
 }
 
     .navbar a {
@@ -68,6 +69,35 @@ header {
         .navbar a:hover {
             color: #d2f801;
         }
+
+.logout-btn {
+    position: relative;
+    padding: 0.5rem 1.2rem;
+    font-size: 1rem;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    color: #d2f801;
+    background-color: transparent;
+    border: 2px solid #d2f801;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.25s ease-in-out;
+    box-shadow: 0 0 8px rgba(210, 248, 1, 0.4);
+}
+
+    .logout-btn:hover {
+        background-color: #d2f801;
+        color: black;
+        box-shadow: 0 0 20px rgba(210, 248, 1, 0.9);
+        transform: scale(1.05);
+    }
+
+    .logout-btn:active {
+        transform: scale(0.98);
+        box-shadow: 0 0 12px rgba(210, 248, 1, 0.7);
+    }
+
+
 
 /*=====================================================================*/
 
