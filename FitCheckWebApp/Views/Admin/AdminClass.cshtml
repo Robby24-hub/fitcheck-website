@@ -11,71 +11,58 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Fitcheck</title>
-    <link rel="stylesheet" href="~/css/AdminClass.css" asp-append-version="true" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Fitcheck</title>
+  <link rel="stylesheet" href="AdminClass.css" asp-append-version="true" />
 </head>
 <body>
-    <header>
+  <header>
         <div class="brand-container">
             <img alt="logo" class="logo" src="IMAGES/LOGO.png">
             <h1 class="brand">FITCHECK</h1>
         </div>
         <nav class="navbar">
+            <a asp-controller="Account" asp-action="UserHome">Home</a>
+            <a asp-controller="Transaction" asp-action="Membership">Payment</a>
+            <a asp-controller="Account" asp-action="ClassesUser">Member</a>
+            <a asp-controller="Account" asp-action="Products">Classes</a>
+             <a asp-controller="Account" asp-action="Products">Log out</a>
+              
+          
 
-            <a asp-controller="Admin" asp-action="AdminHome">Home</a>
-            <a asp-controller="Admin" asp-action="AdminPayment">Payment</a>
-            <a asp-controller="Admin" asp-action="AdminClass">Classes</a>
-            <a asp-controller="Admin" asp-action="AdminMember">Members</a>
-
-            <form asp-controller="Account" asp-action="Logout" method="post" style="display:inline;">
-                <button type="submit" class="logout-btn">Logout</button>
-            </form>
-
-        </nav>
+        </nav>   
     </header>
-
+    
     <!-- Main -->
-    <!-- MAIN -->
-    <main>
-        <h2>WELCOME Admin,</h2>
-        <h3>CLASS OVERVIEW</h3>
 
-        <div class="add-class-btn">
-            <button class="add-class" id="openFormBtn">+ Add Class</button>
-        </div>
+<!-- MAIN -->
+  <main>
+    <h2>WELCOME Admin,</h2>
+    <h3>CLASS OVERVIEW</h3>
 
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Instructor</th>
-                        <th>Type</th>
-                        <th>Date</th>
-                        <th>Time</th>
-                        <th>Participant</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Shaira Sollano</td>
-                        <td>YOGA</td>
-                        <td>11-30-25</td>
-                        <td>10:00AM</td>
-                        <td>20</td>
-                        <td>
-                            <button class="edit">Edit</button>
-                            <button class="delete">Delete</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </main>
 
-    <!-- POPUP FORM -->
+     <div class="table-container">
+      <table aria-describedby="class-overview">
+        <thead>
+          <tr>
+            <th>Day</th>
+            <th>Instructor</th>
+            <th>Type</th>
+            <th>Time</th>
+            <th>Duration</th>
+            <th>Participant</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="classesTableBody">
+          <!-- rows rendered by JS -->
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+ <!-- POPUP FORM -->
 <div class="popup-overlay" id="popupForm">
   <div class="popup">
     <h3>CLASS DETAIL</h3>
@@ -155,138 +142,310 @@
 
 
   <!-- EDIT POPUP FORM -->
-<div class="popup-overlay" id="editForm">
-  <div class="popup">
-    <h3>EDIT CLASS DETAIL</h3>
-    <form>
-      <label>Instructor</label>
-      <select>
-        <option value="" disabled selected>Select instructor</option>
-        <option>Shaira Sollano</option>
-        <option>Michael Reyes</option>
-        <option>Angela Cruz</option>
-        <option>Rico Santos</option>
-        <option>Maria Dela Cruz</option>
-        <option>John Villanueva</option>
-        <option>Kim Bautista</option>
-      </select>
+  <div class="popup-overlay" id="editForm">
+    <div class="popup" role="dialog" aria-modal="true" aria-labelledby="editTitle">
+      <h3 id="editTitle">EDIT CLASS DETAIL</h3>
+      <form id="editClassForm">
+        <label for="editInstructor">Instructor</label>
+        <select id="editInstructor" required>
+          <option value="" disabled>Select instructor</option>
+          <option>Shaira Sollano</option>
+          <option>Michael Reyes</option>
+          <option>Angela Cruz</option>
+          <option>Rico Santos</option>
+          <option>Maria Dela Cruz</option>
+          <option>John Villanueva</option>
+          <option>Kim Bautista</option>
+        </select>
 
-      <label>Type</label>
-      <select>
-        <option value="" disabled selected>Select class type</option>
-        <option>Yoga</option>
-        <option>Zumba</option>
-        <option>Pilates</option>
-        <option>CrossFit</option>
-        <option>HIIT</option>
-        <option>Strength Training</option>
-        <option>Cardio</option>
-        <option>Dance Fitness</option>
-      </select>
+        <label for="editType">Type</label>
+        <select id="editType" required>
+          <option value="" disabled>Select class type</option>
+          <option>Yoga</option>
+          <option>Zumba</option>
+          <option>Pilates</option>
+          <option>CrossFit</option>
+          <option>HIIT</option>
+          <option>Strength Training</option>
+          <option>Cardio</option>
+          <option>Dance Fitness</option>
+        </select>
 
-      <div class="form-row">
-        <div>
-          <label>Day</label>
-      <select>
-        <option value="" disabled selected>Select</option>
-        <option>Monday</option>
-        <option>Tuesday</option>
-        <option>Wednesday</option>
-        <option>Thursday</option>
-        <option>Friday</option>
-        <option>Saturday</option>
-      </select>
+        <div class="form-row">
+          <div>
+            <label for="editDay">Day</label>
+            <select id="editDay" disabled>
+              <option value="" disabled>Select</option>
+              <option>Monday</option>
+              <option>Tuesday</option>
+              <option>Wednesday</option>
+              <option>Thursday</option>
+              <option>Friday</option>
+              <option>Saturday</option>
+            </select>
+          </div>
+          <div>
+            <label for="editTime">Time</label>
+            <input id="editTime" type="time" required>
+          </div>
+          <div>
+            <label for="editDuration">Duration</label>
+            <select id="editDuration" required>
+              <option value="" disabled>Select</option>
+              <option>30min</option>
+              <option>45min</option>
+              <option>60min</option>
+              <option>75min</option>
+              <option>80min</option>
+              <option>90min</option>
+            </select>
+          </div>
         </div>
-        <div>
-          <label>Time</label>
-          <input type="time">
-        </div>
-         <div>
-          <label>Duration</label>
-      <select>
-        <option value="" disabled selected>Select</option>
-        <option>30min</option>
-        <option>45min</option>
-        <option>60min</option>
-        <option>75min</option>
-        <option>80min</option>
-        <option>90min</option>
-      </select>
-        </div>
-      </div>
 
-      <label>Participant Limit</label>
-      <select id="editParticipantLimit" name="editParticipantLimit">
-        <option value="" disabled selected>Select limit</option>
-        <script>
-          for (let i = 1; i <= 30; i++) {
-            document.write(`<option value="${i}">${i}</option>`);
-          }
-        </script>
-      </select>
+        <label for="editParticipantLimit">Participant Limit</label>
+        <select id="editParticipantLimit" name="editParticipantLimit" required>
+          <option value="" disabled>Select limit</option>
+        </select>
 
-      <button type="submit" class="submit-btn">UPDATE CLASS</button>
-    </form>
-    <span class="close-btn" id="closeEditBtn">&times;</span>
+        <button type="submit" class="submit-btn">UPDATE CLASS</button>
+      </form>
+      <span class="close-btn" id="closeEditBtn" title="Close">&times;</span>
+    </div>
   </div>
-</div>
 
 
+   <!-- JavaScript (renders table, handles edit popup and update) -->
+  <script>
+    // Seed data: 3 placeholders per day (MONDAY to SATURDAY)
+    const classes = [
+      // Monday
+      { day: 'MONDAY', instructor: 'Shaira Sollano', type: 'Yoga', time: '10:00', duration: '90min', participants: 20 },
+      { day: 'MONDAY', instructor: 'Michael Reyes', type: 'HIIT', time: '12:00', duration: '60min', participants: 18 },
+      { day: 'MONDAY', instructor: 'Angela Cruz', type: 'Zumba', time: '18:00', duration: '45min', participants: 25 },
 
-    <!-- SCRIPT -->
-    <script>
-        const openBtn = document.getElementById('openFormBtn');
-        const closeBtn = document.getElementById('closeFormBtn');
-        const popup = document.getElementById('popupForm');
+      // Tuesday
+      { day: 'TUESDAY', instructor: 'Rico Santos', type: 'CrossFit', time: '08:00', duration: '60min', participants: 15 },
+      { day: 'TUESDAY', instructor: 'Maria Dela Cruz', type: 'Pilates', time: '11:00', duration: '45min', participants: 12 },
+      { day: 'TUESDAY', instructor: 'John Villanueva', type: 'Cardio', time: '19:00', duration: '60min', participants: 22 },
 
-        openBtn.addEventListener('click', () => {
-          popup.style.display = 'flex';
-        });
+      // Wednesday
+      { day: 'WEDNESDAY', instructor: 'Kim Bautista', type: 'Strength Training', time: '07:00', duration: '75min', participants: 14 },
+      { day: 'WEDNESDAY', instructor: 'Shaira Sollano', type: 'Yoga', time: '09:00', duration: '90min', participants: 20 },
+      { day: 'WEDNESDAY', instructor: 'Michael Reyes', type: 'HIIT', time: '17:00', duration: '60min', participants: 16 },
 
-        closeBtn.addEventListener('click', () => {
-          popup.style.display = 'none';
-        });
+      // Thursday
+      { day: 'THURSDAY', instructor: 'Angela Cruz', type: 'Dance Fitness', time: '13:00', duration: '60min', participants: 24 },
+      { day: 'THURSDAY', instructor: 'Rico Santos', type: 'CrossFit', time: '15:00', duration: '60min', participants: 10 },
+      { day: 'THURSDAY', instructor: 'Maria Dela Cruz', type: 'Pilates', time: '18:30', duration: '45min', participants: 12 },
 
-        window.addEventListener('click', (e) => {
-          if (e.target === popup) {
-            popup.style.display = 'none';
-          }
-        });
-    </script>
+      // Friday
+      { day: 'FRIDAY', instructor: 'John Villanueva', type: 'Cardio', time: '08:30', duration: '60min', participants: 18 },
+      { day: 'FRIDAY', instructor: 'Kim Bautista', type: 'Strength Training', time: '12:00', duration: '75min', participants: 13 },
+      { day: 'FRIDAY', instructor: 'Shaira Sollano', type: 'Yoga', time: '19:30', duration: '90min', participants: 20 },
 
-    <script>
-        const editButtons = document.querySelectorAll('.edit');
-        const editPopup = document.getElementById('editForm');
-        const closeEditBtn = document.getElementById('closeEditBtn');
+      // Saturday
+      { day: 'SATURDAY', instructor: 'Michael Reyes', type: 'HIIT', time: '09:00', duration: '60min', participants: 17 },
+      { day: 'SATURDAY', instructor: 'Angela Cruz', type: 'Zumba', time: '10:30', duration: '45min', participants: 26 },
+      { day: 'SATURDAY', instructor: 'Rico Santos', type: 'CrossFit', time: '16:00', duration: '60min', participants: 11 },
+    ];
 
-        // Show edit form when "Edit" is clicked
-        editButtons.forEach(button => {
-          button.addEventListener('click', () => {
-            editPopup.style.display = 'flex';
-          });
-        });
+    // DOM refs
+    const tbody = document.getElementById('classesTableBody');
+    const editFormOverlay = document.getElementById('editForm');
+    const editForm = document.getElementById('editClassForm');
+    const closeEditBtn = document.getElementById('closeEditBtn');
 
-        // Close edit form when X is clicked
-        closeEditBtn.addEventListener('click', () => {
-          editPopup.style.display = 'none';
-        });
+    const editInstructor = document.getElementById('editInstructor');
+    const editType = document.getElementById('editType');
+    const editDay = document.getElementById('editDay');
+    const editTime = document.getElementById('editTime');
+    const editDuration = document.getElementById('editDuration');
+    const editParticipantLimit = document.getElementById('editParticipantLimit');
 
-        // Close edit form when clicking outside
-        window.addEventListener('click', (e) => {
-          if (e.target === editPopup) {
-            editPopup.style.display = 'none';
-          }
-        });
-    </script>
+    let currentEditIndex = null;
+
+    // Populate participant select options (1-30)
+    function populateParticipantOptions(selectEl) {
+      selectEl.innerHTML = '<option value="" disabled>Select limit</option>';
+      for (let i = 1; i <= 30; i++) {
+        const opt = document.createElement('option');
+        opt.value = i;
+        opt.textContent = i;
+        selectEl.appendChild(opt);
+      }
+    }
+    populateParticipantOptions(editParticipantLimit);
+
+    // Render table rows from classes array
+    function renderTable() {
+      tbody.innerHTML = '';
+      classes.forEach((c, idx) => {
+        const tr = document.createElement('tr');
+
+        const tdDay = document.createElement('td');
+        tdDay.className = 'day-cell';
+        tdDay.textContent = c.day;
+        tr.appendChild(tdDay);
+
+        const tdInstructor = document.createElement('td');
+        tdInstructor.textContent = c.instructor;
+        tr.appendChild(tdInstructor);
+
+        const tdType = document.createElement('td');
+        tdType.textContent = c.type;
+        tr.appendChild(tdType);
+
+        const tdTime = document.createElement('td');
+        tdTime.className = 'time-cell';
+        // display time in hh:mmAM/PM style for table (but keep underlying in 24h when editing)
+        tdTime.textContent = formatTimeDisplay(c.time);
+        tr.appendChild(tdTime);
+
+        const tdDuration = document.createElement('td');
+        tdDuration.className = 'duration-cell';
+        tdDuration.textContent = c.duration;
+        tr.appendChild(tdDuration);
+
+        const tdParticipants = document.createElement('td');
+        tdParticipants.className = 'participant-cell';
+        tdParticipants.textContent = c.participants;
+        tr.appendChild(tdParticipants);
+
+        const tdActions = document.createElement('td');
+        const editBtn = document.createElement('button');
+        editBtn.className = 'edit';
+        editBtn.textContent = 'Edit';
+        editBtn.setAttribute('aria-label', `Edit ${c.day} ${c.type} class`);
+        editBtn.dataset.index = idx;
+        editBtn.addEventListener('click', onEditClick);
+        tdActions.appendChild(editBtn);
+        tr.appendChild(tdActions);
+
+        tbody.appendChild(tr);
+      });
+    }
+
+    // Format time for table display -> 24h input to 12-hour AM/PM
+    function formatTimeDisplay(time24) {
+      if (!time24) return '';
+      // time24 expected 'HH:MM' (24h)
+      const [hhStr, mm] = time24.split(':');
+      let hh = parseInt(hhStr, 10);
+      const ampm = hh >= 12 ? 'PM' : 'AM';
+      hh = hh % 12;
+      if (hh === 0) hh = 12;
+      return `${hh}:${mm}${ampm}`;
+    }
+
+    // Handler when Edit button clicked
+    function onEditClick(e) {
+      const idx = Number(e.currentTarget.dataset.index);
+      currentEditIndex = idx;
+      const cls = classes[idx];
+
+      // populate fields
+      editInstructor.value = cls.instructor;
+      editType.value = cls.type;
+
+      // set day - display as human readable like 'Monday'
+      // our stored days are uppercase; make first-letter capital for select
+      const dayHuman = cls.day.charAt(0) + cls.day.slice(1).toLowerCase();
+      // Ensure option exists and set value
+      Array.from(editDay.options).forEach(opt => {
+        if (opt.textContent.toLowerCase() === dayHuman.toLowerCase()) {
+          editDay.value = opt.textContent;
+        }
+      });
+
+      // set time to HH:MM (24h) for input value
+      // ensure time format is HH:MM
+      editTime.value = normalizeTimeForInput(cls.time);
+
+      editDuration.value = cls.duration;
+      editParticipantLimit.value = cls.participants;
+
+      // day must remain non-editable (disabled)
+      editDay.disabled = true;
+
+      // show overlay
+      editFormOverlay.style.display = 'flex';
+
+      // focus first input
+      setTimeout(() => editInstructor.focus(), 80);
+    }
+
+    // Normalize time values for input[type=time]
+    function normalizeTimeForInput(value) {
+      if (!value) return '';
+      // if value like '9:00' -> make '09:00'; if '19:30' keep as is
+      const parts = value.split(':');
+      if (parts.length !== 2) return value;
+      const hh = parts[0].padStart(2, '0');
+      const mm = parts[1].padStart(2, '0');
+      return `${hh}:${mm}`;
+    }
+
+    // Close overlay handlers
+    closeEditBtn.addEventListener('click', () => {
+      editFormOverlay.style.display = 'none';
+      currentEditIndex = null;
+    });
+
+    // click outside popup to close
+    window.addEventListener('click', (e) => {
+      if (e.target === editFormOverlay) {
+        editFormOverlay.style.display = 'none';
+        currentEditIndex = null;
+      }
+    });
+
+    // handle form submission (update class)
+    editForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (currentEditIndex === null) return;
+
+      // read values
+      const updated = {
+        ...classes[currentEditIndex],
+        instructor: editInstructor.value,
+        type: editType.value,
+        // day remains unchanged
+        time: editTime.value,
+        duration: editDuration.value,
+        participants: Number(editParticipantLimit.value)
+      };
+
+      // validate basic (time, instructor, type, participants)
+      if (!updated.instructor || !updated.type || !updated.time || !updated.duration || !updated.participants) {
+        alert('Please complete all required fields.');
+        return;
+      }
+
+      // apply changes
+      classes[currentEditIndex] = updated;
+
+      // re-render table
+      renderTable();
+
+      // close popup
+      editFormOverlay.style.display = 'none';
+      currentEditIndex = null;
+    });
+
+    // initialize
+    renderTable();
+  </script>
+</body>
+</html>
+    
 
 
-
-    <div class="hr-container">
+   <div class="hr-container">
         <hr>
     </div>
 
 
-    <div class="hr-container">
+  <div class="hr-container">
         <hr>
     </div>
 
