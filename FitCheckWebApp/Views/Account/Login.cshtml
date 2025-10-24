@@ -1,4 +1,4 @@
-@{
+﻿@{
     Layout = null;
 }
 @model FitCheckWebApp.ViewModels.LoginViewModel
@@ -29,21 +29,31 @@
         </nav>
     </header>
 
+
     <main>
         <h1 class="txt-welcome">WELCOME TO FITCHECK</h1>
         <form asp-controller="Account" asp-action="Login" method="post">
             <div class="form-container">
                 <h2 class="txt-sign-in">Sign in to your account</h2>
 
+                <!-- 🔴 Error message section -->
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <div class="error-message">
+                        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                        {
+                            <p>@error.ErrorMessage</p>
+                        }
+                    </div>
+                }
+
                 <div>
-                    <h5 class="txt-email">Email</h5>
-                    <input asp-for="Email" type="email" class="email-field" required />
+                    <input asp-for="Email" type="email" class="email-field" placeholder="Email" required />
                     <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
 
                 <div>
-                    <h5 class="txt-password">Password</h5>
-                    <input asp-for="Password" type="password" class="password-field" required />
+                    <input asp-for="Password" type="password" class="password-field" placeholder="Password" required />
                     <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
 
@@ -79,7 +89,7 @@
             </div>
 
             <button class="btn-continue">CONTINUE</button>
-            <p class="resend-text">Didn�t get the code? <a href="#" class="resend-link">Resend</a></p>
+            <p class="resend-text">Didn�t get the code? <a href="#" class="resend-link">Resend</a></p>
         </div>
     </div>
 
