@@ -82,17 +82,17 @@ namespace FitCheckWebApp.Controllers
         [HttpPost]
         public IActionResult Register(RegistrationViewModel model)
         {
-            if (!Helpers.Helpers.IsBirthdayValid(model.Birthday))
+            if (!Helpers.Helpers.IsBirthdayValid(model.BirthDate))
             {
-                ModelState.AddModelError("Birthday", "Birthday cannot be a future date.");
+                ModelState.AddModelError("BirthDate", "Birth date cannot be a future date.");
                 return View(model);
             }
 
-            model.Age = Helpers.Helpers.CalculateAge(model);
+            model.Age = Helpers.Helpers.CalculateAge(model.BirthDate);
 
             if (model.Age < 0)
             {
-                ModelState.AddModelError("Age", "Invalid age calculated from birthday.");
+                ModelState.AddModelError("Age", "Invalid age calculated from birth date.");
                 return View(model);
             }
 
@@ -111,13 +111,20 @@ namespace FitCheckWebApp.Controllers
                 Email = model.Email,
                 PasswordHash = HashingPassword(model.Password!),
                 FirstName = model.FirstName,
-                LastName = model.LastName
+                LastName = model.LastName,
+                BirthDate = model.BirthDate,
+                Age = model.Age,
+                Gender = model.Gender,
+                ContactNumber = model.ContactNumber,
+                EmergencyName = model.FullName,
+                EmergencyContact = model.EmergencyContactNumber
             };
 
             AccountManager.PostAccount(account);
 
             return RedirectToAction("Login");
         }
+
 
         // ===== PAGES =====
 
@@ -268,7 +275,21 @@ namespace FitCheckWebApp.Controllers
         public IActionResult PrivacyPolicyUser() => View();
         public IActionResult TermsConditionsUser() => View();
         public IActionResult ChangePasswordUser() => View();
-        public IActionResult UserProfileUser() => View();
+
+        [Authorize]
+        public IActionResult UserProfileUser()
+        {
+            var userEmail = User.FindFirst(ClaimTypes.Email)?.Value;
+            var account = AccountManager.FindByEmail(userEmail!);
+            if (account == null)
+                return RedirectToAction("Login");
+
+            account.Age = Helpers.Helpers.CalculateAge(account.BirthDate);
+
+
+
+            return View(account);
+        }
 
 
     }

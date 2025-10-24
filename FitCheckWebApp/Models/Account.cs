@@ -25,5 +25,12 @@
 
         public string? LastName { get; set; }
 
+        public DateTime? BirthDate { get; set; }
+        public int? Age { get; set; }
+        public string? Gender { get; set; }
+        public string? ContactNumber { get; set; }
+        public string? EmergencyName { get; set; }
+        public string? EmergencyContact { get; set; }
+
     }
 }
