@@ -191,6 +191,99 @@ select.input-field {
         transform: scale(1.03);
     }
 
+/*======================== MODAL ========================*/
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+}
+
+/* Modal box */
+.modal-content {
+    background: #1c1c1c;
+    border: 2px solid #d2f801;
+    border-radius: 15px;
+    padding: 2rem;
+    width: 400px;
+    text-align: center;
+    box-shadow: 0 0 25px rgba(210, 248, 1, 0.4);
+    animation: popIn 0.3s ease-out;
+}
+
+    .modal-content h2 {
+        background: linear-gradient(0deg, rgba(210, 248, 1, 1) 18%, rgba(97, 97, 97, 1) 94%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .modal-content p {
+        color: white;
+        font-size: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+/* Buttons inside modal */
+.modal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.modal-btn {
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+/* Switch design — “No” = neon green, “Yes” = gray */
+.btn-no {
+    background: linear-gradient(0deg, rgba(210, 248, 1, 1) 18%, rgba(97, 97, 97, 1) 94%);
+    color: black;
+}
+
+    .btn-no:hover {
+        box-shadow: 0 0 20px rgba(210, 248, 1, 0.7);
+        transform: scale(1.05);
+    }
+
+.btn-yes {
+    background-color: #333;
+    color: white;
+    border: 2px solid #555;
+}
+
+    .btn-yes:hover {
+        background-color: #555;
+        transform: scale(1.05);
+    }
+
+/* Smooth opening animation */
+@keyframes popIn {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
 /*===========================================*/
 
 footer {
