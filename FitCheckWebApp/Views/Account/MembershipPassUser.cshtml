@@ -46,22 +46,20 @@
                     <div class="pass-details">
                         <p>
                             <span class="label">Name :</span>
-                            <span class="value">@Model?.FullName ?? "Unknown"</span>
+                            <span class="value">@Model!.FullName</span>
                         </p>
                         <p>
                             <span class="label">Member ID :</span>
-                            <span class="value">@Model?.MemberID ?? "N/A"</span>
+                            <span class="value">@Model.MemberID</span>
                         </p>
                         <p>
                             <span class="label">Plan Type :</span>
-                            <span class="value">@Model?.MembershipPlan ?? "N/A"</span>
+                            <span class="value">@Model.MembershipPlan</span>
                         </p>
-                            
                         <p>
                             <span class="label">Valid until :</span>
-                            <span class="value">@((Model?.EndDate)?.ToString("MMMM yyyy") ?? "N/A")</span>
+                            <span class="value">@(Model?.EndDate.HasValue == true ? Model.EndDate.Value.ToString("MMMM yyyy") : "N/A")</span>
                         </p>
-
 
                     </div>
                 </div>
