@@ -1,5 +1,6 @@
 ﻿using FitCheckWebApp.Models;
 using MySql.Data.MySqlClient;
+using Mysqlx.Crud;
 
 namespace FitCheckWebApp.DataAccess
 {
@@ -157,10 +158,11 @@ namespace FitCheckWebApp.DataAccess
                 using (var cmd = connection.CreateCommand())
                 {
                     cmd.CommandText = @"
-                SELECT Id, MemberID, Username, PasswordHash, Email, Role, DateCreated, IsActive, MembershipPlan,
-                       FirstName, LastName, BirthDate, Gender, ContactNumber, EmergencyName, EmergencyContact
-                FROM account
-                WHERE Id = @id";
+                        SELECT Id, MemberID, Username, PasswordHash, Email, Role, DateCreated, IsActive, MembershipPlan,
+                        FirstName, LastName, BirthDate, Gender, ContactNumber, EmergencyName, EmergencyContact
+                        FROM account
+                        WHERE Id = @id
+                    ";
 
                     cmd.Parameters.AddWithValue("@id", id);
                     using var reader = cmd.ExecuteReader();
@@ -194,6 +196,14 @@ namespace FitCheckWebApp.DataAccess
                 }
             }
         }
+
+        
+
+
+        
+
+        
+
     }
 
 }

@@ -1,117 +1,134 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-
-    Layout = null;
-
-}
+﻿@model FitCheckWebApp.ViewModels.AdminPaymentViewModel
 
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Fitcheck</title>
 
-   <link rel="stylesheet" href="~/css/AdminPayment.css" asp-append-version="true" />
-</head>
-<body>
-  <header>
-        <div class="brand-container">
-            <img alt="logo" class="logo" src="~/images_fitcheck/fitcheckicon.png">
-            <h1 class="brand">FITCHECK</h1>
+    @*
+        For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+    *@
+    @{
+
+        Layout = null;
+
+    }
+
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <title>Fitcheck</title>
+
+       <link rel="stylesheet" href="~/css/AdminPayment.css" asp-append-version="true" />
+    </head>
+    <body>
+      <header>
+            <div class="brand-container">
+                <img alt="logo" class="logo" src="~/images_fitcheck/fitcheckicon.png">
+                <h1 class="brand">FITCHECK</h1>
+            </div>
+            <nav class="navbar">
+
+                <a asp-controller="Admin" asp-action="AdminHome">Home</a>
+                <a asp-controller="Admin" asp-action="AdminPayment">Payment</a>
+                <a asp-controller="Admin" asp-action="AdminClass">Classes</a>
+                <a asp-controller="Admin" asp-action="AdminMember">Members</a>
+
+                <form asp-controller="Account" asp-action="Logout" method="post" style="display:inline;">
+                    <button type="submit" class="logout-btn">Logout</button>
+                </form>
+
+
+            </nav>   
+        </header>
+    
+        <!-- Main -->
+
+
+          <main>
+        <h2>WELCOME Admin,</h2>
+        <h3>PENDING MEMBERSHIP</h3>
+
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Plan</th>
+                <th>Payment</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+                    <tbody>
+                        @foreach (var t in Model.PendingTransactions)
+                        {
+                            <tr>
+                                <td>@t.AccountName</td>
+                                <td>@t.MembershipPlan</td>
+                                <td>@t.Amount</td>
+                                <td>
+
+                                <form asp-controller="Admin" asp-action="ApproveMembership" method="post" style="display:inline;">
+                                    <input type="hidden" name="transactionId" value="@t.TransactionId" />
+                                    <button type="submit" class="approve">Approve</button>
+                                </form>
+
+                                <form asp-controller="Admin" asp-action="DeclineMembership" method="post" style="display:inline;">
+                                    <input type="hidden" name="transactionId" value="@t.TransactionId" />
+                                    <button type="submit" class="decline">Decline</button>
+                                </form>
+
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+
+          </table>
         </div>
-        <nav class="navbar">
-
-            <a asp-controller="Admin" asp-action="AdminHome">Home</a>
-            <a asp-controller="Admin" asp-action="AdminPayment">Payment</a>
-            <a asp-controller="Admin" asp-action="AdminClass">Classes</a>
-            <a asp-controller="Admin" asp-action="AdminMember">Members</a>
-
-            <form asp-controller="Account" asp-action="Logout" method="post" style="display:inline;">
-                <button type="submit" class="logout-btn">Logout</button>
-            </form>
-
-
-        </nav>   
-    </header>
-    
-    <!-- Main -->
-
-
-      <main>
-    <h2>WELCOME Admin,</h2>
-    <h3>PENDING MEMBERSHIP</h3>
-
-    <div class="table-container">
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Plan</th>
-            <th>Payment</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Juan Dela Cruz</td>
-            <td>FitElite</td>
-            <td>1,499</td>
-            <td>
-              <button class="approve">Approve</button>
-              <button class="decline">Decline</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </main>
+      </main>
 
     
-  <div class="hr-container">
-        <hr>
-    </div>
+      <div class="hr-container">
+            <hr>
+        </div>
 
 
-  <div class="hr-container">
-        <hr>
-    </div>
+      <div class="hr-container">
+            <hr>
+        </div>
 
-    <footer>
-        <div class="footer-container">
-            <div class="left-side-footer">
-                <div class="description-footer">
-                    <img class="fitcheck-logo-footer" src="~/images_fitcheck/fitcheckicon.png">
-                    <p>Transform your body and mind at FitCheck Gym. With state-of-the-art equipment, expert trainers, and a supportive community, we're here to help you achieve your fitness goals.</p>
+        <footer>
+            <div class="footer-container">
+                <div class="left-side-footer">
+                    <div class="description-footer">
+                        <img class="fitcheck-logo-footer" src="~/images_fitcheck/fitcheckicon.png">
+                        <p>Transform your body and mind at FitCheck Gym. With state-of-the-art equipment, expert trainers, and a supportive community, we're here to help you achieve your fitness goals.</p>
+                    </div>
+                    <div class="follow-socials-container">
+                        <h4 class="follow-us-footer">FOLLOW US</h4>
+                        <div class="social-media-container">
+                            <a target="_blank" href="https://www.facebook.com/"><img src="~/images_fitcheck/icon_fb-removebg-preview.png"></a>
+                            <a target="_blank" href="https://www.linkedin.com/"><img src="~/images_fitcheck/Icon_linkedin-removebg-preview.png"></a>
+                            <a target="_blank" href="https://www.youtube.com/"><img src="~/images_fitcheck/icon_youtube-removebg-preview.png"></a>
+                            <a target="_blank" href="https://www.instagram.com/"><img src="~/images_fitcheck/icon_instagram-removebg-preview.png"></a>
+                        </div>
+                    </div>
                 </div>
-                <div class="follow-socials-container">
-                    <h4 class="follow-us-footer">FOLLOW US</h4>
-                    <div class="social-media-container">
-                        <a target="_blank" href="https://www.facebook.com/"><img src="~/images_fitcheck/icon_fb-removebg-preview.png"></a>
-                        <a target="_blank" href="https://www.linkedin.com/"><img src="~/images_fitcheck/Icon_linkedin-removebg-preview.png"></a>
-                        <a target="_blank" href="https://www.youtube.com/"><img src="~/images_fitcheck/icon_youtube-removebg-preview.png"></a>
-                        <a target="_blank" href="https://www.instagram.com/"><img src="~/images_fitcheck/icon_instagram-removebg-preview.png"></a>
+                <div class="right-side-footer">
+                    <div class="address">
+                        <img src="~/images_fitcheck/icon_location-removebg-preview.png">
+                        <p>Street 1, Congressional Rd Caloocan City</p>
+                    </div>
+                    <div class="email-address">
+                        <img src="~/images_fitcheck/icon_email-removebg-preview.png">
+                        <p>info@fitcheckgym.com</p>
+                    </div>
+                    <div class="contact-number">
+                        <img src="~/images_fitcheck/icon_mobile-removebg-preview.png">
+                        <p>09192344890 / 09365144587</p>
                     </div>
                 </div>
             </div>
-            <div class="right-side-footer">
-                <div class="address">
-                    <img src="~/images_fitcheck/icon_location-removebg-preview.png">
-                    <p>Street 1, Congressional Rd Caloocan City</p>
-                </div>
-                <div class="email-address">
-                    <img src="~/images_fitcheck/icon_email-removebg-preview.png">
-                    <p>info@fitcheckgym.com</p>
-                </div>
-                <div class="contact-number">
-                    <img src="~/images_fitcheck/icon_mobile-removebg-preview.png">
-                    <p>09192344890 / 09365144587</p>
-                </div>
-            </div>
-        </div>
-    </footer>
-</body>
-</html>
+        </footer>
+    </body>
+    </html>
