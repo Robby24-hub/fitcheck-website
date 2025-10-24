@@ -97,11 +97,11 @@ main {
 /* FORM CONTAINER */
 .form-section {
     text-align: center;
-    padding: 3rem 2rem;
+    padding: 3rem 3rem;
     background: linear-gradient(to top, #1C1C1C, black);
     border-radius: 15px;
     box-shadow: 0 0 30px rgba(210, 248, 1, 0.15);
-    width: 400px;
+    width: 600px; /* ⬅️ Increased from 400px to 600px */
     margin-bottom: 3rem;
 }
 
@@ -127,10 +127,11 @@ main {
     background-color: #222;
     border: 2px solid #3a3a3a;
     color: white;
-    padding: 0.9rem;
+    padding: 1rem;
     border-radius: 8px;
     font-size: 1rem;
     width: 100%;
+    max-width: 100%; 
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
