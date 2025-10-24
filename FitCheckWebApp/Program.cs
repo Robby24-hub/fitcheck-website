@@ -11,6 +11,9 @@ namespace FitCheckWebApp
 
             var connectionString = builder.Configuration.GetConnectionString("LocalMySql");
 
+            builder.Services.AddHostedService<FitCheckWebApp.Services.EmailWarningService>();
+
+
             builder.Services.AddControllersWithViews();
 
             

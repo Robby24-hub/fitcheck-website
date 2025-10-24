@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using FitCheckWebApp.DataAccess;
+using FitCheckWebApp.Helpers;
 using FitCheckWebApp.Models;
 using FitCheckWebApp.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -10,6 +11,16 @@ namespace FitCheckWebApp.Controllers
     public class TransactionController : Controller
     {
         // ==== MemberShipChoice
+
+        [Authorize(Roles = "admin")]
+        public IActionResult TestWarningEmails()
+        {
+            TransactionManager.ExpireOldMemberships();
+            EmailHelper.SendMembershipExpiryWarnings();
+            return Content("Warning emails triggered manually.");
+        }
+
+
 
         [HttpGet, Authorize]
         public IActionResult PaymentMethod() => View();
@@ -25,7 +36,7 @@ namespace FitCheckWebApp.Controllers
             if (!User.Identity!.IsAuthenticated)
                 return RedirectToAction("Login", "Account");
 
-            var lastTransaction = TransactionManager.FindLatestActiveByAccount(accountId); // <— find latest, not only active
+            var lastTransaction = TransactionManager.FindLatestActiveByAccount(accountId);
             bool isRenewal = lastTransaction != null && lastTransaction.Status == TransactionStatus.Expired;
             bool isExtension = lastTransaction != null && lastTransaction.Status == TransactionStatus.Active;
 
