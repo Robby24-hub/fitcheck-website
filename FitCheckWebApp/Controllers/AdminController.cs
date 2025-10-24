@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using FitCheckWebApp.DataAccess;
 using FitCheckWebApp.Models;
 using FitCheckWebApp.ViewModels;
-using FitCheckWebApp.DataAccess;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using MySql.Data.MySqlClient;
 
 
 namespace FitCheckWebApp.Controllers
@@ -50,15 +51,30 @@ namespace FitCheckWebApp.Controllers
 
 
 
-
-
-
         [Authorize(Roles = "admin")]
         public IActionResult AdminClass() => View();
 
 
         [Authorize(Roles = "admin")]
-        public IActionResult AdminMember() => View();
+        public IActionResult AdminMember()
+        {
+            var model = new AdminMemberViewModel
+            {
+                Members = AccountManager.GetAllMembers()
+            };
+
+            return View(model);
+        }
+
+
+        [Authorize(Roles = "admin")]
+        [HttpPost]
+        public IActionResult DeleteMember(int id)
+        {
+            AccountManager.SoftDeleteMember(id);
+            return RedirectToAction("AdminMember");
+        }
+
 
 
 
