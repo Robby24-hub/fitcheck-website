@@ -11,7 +11,7 @@
 
     <link rel="stylesheet" href="~/css/LogInPage.css" asp-append-version="true">
     <link rel="icon" href="~/images_fitcheck/fitcheckicon.png" type="image/png">
-    <title>Log In | Fitcheck Gym</title>
+    <title>Log In | FitCheck Gym</title>
 </head>
 <body>
     <header>
@@ -57,8 +57,7 @@
                     <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
 
-
-                <a asp-controller="Account" asp-action="ForgotPassword" class="forgot-password">
+                <a href="#" class="forgot-password" onclick="openVerificationPopup()">
                     <p>Forgot Password?</p>
                 </a>
 
@@ -73,6 +72,43 @@
             </div>
         </form>
     </main>
+
+    <!-- Ito yung form -->
+    <!-- Email Verification Popup -->
+    <div id="emailVerificationPopup" class="popup-container">
+        <div class="popup">
+            <button class="close-btn" onclick="closePopup()">&times;</button>
+            <h2 class="popup-title">VERIFY EMAIL</h2>
+            <p class="popup-text">To log in, verify your email. We sent you a 4-digit code.</p>
+
+            <div class="code-inputs">
+                <input type="text" maxlength="1" class="code-box" />
+                <input type="text" maxlength="1" class="code-box" />
+                <input type="text" maxlength="1" class="code-box" />
+                <input type="text" maxlength="1" class="code-box" />
+            </div>
+
+            <button class="btn-continue">CONTINUE</button>
+            <p class="resend-text">Didn�t get the code? <a href="#" class="resend-link">Resend</a></p>
+        </div>
+    </div>
+
+    <script>
+        function openVerificationPopup() {
+            document.getElementById("emailVerificationPopup").style.display = "flex";
+        }
+
+        function closePopup() {
+            document.getElementById("emailVerificationPopup").style.display = "none";
+        }
+
+        // Ensure popup never shows on reload
+        window.addEventListener('load', function () {
+            document.getElementById("emailVerificationPopup").style.display = "none";
+        });
+    </script>
+
+    <!-- Hanggang js -->
 
     <div class="hr-container">
         <hr>
