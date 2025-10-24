@@ -40,23 +40,22 @@ namespace FitCheckWebApp.Helpers
 
         }
 
-        public static int CalculateAge(RegistrationViewModel model)
+        public static int CalculateAge(DateTime? birthDate)
         {
-            
-            if (!model.Birthday.HasValue)
-                return 0; 
+            if (!birthDate.HasValue)
+                return 0;
 
-            var birthDate = model.Birthday.Value.Date;
+            var date = birthDate.Value.Date;
             var today = DateTime.Today;
 
-            int age = today.Year - birthDate.Year;
-
-
-            if (birthDate > today.AddYears(-age))
+            int age = today.Year - date.Year;
+            if (date > today.AddYears(-age))
                 age--;
 
-            return age < 0 ? 0 : age; 
+            return age < 0 ? 0 : age;
         }
+
+
 
 
         public static bool IsBirthdayValid(DateTime? birthday)

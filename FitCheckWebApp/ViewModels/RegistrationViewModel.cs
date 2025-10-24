@@ -10,9 +10,10 @@ namespace FitCheckWebApp.ViewModels
         [Required(ErrorMessage = "Last name is required.")]
         public string? LastName { get; set; }
 
-        [Required(ErrorMessage = "Birthday is required.")]
+        [Required(ErrorMessage = "Birth date is required.")]
         [DataType(DataType.Date)]
-        public DateTime? Birthday { get; set; }
+        public DateTime? BirthDate { get; set; }
+
 
         [Range(1, 120, ErrorMessage = "Age must be between 1 and 120.")]
         public int Age { get; set; }

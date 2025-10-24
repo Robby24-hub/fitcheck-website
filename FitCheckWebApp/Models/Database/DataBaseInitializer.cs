@@ -46,9 +46,16 @@ namespace FitCheckWebApp.Models.Database
                             IsActive TINYINT(1) DEFAULT 1,
                             MembershipPlan ENUM('FitStart','FitElite','FitPro') DEFAULT NULL,
                             FirstName VARCHAR(50),
-                            LastName VARCHAR(50)
+                            LastName VARCHAR(50),
+                            BirthDate DATE DEFAULT NULL,
+                            Age INT DEFAULT NULL,
+                            Gender ENUM('Male','Female','Other') DEFAULT NULL,
+                            ContactNumber VARCHAR(20) DEFAULT NULL,
+                            EmergencyName VARCHAR(100) DEFAULT NULL,
+                            EmergencyContact VARCHAR(20) DEFAULT NULL
                         );";
                     tableCmd.ExecuteNonQuery();
+
 
 
                     tableCmd.CommandText = @"
