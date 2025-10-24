@@ -49,11 +49,12 @@ namespace FitCheckWebApp.DataAccess
                 using( var cmd = connection.CreateCommand())
                 {
                     cmd.CommandText =
-                        @"SELECT TransactionID, AccountID, MembershipPlan, PaymentMethod, TransactionDate, StartDate, EndDate, Status
-                            FROM Transaction
-                            WHERE AccountID = @accountId";
+                    @"SELECT TransactionID, AccountID, MembershipPlan, PaymentMethod, TransactionDate, StartDate, EndDate, Status
+                      FROM Transaction
+                      WHERE TransactionID = @transactionId";
 
-                    cmd.Parameters.AddWithValue("@accountId", id);
+                    cmd.Parameters.AddWithValue("@transactionId", id);
+
 
                     using var reader = cmd.ExecuteReader();
 

@@ -67,11 +67,10 @@
                     <p>
                         <strong>Payment Status:</strong>
                         <span class="paid">
-                            @(Model?.Status == null || Model.Status == "N/A"
-                                                        ? "N/A"
-                                                        : (Model.Status.ToLower() == "paid" ? "Paid" : "Unpaid"))
+                            @(Model?.PaymentStatus ?? "N/A")
                         </span>
                     </p>
+
 
                     <p>
                         <strong>Membership Type:</strong>

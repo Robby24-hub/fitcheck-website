@@ -29,7 +29,9 @@ namespace FitCheckWebApp.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
-            var lastTransaction = TransactionManager.FindById(accountId);
+            var lastTransaction = TransactionManager.FindLatestActiveByAccount(accountId);
+
+
             bool isRenewal = lastTransaction != null && lastTransaction.EndDate > DateTime.Now;
 
             DateTime startDate = DateTime.Now;
@@ -45,8 +47,8 @@ namespace FitCheckWebApp.Controllers
                 AccountID = accountId,
                 MembershipPlan = newtransaction.MembershipPlan,
                 PaymentMethod = newtransaction.PaymentMethod,
-                StartDate = DateTime.Now,
-                EndDate = DateTime.Now.AddMonths(1)
+                StartDate = startDate,
+                EndDate = endDate
             };
 
             TransactionManager.PostTransaction(transaction);
