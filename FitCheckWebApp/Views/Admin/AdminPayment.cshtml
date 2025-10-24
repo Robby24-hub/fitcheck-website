@@ -67,8 +67,17 @@
                                 <td>@t.MembershipPlan</td>
                                 <td>@t.Amount</td>
                                 <td>
-                                    <button class="approve">Approve</button>
-                                    <button class="decline">Decline</button>
+
+                                <form asp-controller="Admin" asp-action="ApproveMembership" method="post" style="display:inline;">
+                                    <input type="hidden" name="transactionId" value="@t.TransactionId" />
+                                    <button type="submit" class="approve">Approve</button>
+                                </form>
+
+                                <form asp-controller="Admin" asp-action="DeclineMembership" method="post" style="display:inline;">
+                                    <input type="hidden" name="transactionId" value="@t.TransactionId" />
+                                    <button type="submit" class="decline">Decline</button>
+                                </form>
+
                                 </td>
                             </tr>
                         }

@@ -24,8 +24,6 @@ namespace FitCheckWebApp.Controllers
         }
 
 
-
-
         [Authorize(Roles = "admin")]
         public IActionResult AdminPayment()
         {
@@ -60,7 +58,56 @@ namespace FitCheckWebApp.Controllers
 
 
         [Authorize(Roles = "admin")]
-        public IActionResult AdminMember() => View(); 
+        public IActionResult AdminMember() => View();
+
+
+
+
+        [HttpPost, Authorize(Roles = "admin")]
+        public IActionResult ApproveMembership(int transactionId)
+        {
+            
+            var transaction = TransactionManager.FindById(transactionId);
+            if (transaction == null)
+                return NotFound();
+
+            
+            transaction.Status = TransactionStatus.Active;
+
+            
+            transaction.StartDate = DateTime.Now;
+            transaction.EndDate = transaction.StartDate.AddMonths(1);
+            transaction.TransactionDate = DateTime.Now;
+
+            
+            TransactionManager.UpdateTransaction(transaction);
+
+            
+            var account = AccountManager.FindById(transaction.AccountID);
+            if (account != null)
+            {
+                account.MembershipPlan = transaction.MembershipPlan;
+                if (string.IsNullOrEmpty(account.MemberID))
+                    account.MemberID = Helpers.Helpers.MemberIdGenerator();
+                AccountManager.UpdateAccount(account);
+            }
+
+            return RedirectToAction("AdminPayment");
+        }
+
+        [HttpPost, Authorize(Roles = "admin")]
+        public IActionResult DeclineMembership(int transactionId)
+        {
+            var transaction = TransactionManager.FindById(transactionId);
+            if (transaction == null)
+                return NotFound();
+
+            
+            transaction.Status = TransactionStatus.Declined;
+            TransactionManager.UpdateTransaction(transaction);
+
+            return RedirectToAction("AdminPayment");
+        }
 
     }
 }

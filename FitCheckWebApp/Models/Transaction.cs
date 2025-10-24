@@ -40,7 +40,8 @@
             Active,
             Expired,
             Cancelled,
-            Pending
-        }
+            Pending,
+            Declined
+    }
 
 }

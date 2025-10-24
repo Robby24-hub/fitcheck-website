@@ -68,7 +68,7 @@ namespace FitCheckWebApp.Models.Database
                             StartDate DATETIME NOT NULL,
                             EndDate DATETIME NOT NULL,
                             Amount DECIMAL(10,2) NOT NULL,
-                            Status ENUM('Active','Expired','Cancelled', 'Pending') DEFAULT 'Active',
+                            Status ENUM('Active','Expired','Cancelled', 'Pending', 'Declined') DEFAULT 'Active',
                             FOREIGN KEY (AccountID) REFERENCES Account(Id)
                         );";
                     tableCmd.ExecuteNonQuery();
