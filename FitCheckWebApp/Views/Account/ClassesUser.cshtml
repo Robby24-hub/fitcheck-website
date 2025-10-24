@@ -251,66 +251,106 @@
 </div>
 
 
-   <script>
-    const classParticipants = {
-        "MORNING YOGA": 10,
-        "ZUMBA DANCE": 24,
-        "STRENGTH & ENDURANCE TRAINING": 8,
-        "PILATES": 15,
-        "BOXING FUNDAMENTALS": 12,
-        "CROSSFIT TRAINING": 9,
-        "HIIT BOOTCAMP": 15,
-        "BASICS OF MUAY THAI": 17,
-        "HYPERTROPHY LESSON": 19
-    };
+  <script>
+document.addEventListener('DOMContentLoaded', () => {
+  // simulated participant counts (replace with server values)
+  const classParticipants = {
+    "MORNING YOGA": 10,
+    "ZUMBA DANCE": 24,
+    "STRENGTH & ENDURANCE TRAINING": 8,
+    "PILATES": 15,
+    "BOXING FUNDAMENTALS": 12,
+    "CROSSFIT TRAINING": 9,
+    "HIIT BOOTCAMP": 15,
+    "BASICS OF MUAY THAI": 17,
+    "HYPERTROPHY LESSON": 19
+  };
 
-    const modal = document.getElementById('thankYouModal');
-    const closeBtn = document.querySelector('.close-btn');
-    const okBtn = document.getElementById('okButton');
+  const modal = document.getElementById('thankYouModal');
+  const closeBtn = document.querySelector('#thankYouModal .close-btn'); // scope to modal
+  const okBtn = document.getElementById('okButton'); // may be null if not present
 
-    document.querySelectorAll('.class-card').forEach(card => {
-        const className = card.querySelector('.class-name').textContent.trim();
-        const durationText = card.querySelector('.class-duration').textContent;
-        const maxMatch = durationText.match(/Max\s+(\d+)/);
-        const joinBtn = card.querySelector('.join-btn');
+  // safe handlers for modal (only attach if elements exist)
+  if (closeBtn) closeBtn.addEventListener('click', () => modal.style.display = 'none');
+  if (okBtn) okBtn.addEventListener('click', () => modal.style.display = 'none');
+  window.addEventListener('click', (e) => { if (e.target === modal) modal.style.display = 'none'; });
 
-        if (maxMatch) {
-            const maxLimit = parseInt(maxMatch[1]);
-            const currentParticipants = classParticipants[className] || 0;
+  document.querySelectorAll('.class-card').forEach(card => {
+    const classNameEl = card.querySelector('.class-name');
+    const durationEl = card.querySelector('.class-duration');
+    const joinBtn = card.querySelector('.join-btn');
 
-            // Disable button if full
-            if (currentParticipants >= maxLimit) {
-                joinBtn.disabled = true;
-                joinBtn.textContent = "FULL";
-                joinBtn.style.backgroundColor = "#555";
-                joinBtn.style.color = "#999";
-                joinBtn.style.cursor = "not-allowed";
-            } else {
-                // Show modal when joining
-                joinBtn.addEventListener("click", () => {
-                    modal.style.display = "flex";
-                    classParticipants[className]++;
-                    if (classParticipants[className] >= maxLimit) {
-                        joinBtn.disabled = true;
-                        joinBtn.textContent = "FULL";
-                        joinBtn.style.backgroundColor = "#555";
-                        joinBtn.style.color = "#999";
-                        joinBtn.style.cursor = "not-allowed";
-                    }
-                });
-            }
+    if (!classNameEl || !durationEl || !joinBtn) return;
+
+    const className = classNameEl.textContent.trim();
+    const durationText = durationEl.textContent;
+    const maxMatch = durationText.match(/Max\s+(\d+)/i);
+    const currentParticipants = classParticipants[className] || 0;
+
+    if (maxMatch) {
+      const maxLimit = parseInt(maxMatch[1], 10);
+
+      // initial full check
+      if (currentParticipants >= maxLimit) {
+        joinBtn.disabled = true;
+        joinBtn.textContent = "FULL";
+        joinBtn.style.backgroundColor = "#555";
+        joinBtn.style.color = "#999";
+        joinBtn.style.cursor = "not-allowed";
+        return;
+      }
+
+      // Click handler
+      joinBtn.addEventListener('click', async (e) => {
+        // prevent double-click race locally
+        if (joinBtn.disabled) return;
+
+        // Immediately update UI
+        joinBtn.disabled = true;
+        joinBtn.textContent = "JOINED";
+        joinBtn.style.backgroundColor = "#555";
+        joinBtn.style.color = "#999";
+        joinBtn.style.cursor = "not-allowed";
+
+        // show the modal
+        if (modal) modal.style.display = "flex";
+
+        // increment client-side counter
+        classParticipants[className] = (classParticipants[className] || 0) + 1;
+
+        // if reached max after this join, show FULL (optional; JOINED -> FULL)
+        if (classParticipants[className] >= maxLimit) {
+          joinBtn.textContent = "FULL";
         }
-    });
 
-    // Close modal
-    closeBtn.onclick = () => modal.style.display = "none";
-    okBtn.onclick = () => modal.style.display = "none";
-    window.onclick = (e) => {
-        if (e.target === modal) modal.style.display = "none";
-    };
+        // OPTIONAL: send join to server (uncomment and edit URL/controller)
+        /*
+        try {
+          const resp = await fetch('/Account/JoinClass', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ className: className })
+          });
+
+          if (!resp.ok) {
+            // server rejected (maybe full or already joined), revert UI or show error
+            const text = await resp.text();
+            alert(text || 'Failed to join (server).');
+
+            // revert button if you want:
+            // joinBtn.disabled = false;
+            // joinBtn.textContent = "JOIN";
+            // joinBtn.style.cursor = "pointer";
+          }
+        } catch (err) {
+          console.error('Join request error', err);
+        }
+        */
+      });
+    }
+  });
+});
 </script>
-
-
 
 
 
