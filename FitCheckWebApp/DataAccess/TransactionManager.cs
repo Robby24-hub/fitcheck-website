@@ -110,6 +110,48 @@ namespace FitCheckWebApp.DataAccess
 
         }
 
+        public static Transaction? FindLatestByAccount(int accountId)
+        {
+            using (var connection = new MySqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string query = @"
+            SELECT * 
+            FROM transaction
+            WHERE AccountID = @AccountID
+            ORDER BY EndDate DESC
+            LIMIT 1;";
+
+                using (var cmd = new MySqlCommand(query, connection))
+                {
+                    cmd.Parameters.AddWithValue("@AccountID", accountId);
+
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            return new Transaction
+                            {
+                                TransactionID = reader.GetInt32("TransactionID"),
+                                AccountID = reader.GetInt32("AccountID"),
+                                MembershipPlan = Enum.Parse<FitCheckWebApp.Models.MembershipPlan>(reader.GetString("MembershipPlan")),
+                                PaymentMethod = Enum.Parse<FitCheckWebApp.Models.PaymentMethod>(reader.GetString("PaymentMethod")),
+                                StartDate = reader.GetDateTime("StartDate"),
+                                EndDate = reader.GetDateTime("EndDate"),
+                                TransactionDate = reader.GetDateTime("TransactionDate"),
+                                Status = Enum.Parse<FitCheckWebApp.Models.TransactionStatus>(reader.GetString("Status"))
+                            };
+                        }
+                    }
+                }
+            }
+
+            return null;
+        }
+
+
+
         public static void ExpireOldMemberships()
         {
             using (var connection = new MySqlConnection(connectionString))

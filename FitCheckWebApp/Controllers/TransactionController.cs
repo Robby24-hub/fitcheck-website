@@ -25,12 +25,23 @@ namespace FitCheckWebApp.Controllers
             if (!User.Identity!.IsAuthenticated)
                 return RedirectToAction("Login", "Account");
 
-            var lastTransaction = TransactionManager.FindLatestActiveByAccount(accountId);
-            bool isRenewal = lastTransaction != null && lastTransaction.EndDate > DateTime.Now;
+            var lastTransaction = TransactionManager.FindLatestActiveByAccount(accountId); // <— find latest, not only active
+            bool isRenewal = lastTransaction != null && lastTransaction.Status == TransactionStatus.Expired;
+            bool isExtension = lastTransaction != null && lastTransaction.Status == TransactionStatus.Active;
 
-            DateTime startDate = isRenewal ? lastTransaction!.EndDate.AddDays(1) : DateTime.Now;
+            DateTime startDate;
+            if (isExtension)
+            {
+                // Extend active membership by 1 month
+                startDate = lastTransaction.EndDate.AddDays(1);
+            }
+            else
+            {
+                // Start new or renew expired membership today
+                startDate = DateTime.Now;
+            }
+
             DateTime endDate = startDate.AddMonths(1);
-
 
             var transaction = new Transaction
             {
@@ -40,16 +51,14 @@ namespace FitCheckWebApp.Controllers
                 StartDate = startDate,
                 EndDate = endDate,
                 TransactionDate = DateTime.Now,
-                Status = TransactionStatus.Active 
+                Status = TransactionStatus.Active
             };
-
 
             TransactionManager.PostTransaction(transaction);
 
             var account = AccountManager.FindById(accountId);
             if (account != null)
             {
-
                 if (string.IsNullOrEmpty(account.MemberID))
                 {
                     account.MemberID = Helpers.Helpers.MemberIdGenerator();
@@ -61,6 +70,7 @@ namespace FitCheckWebApp.Controllers
 
             return RedirectToAction("UserMembership");
         }
+
 
 
 
