@@ -46,15 +46,15 @@
                     <div class="pass-details">
                         <p>
                             <span class="label">Name :</span>
-                            <span class="value">@Model?.FullName ?? "Unknown"</span>
+                            <span class="value">@Model?.FullName </span>
                         </p>
                         <p>
                             <span class="label">Member ID :</span>
-                            <span class="value">@Model?.MemberID ?? "N/A"</span>
+                            <span class="value">@Model?.MemberID "N/A"</span>
                         </p>
                         <p>
                             <span class="label">Plan Type :</span>
-                            <span class="value">@Model?.MembershipPlan ?? "N/A"</span>
+                            <span class="value">@Model?.MembershipPlan "N/A"</span>
                         </p>
                             
                         <p>
@@ -73,6 +73,82 @@
         <div class="btn-container">
             <form><button class="print-btn">Print</button></form>
         </div>
+
+        <!-- ===== MODALS SECTION ===== -->
+        <!-- Cancel Membership Modal -->
+        <div id="cancelModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Cancel Membership</h2>
+                <p>Are you sure you want to cancel your current gym membership?</p>
+                <div class="warning">⚠️ Once cancelled, you’ll lose access to gym facilities and online services.</div>
+                <div class="modal-actions">
+                    <button class="btn confirm" id="confirmCancel">Yes, Cancel</button>
+                    <button class="btn decline" id="closeCancel">No, Keep Plan</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Renew Membership Modal -->
+        <div id="renewModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Renew Membership</h2>
+                <p>Would you like to renew your current membership plan for another cycle?</p>
+                <div class="info">💪 Enjoy continued access to all FitCheck Gym services and perks!</div>
+                <div class="modal-actions">
+                    <button class="btn confirm" id="confirmRenew">Yes, Renew</button>
+                    <button class="btn decline" id="closeRenew">No, Later</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Upgrade Plan Modal -->
+        <div id="upgradeModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Upgrade Plan</h2>
+                <p>Want to upgrade your plan to access premium equipment and personal training?</p>
+                <div class="info">🚀 Choose from exclusive membership tiers for enhanced benefits.</div>
+                <div class="modal-actions">
+                    <button class="btn confirm" id="confirmUpgrade">Yes, Upgrade</button>
+                    <button class="btn decline" id="closeUpgrade">No, Stay Current</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== JAVASCRIPT ===== -->
+        <script>
+            // --- Helper Function ---
+            function setupModal(buttonClass, modalId, closeBtns) {
+              const openBtn = document.querySelector(buttonClass);
+              const modal = document.getElementById(modalId);
+              const closeX = modal.querySelector(".close");
+              const decline = document.getElementById(closeBtns);
+
+              openBtn.addEventListener("click", function (e) {
+                e.preventDefault();
+                modal.style.display = "flex";
+              });
+
+              closeX.onclick = function () { modal.style.display = "none"; };
+              decline.onclick = function () { modal.style.display = "none"; };
+              window.onclick = function (event) {
+                if (event.target === modal) modal.style.display = "none";
+              };
+            }
+
+            // Initialize Modals
+            setupModal(".manage-btn.cancel", "cancelModal", "closeCancel");
+            setupModal(".manage-btn.renew", "renewModal", "closeRenew");
+            setupModal(".manage-btn.upgrade", "upgradeModal", "closeUpgrade");
+
+            // Actions
+            document.getElementById("confirmCancel").onclick = () => alert("Your membership has been cancelled.");
+            document.getElementById("confirmRenew").onclick = () => alert("Membership renewed successfully!");
+            document.getElementById("confirmUpgrade").onclick = () => alert("Redirecting to upgrade options...");
+        </script>
+
 
         
     </main>

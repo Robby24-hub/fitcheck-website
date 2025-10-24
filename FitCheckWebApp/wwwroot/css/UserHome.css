@@ -69,6 +69,20 @@ header {
             color: #d2f801;
         }
 
+.logout-btn {
+    background: transparent;
+    border: 2px solid #d2f801; /* bright neon green outline */
+    color: #d2f801;
+    padding: 6px 14px;
+    border-radius: 6px;
+    
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-left: 10px;
+    letter-spacing: 0.5px;
+}
+
 /*=====================================================================*/
 
 main {

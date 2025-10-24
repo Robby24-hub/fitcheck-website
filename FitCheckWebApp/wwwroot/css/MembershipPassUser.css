@@ -367,3 +367,134 @@ footer .right-side-footer {
         width: 25px;
         height: auto;
     }
+
+/* ===================== MODALS ===================== */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 999;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+    background: #1e1e1e;
+    padding: 30px;
+    border-radius: 12px;
+    width: 400px;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(210, 248, 1, 0.4);
+    position: relative;
+    animation: slideDown 0.3s ease;
+}
+
+    .modal-content h2 {
+        color: #d2f801;
+        margin-bottom: 15px;
+        font-size: 1.5rem;
+    }
+
+    .modal-content p {
+        color: #ddd;
+        margin-bottom: 10px;
+        font-size: 0.95rem;
+    }
+
+.warning {
+    background: rgba(255, 59, 59, 0.1);
+    border: 1px solid #ff3b3b;
+    color: #ffb3b3;
+    padding: 10px;
+    border-radius: 8px;
+    margin: 15px 0;
+    font-size: 0.9rem;
+}
+
+.info {
+    background: rgba(210, 248, 1, 0.1);
+    border: 1px solid #d2f801;
+    color: #d2f801;
+    padding: 10px;
+    border-radius: 8px;
+    margin: 15px 0;
+    font-size: 0.9rem;
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    color: #aaa;
+    font-size: 22px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+    .close:hover {
+        color: #fff;
+    }
+
+.modal-actions {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: 0.3s;
+    font-weight: bold;
+}
+
+    .btn.confirm {
+        background: #d2f801;
+        color: #1a1a1a;
+    }
+
+        .btn.confirm:hover {
+            background: #e5ff4d;
+            box-shadow: 0 0 10px rgba(210, 248, 1, 0.5);
+        }
+
+    .btn.decline {
+        background: #333;
+        color: #fff;
+        border: 1px solid #555;
+    }
+
+        .btn.decline:hover {
+            background: #444;
+        }
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-30px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+

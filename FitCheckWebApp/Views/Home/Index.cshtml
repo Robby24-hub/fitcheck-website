@@ -1,4 +1,4 @@
-@{
+﻿@{
     Layout = null;
 }
 
@@ -23,6 +23,11 @@
             <h1 class="brand">FITCHECK</h1>
         </div>
 
+        <!-- Hamburger Button -->
+        <div class="menu-toggle" id="menu-toggle">
+            ☰
+        </div>
+
         <nav class="navbar">
             <a asp-controller="Home" asp-action="Index">Home</a>
             <a asp-controller="Transaction" asp-action="Membership">Membership</a>
@@ -40,7 +45,9 @@
                     <h1><span class="body">BODY</span> <span class="shape">SHAPE</span></h1>
                 </div>
                 <p>WITH THE WIDEST RANGE OF CARDIO, STRENGTH AND GROUP TRAINING EQUIPMENT IN THE FITNESS INDUSTRY, OUR MISSION IS TO SOLUTIONS</p>
-                <button>START NOW</button>
+                <button>
+                    <a asp-controller="Account" asp-action="Register" >START NOW</a>
+                </button>
             </div>
         </section>
 
@@ -56,13 +63,13 @@
                 <img class="grid-item-image" src="~/images_fitcheck/imageitem2.jpg" alt="imageitem2">
                 <div class="grid-item-text">
                     <h3>24/7 GYM ACCESS</h3>
-                    <p>Workout on your schedule�our gym is open 24/7 so you can train anytime, day or night.</p>
+                    <p>Workout on your schedule—our gym is open 24/7 so you can train anytime, day or night.</p>
                 </div>
 
                 <img class="grid-item-image" src="~/images_fitcheck/imageitem3.jpg" alt="imageitem3">
                 <div class="grid-item-text">
                     <h3>GROUP FITNESS CLASSES</h3>
-                    <p>HIIT, Yoga, Zumba, Spin & more�energizing classes for every goal, from strength and flexibility to fun group workouts.</p>
+                    <p>HIIT, Yoga, Zumba, Spin & more—energizing classes for every goal, from strength and flexibility to fun group workouts.</p>
                 </div>
             </div>
         </section>
@@ -139,5 +146,16 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        const menuToggle = document.getElementById("menu-toggle");
+        const navbar = document.getElementById("navbar");
+
+        menuToggle.addEventListener("click", () => {
+          navbar.classList.toggle("show");
+        });
+    </script>
+
+
 </body>
 </html>
