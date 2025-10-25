@@ -244,7 +244,11 @@
                     }
                 </select>
 
-                <button type="submit" class="submit-btn">UPDATE CLASS</button>
+                <div class="button-row">
+                    <button type="submit" class="submit-btn">UPDATE CLASS</button>
+                    <button type="button" class="delete-btn" onclick="deleteClass()">DELETE CLASS</button>
+                </div>
+
             </form>
             <span class="close-btn" id="closeEditBtn">&times;</span>
         </div>
@@ -334,6 +338,35 @@
         }
 
     </script>
+
+    <script>
+        function deleteClass() {
+            const id = document.getElementById('editId').value;
+            if (!id) {
+                alert("Error: No class selected to delete.");
+                return;
+            }
+
+            if (confirm("Are you sure you want to delete this class? This action cannot be undone.")) {
+                fetch(`/Admin/DeleteClass/${id}`, {
+                    method: "POST"
+                })
+                .then(response => {
+                    if (response.ok) {
+                        alert("Class deleted successfully!");
+                        location.reload(); // refresh table
+                    } else {
+                        alert("Failed to delete class.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    alert("An error occurred while deleting the class.");
+                });
+            }
+        }
+    </script>
+
 
 
 
