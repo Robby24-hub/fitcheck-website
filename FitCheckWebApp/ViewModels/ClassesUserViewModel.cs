@@ -7,6 +7,8 @@ namespace FitCheckWebApp.ViewModels
         public Dictionary<DayOfWeekClass, List<ClassDisplayViewModel>> ClassesByDay { get; set; } = new();
         public bool HasActiveMembership { get; set; }
         public string? MembershipPlan { get; set; }
+
+        public string TrainerName { get; set; } = string.Empty;
     }
 
     public class ClassDisplayViewModel
