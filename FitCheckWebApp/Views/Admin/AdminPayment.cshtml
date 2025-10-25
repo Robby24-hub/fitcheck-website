@@ -1,10 +1,7 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model FitCheckWebApp.ViewModels.AdminPaymentViewModel
+
 @{
-
     Layout = null;
-
 }
 
 <!DOCTYPE html>
@@ -14,7 +11,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" href="~/images_fitcheck/fitcheckicon.png" />
     <title>Fitcheck</title>
-
     <link rel="stylesheet" href="~/css/AdminPayment.css" asp-append-version="true" />
 </head>
 <body>
@@ -24,7 +20,6 @@
             <h1 class="brand">FITCHECK</h1>
         </div>
         <nav class="navbar">
-
             <a asp-controller="Admin" asp-action="AdminHome">Home</a>
             <a asp-controller="Admin" asp-action="AdminPayment">Payment</a>
             <a asp-controller="Admin" asp-action="AdminClass">Classes</a>
@@ -56,15 +51,24 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Juan Dela Cruz</td>
-                        <td>FitElite</td>
-                        <td>1,499</td>
-                        <td>
-                            <button class="approve">Approve</button>
-                            <button class="decline">Decline</button>
-                        </td>
-                    </tr>
+                    @foreach (var member in Model.PendingMemberships)
+                    {
+                        <tr>
+                            <td>@member.Name</td>
+                            <td>@member.Plan</td>
+                            <td>@member.Payment.ToString("N0")</td>
+                            <td>
+                                <form asp-action="ApproveMembership" method="post" style="display:inline;">
+                                    <input type="hidden" name="id" value="@member.Id" />
+                                    <button class="approve">Approve</button>
+                                </form>
+                                <form asp-action="DeclineMembership" method="post" style="display:inline;">
+                                    <input type="hidden" name="id" value="@member.Id" />
+                                    <button class="decline">Decline</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
                 </tbody>
             </table>
         </div>

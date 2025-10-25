@@ -260,9 +260,134 @@ namespace FitCheckWebApp.Controllers
 
 
         [Authorize]
-        public IActionResult ClassesUser() => View();
+        public IActionResult ClassesUser()
+        {
+            var userId = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? "0");
+            var currentUser = AccountManager.FindById(userId);
+
+            var allClasses = ClassManager.GetAllClasses();
+
+            // Group classes by day
+            var classesByDay = allClasses
+                .GroupBy(c => c.Day)
+                .ToDictionary(
+                    g => g.Key,
+                    g => g.Select(c => new ClassDisplayViewModel
+                    {
+                        Id = c.Id,
+                        Type = FormatClassType(c.Type),
+                        InstructorName = c.InstructorName ?? "Unassigned",
+                        Time = c.Time,
+                        DurationMinutes = c.DurationMinutes,
+                        ParticipantLimit = c.ParticipantLimit,
+                        ParticipantsCount = c.ParticipantsCount
+                    })
+                    .OrderBy(c => c.Time)
+                    .ToList()
+                );
+
+            // Check if user has active membership
+            bool hasActiveMembership = false;
+            string? membershipPlan = null;
+
+            if (currentUser != null)
+            {
+                // Check if user has a membership plan
+                hasActiveMembership = currentUser.MembershipPlan != null && currentUser.MembershipPlan != MembershipPlan.None;
+                membershipPlan = currentUser.MembershipPlan.ToString();
+
+                // Optionally: Also check if their membership transaction is active and not expired
+                var activeTransaction = TransactionManager.GetActiveTransactionByAccountId(userId);
+                if (activeTransaction == null || activeTransaction.Status != TransactionStatus.Active || activeTransaction.EndDate < DateTime.Now)
+                {
+                    hasActiveMembership = false;
+                }
+            }
+
+            var model = new ClassesUserViewModel
+            {
+                ClassesByDay = classesByDay,
+                HasActiveMembership = hasActiveMembership,
+                MembershipPlan = membershipPlan
+            };
+
+            return View(model);
+        }
 
 
+        [HttpPost]
+        [Authorize]
+        public IActionResult JoinClass([FromBody] JoinClassRequest request)
+        {
+            try
+            {
+                var userId = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? "0");
+                var currentUser = AccountManager.FindById(userId);
+
+                // Check if user has active membership
+                if (currentUser == null || currentUser.MembershipPlan == null)
+                {
+                    return Json(new { success = false, message = "You need an active membership to join classes. Please purchase a membership first." });
+                }
+
+                // Check if membership is active and not expired
+                var activeTransaction = TransactionManager.GetActiveTransactionByAccountId(userId);
+                if (activeTransaction == null || activeTransaction.Status != TransactionStatus.Active || activeTransaction.EndDate < DateTime.Now)
+                {
+                    return Json(new { success = false, message = "Your membership has expired. Please renew your membership to join classes." });
+                }
+
+                // Check if class exists
+                var classToJoin = ClassManager.GetClassById(request.ClassId);
+
+                if (classToJoin == null)
+                    return Json(new { success = false, message = "Class not found" });
+
+                // Check if already full
+                if (classToJoin.ParticipantsCount >= classToJoin.ParticipantLimit)
+                    return Json(new { success = false, message = "Class is full" });
+
+                // Try to increment participant count
+                bool joined = ClassManager.IncrementParticipantCount(request.ClassId);
+
+                if (joined)
+                {
+                    // Get updated class info
+                    var updatedClass = ClassManager.GetClassById(request.ClassId);
+                    bool isFull = updatedClass != null && updatedClass.ParticipantsCount >= updatedClass.ParticipantLimit;
+
+                    return Json(new
+                    {
+                        success = true,
+                        message = "Successfully joined the class!",
+                        isFull = isFull,
+                        participantsCount = updatedClass?.ParticipantsCount ?? 0,
+                        participantLimit = updatedClass?.ParticipantLimit ?? 0
+                    });
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Class is full or no longer available" });
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error joining class: {ex.Message}");
+                return Json(new { success = false, message = "An error occurred while joining the class" });
+            }
+        }
+
+        // Add this class at the bottom of your controller or in a separate file
+        public class JoinClassRequest
+        {
+            public int ClassId { get; set; }
+        }
+
+
+        private string FormatClassType(ClassType type)
+        {
+            return System.Text.RegularExpressions.Regex.Replace(type.ToString(), "([a-z])([A-Z])", "$1 $2");
+        }
 
 
         public IActionResult AboutUs() => View();

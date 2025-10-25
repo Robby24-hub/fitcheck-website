@@ -1,22 +1,15 @@
 ﻿namespace FitCheckWebApp.ViewModels
 {
-
     public class AdminPaymentViewModel
     {
-        public List<PendingTransactionViewModel> PendingTransactions { get; set; } = new List<PendingTransactionViewModel>();
+        public List<PendingMembershipViewModel> PendingMemberships { get; set; } = new List<PendingMembershipViewModel>();
     }
 
-    public class PendingTransactionViewModel
+    public class PendingMembershipViewModel
     {
-        public int TransactionId { get; set; }          
-        public string AccountName { get; set; } = string.Empty;
-        public string MembershipPlan { get; set; } = string.Empty;
-        public decimal Amount { get; set; }
-        public string PaymentMethod { get; set; } = string.Empty;
-        public DateTime TransactionDate { get; set; }
-
-
+        public int Id { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string Plan { get; set; } = string.Empty;
+        public decimal Payment { get; set; }
     }
-
-    
 }
