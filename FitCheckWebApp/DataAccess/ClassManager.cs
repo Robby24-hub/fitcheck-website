@@ -285,6 +285,22 @@ namespace FitCheckWebApp.DataAccess
             return Convert.ToInt32(cmd.ExecuteScalar());
         }
 
+        public static bool DeleteClass(int classId)
+        {
+            using var connection = new MySqlConnection(connectionString);
+            connection.Open();
+
+            using var cmd = connection.CreateCommand();
+            cmd.CommandText = "DELETE FROM Class WHERE Id = @Id";
+            cmd.Parameters.AddWithValue("@Id", classId);
+
+            int rowsAffected = cmd.ExecuteNonQuery();
+
+
+            return rowsAffected > 0;
+        }
+
+
         public static List<Class> GetAllClassesForTrainer(int trainerId)
         {
             
