@@ -68,12 +68,36 @@
                 <div class="pass-footer"></div>
             </div>
 
+            <div class="pass-card">
+                <div class="pass-header">
+                    <img src="~/images_fitcheck/fitcheckicon.png" alt="FitCheck Logo">
+                    <h3>MEMBERSHIP PASS</h3>
+                </div>
+
+                <div class="pass-body emergency-body">
+                    <h5>Emergency Contact</h5>
+                    <div class="pass-details emergency-details">
+                        <p>
+                            <span class="label">Name :</span>
+                            <span class="value">@(!string.IsNullOrEmpty(Model?.FullName) ? Model.FullName : "Unknown")</span>
+                        </p>
+                        <p>
+                            <span class="label">Contact Number :</span>
+                            <span class="value">@(!string.IsNullOrEmpty(Model?.MemberID) ? Model.MemberID : "N/A")</span>
+                        </p>
+                        
+                    </div>
+                </div>
+
+                <div class="pass-footer"></div>
+            </div>
+		</section>
             <div class="btn-container">
                 <form><button class="btn print-btn">Print</button></form>
                 <form><button class="btn upload-btn">Upload Photo</button></form>
 
             </div>
-        </section>
+       
 
 
         <hr class="separator">
