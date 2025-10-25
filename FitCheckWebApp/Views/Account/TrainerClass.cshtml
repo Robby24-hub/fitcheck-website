@@ -1,8 +1,8 @@
 ﻿@model FitCheckWebApp.ViewModels.ClassesUserViewModel
-
 @{
     Layout = null;
-    var trainerName = User.Identity?.Name?.Trim().ToLower() ?? "";
+    string trainerName = User.Identity?.Name?.Trim().ToLower() ?? "";
+    string[] daysOfWeek = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
 }
 
 <!DOCTYPE html>
@@ -23,7 +23,6 @@
 
         <nav class="navbar">
             <a asp-controller="Account" asp-action="TrainerClass">Schedule</a>
-
             <form asp-controller="Account" asp-action="Logout" method="post" style="display:inline;">
                 <button type="submit" class="logout-btn">Logout</button>
             </form>
@@ -32,24 +31,38 @@
 
     <main>
         <div class="classes-header">
-            <h2 id="welcome-text">WELCOME Trainer, <span id="trainer-name">@User.Identity.Name</span></h2>
+            <h2>WELCOME Trainer, <span id="trainer-name">@User.Identity.Name</span></h2>
             <h3 class="overview">CLASS OVERVIEW</h3>
-            <p class="subtitle">SEE YOUR CLASSES THIS WEEK</p>
+            <p class="subtitle">SEE ALL CLASSES THIS WEEK</p>
         </div>
 
         <div class="schedule-container">
-            @foreach (var day in Model.ClassesByDay)
+            @foreach (var day in daysOfWeek)
             {
-                <div class="day-column">
-                    <div class="day-header">@day.Key.ToString().ToUpper()</div>
+                var dayEnum = Enum.Parse<FitCheckWebApp.Models.DayOfWeekClass>(day);
+                var classesForDay = Model.ClassesByDay.ContainsKey(dayEnum)
+                ? Model.ClassesByDay[dayEnum]
+                : new List<FitCheckWebApp.ViewModels.ClassDisplayViewModel>();
 
-                    @foreach (var c in day.Value.OrderBy(c => c.Time))
+                <div class="day-column">
+                    <div class="day-header">@day.ToUpper()</div>
+
+                    @if (classesForDay.Any())
                     {
-                        <div class="class-card @(c.InstructorName.Trim().ToLower() == trainerName ? "glow" : "") @(c.IsFull ? "full" : "")">
-                            <div class="class-time">@c.Time.ToString(@"hh\:mm tt")</div>
-                            <h3 class="class-name">@c.Type</h3>
-                            <p class="class-instructor">with @c.InstructorName</p>
-                            <p class="class-duration">@c.DurationMinutes min | Max @c.ParticipantLimit | Joined: @c.ParticipantsCount</p>
+                        @foreach (var cls in classesForDay.OrderBy(c => c.Time))
+                        {
+                            <div class="class-card @(cls.InstructorName.Trim().ToLower() == trainerName ? "glow" : "") @(cls.IsFull ? "full" : "")">
+                                <div class="class-time">@FormatTime(cls.Time)</div>
+                                <h3 class="class-name">@cls.Type.ToUpper()</h3>
+                                <p class="class-instructor">with @cls.InstructorName</p>
+                                <p class="class-duration">@cls.DurationMinutes min | Max @cls.ParticipantLimit | Joined: @cls.ParticipantsCount</p>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="class-card" style="text-align: center; padding: 40px 20px;">
+                            <p style="color: #999;">No classes scheduled</p>
                         </div>
                     }
                 </div>
@@ -94,5 +107,15 @@
             </div>
         </div>
     </footer>
+
+    @functions {
+        private string FormatTime(TimeSpan t)
+        {
+            int h = t.Hours % 12;
+            if (h == 0) h = 12;
+            string ampm = t.Hours >= 12 ? "PM" : "AM";
+            return $"{h}:{t.Minutes:D2} {ampm}";
+        }
+    }
 </body>
 </html>
