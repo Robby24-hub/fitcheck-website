@@ -28,13 +28,8 @@
             <form method="post" style="display:inline;">
                 <button type="button" class="logout-btn" onclick="openLogoutModal()">Logout</button>
             </form>
-
-
         </nav>
     </header>
-
-    <!-- Main -->
-
 
     <main>
         <h2>WELCOME Admin,</h2>
@@ -87,8 +82,9 @@
             </div>
         </div>
     </div>
+
     <script>
-                function openLogoutModal() {
+        function openLogoutModal() {
             document.getElementById("logoutModal").style.display = "flex";
         }
 
@@ -96,70 +92,16 @@
             document.getElementById("logoutModal").style.display = "none";
         }
 
-        // Optional: close modal if user clicks outside content
         window.onclick = function(event) {
             const modal = document.getElementById("logoutModal");
             if (event.target == modal) {
                 closeLogoutModal();
             }
         }
-
     </script>
 
-    <div class="hr-container">
-        <hr>
-    </div>
-
-
-    <div class="hr-container">
-        <hr>
-    </div>
-    <table>
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Plan</th>
-                <th>Payment</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var t in Model.PendingTransactions)
-            {
-                <tr>
-                    <td>@t.AccountName</td>
-                    <td>@t.MembershipPlan</td>
-                    <td>@t.Amount</td>
-                    <td>
-
-                        <form asp-controller="Admin" asp-action="ApproveMembership" method="post" style="display:inline;">
-                            <input type="hidden" name="transactionId" value="@t.TransactionId" />
-                            <button type="submit" class="approve">Approve</button>
-                        </form>
-
-                        <form asp-controller="Admin" asp-action="DeclineMembership" method="post" style="display:inline;">
-                            <input type="hidden" name="transactionId" value="@t.TransactionId" />
-                            <button type="submit" class="decline">Decline</button>
-                        </form>
-
-                    </td>
-                </tr>
-            }
-        </tbody>
-
-    </table>
-    </div>
-    </main>
-
-
-    <div class="hr-container">
-        <hr>
-    </div>
-
-
-    <div class="hr-container">
-        <hr>
-    </div>
+    <div class="hr-container"><hr></div>
+    <div class="hr-container"><hr></div>
 
     <footer>
         <div class="footer-container">

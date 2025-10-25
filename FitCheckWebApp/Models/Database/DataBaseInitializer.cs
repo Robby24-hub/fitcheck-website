@@ -87,6 +87,17 @@ namespace FitCheckWebApp.Models.Database
                     );";
                     tableCmd.ExecuteNonQuery();
 
+                    tableCmd.CommandText = @"
+                    CREATE TABLE IF NOT EXISTS VerificationCode (
+                        Id INT AUTO_INCREMENT PRIMARY KEY,
+                        Email VARCHAR(150) NOT NULL,
+                        Code VARCHAR(4) NOT NULL,
+                        CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+                        ExpiresAt DATETIME NOT NULL,
+                        IsUsed TINYINT(1) DEFAULT 0,
+                        INDEX idx_email_code (Email, Code)
+                    );";
+                    tableCmd.ExecuteNonQuery();
 
 
                     tableCmd.CommandText = "SELECT COUNT(*) FROM Account WHERE Username = 'admin'";

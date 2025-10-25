@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using FitCheckWebApp.DataAccess;
+using FitCheckWebApp.Helpers;
 using FitCheckWebApp.Models;
 using FitCheckWebApp.ViewModels;
 using Microsoft.AspNetCore.Authentication;
@@ -399,7 +400,6 @@ namespace FitCheckWebApp.Controllers
         public IActionResult AboutFitcheckUser() => View();
         public IActionResult PrivacyPolicyUser() => View();
         public IActionResult TermsConditionsUser() => View();
-        public IActionResult ChangePasswordUser() => View();
 
         [Authorize]
         public IActionResult UserProfileUser()
@@ -416,6 +416,150 @@ namespace FitCheckWebApp.Controllers
             return View(account);
         }
 
+
+        //CHANGE PASSWORD
+
+        [Authorize]
+        public IActionResult ChangePasswordUser()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult SendVerificationCode()
+        {
+            try
+            {
+                var userId = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? "0");
+                var user = AccountManager.FindById(userId);
+
+                if (user == null)
+                    return Json(new { success = false, message = "User not found" });
+
+                // Generate 4-digit code
+                string code = VerificationCodeManager.GenerateCode();
+
+                // Save to database
+                VerificationCodeManager.SaveCode(user.Email, code);
+
+                // Send email
+                EmailHelper.SendVerificationCode(user.Email, code, user.FirstName ?? "User");
+
+                return Json(new { success = true, message = "Verification code sent to your email" });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error sending verification code: {ex.Message}");
+                return Json(new { success = false, message = "Failed to send verification code" });
+            }
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult VerifyCode([FromBody] VerifyCodeViewModel model)
+        {
+            try
+            {
+                var userId = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? "0");
+                var user = AccountManager.FindById(userId);
+
+                if (user == null)
+                    return Json(new { success = false, message = "User not found" });
+
+                bool isValid = VerificationCodeManager.VerifyCode(user.Email, model.Code);
+
+                if (isValid)
+                {
+                    return Json(new { success = true, message = "Code verified successfully" });
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Invalid or expired code" });
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error verifying code: {ex.Message}");
+                return Json(new { success = false, message = "Verification failed" });
+            }
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult ChangePassword([FromBody] ChangePasswordViewModel model)
+        {
+            try
+            {
+                var userId = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? "0");
+                var user = AccountManager.FindById(userId);
+
+                if (user == null)
+                    return Json(new { success = false, message = "User not found" });
+
+                // Verify current password
+                if (!Helpers.Helpers.verifyPassword(model.CurrentPassword, user.PasswordHash))
+                    return Json(new { success = false, message = "Current password is incorrect" });
+
+                // Validate new password
+                if (model.NewPassword != model.ConfirmPassword)
+                    return Json(new { success = false, message = "New passwords do not match" });
+
+                if (model.NewPassword.Length < 6)
+                    return Json(new { success = false, message = "Password must be at least 6 characters" });
+
+                // Update password
+                user.PasswordHash = Helpers.Helpers.HashingPassword(model.NewPassword);
+                AccountManager.UpdateAccount(user);
+
+                return Json(new { success = true, message = "Password changed successfully" });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error changing password: {ex.Message}");
+                return Json(new { success = false, message = "Failed to change password" });
+            }
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult ResetPasswordWithCode([FromBody] ResetPasswordViewModel model)
+        {
+            try
+            {
+                var userId = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? "0");
+                var user = AccountManager.FindById(userId);
+
+                if (user == null)
+                    return Json(new { success = false, message = "User not found" });
+
+                // Verify code one more time
+                bool isValid = VerificationCodeManager.VerifyCode(user.Email, model.Code);
+                if (!isValid)
+                    return Json(new { success = false, message = "Invalid or expired code" });
+
+                // Validate new password
+                if (model.NewPassword != model.ConfirmPassword)
+                    return Json(new { success = false, message = "Passwords do not match" });
+
+                if (model.NewPassword.Length < 6)
+                    return Json(new { success = false, message = "Password must be at least 6 characters" });
+
+                // Update password
+                user.PasswordHash = Helpers.Helpers.HashingPassword(model.NewPassword);
+                AccountManager.UpdateAccount(user);
+
+                // Mark code as used
+                VerificationCodeManager.MarkCodeAsUsed(user.Email, model.Code);
+
+                return Json(new { success = true, message = "Password reset successfully" });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error resetting password: {ex.Message}");
+                return Json(new { success = false, message = "Failed to reset password" });
+            }
+        }
 
     }
 }
