@@ -207,6 +207,49 @@ h3{
         transform: scale(1.03);
     }
 
+.btn-yes,
+.btn-no {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin: 0 8px; /* space between buttons */
+}
+
+/* ✅ Yes Button */
+.btn-yes {
+    background-color: #4CAF50; /* green */
+    color: white;
+}
+
+    .btn-yes:hover {
+        background-color: #43a047;
+        transform: scale(1.03);
+    }
+
+/* ❌ No Button */
+.btn-no {
+    background-color: #f44336; /* red */
+    color: white;
+}
+
+    .btn-no:hover {
+        background-color: #e53935;
+        transform: scale(1.03);
+    }
+
+/* Optional: make them side-by-side centered */
+.button-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+
 /* ===== Modal Overlay ===== */
 .modal {
   display: none;
