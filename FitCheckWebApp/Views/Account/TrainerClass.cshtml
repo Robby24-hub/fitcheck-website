@@ -1,7 +1,6 @@
 ﻿@model FitCheckWebApp.ViewModels.ClassesUserViewModel
 @{
     Layout = null;
-    string trainerName = User.Identity?.Name?.Trim().ToLower() ?? "";
     string[] daysOfWeek = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
 }
 
@@ -31,7 +30,7 @@
 
     <main>
         <div class="classes-header">
-            <h2>WELCOME Trainer, <span id="trainer-name">@User.Identity.Name</span></h2>
+            <h2>WELCOME Trainer, <span id="trainer-name">@Model.TrainerName</span></h2>
             <h3 class="overview">CLASS OVERVIEW</h3>
             <p class="subtitle">SEE ALL CLASSES THIS WEEK</p>
         </div>
@@ -49,9 +48,9 @@
 
                     @if (classesForDay.Any())
                     {
-                        @foreach (var cls in classesForDay.OrderBy(c => c.Time))
+                        @foreach (var cls in classesForDay)
                         {
-                            <div class="class-card @(cls.InstructorName.Trim().ToLower() == trainerName ? "glow" : "") @(cls.IsFull ? "full" : "")">
+                            <div class="class-card @(cls.InstructorName.Trim() == Model.TrainerName.Trim() ? "glow" : "") @(cls.IsFull ? "full" : "")">
                                 <div class="class-time">@FormatTime(cls.Time)</div>
                                 <h3 class="class-name">@cls.Type.ToUpper()</h3>
                                 <p class="class-instructor">with @cls.InstructorName</p>

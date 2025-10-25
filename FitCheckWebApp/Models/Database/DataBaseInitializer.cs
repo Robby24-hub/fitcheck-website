@@ -116,13 +116,13 @@ namespace FitCheckWebApp.Models.Database
 
                     
 
-                    tableCmd.CommandText = "SELECT COUNT(*) FROM Account WHERE Username = 'liway2006'";
+                    tableCmd.CommandText = "SELECT COUNT(*) FROM Account WHERE Username = 'magnamalo2006'";
                     long trainer1Count = (long)tableCmd.ExecuteScalar();
                     if (trainer1Count == 0)
                     {
                         tableCmd.CommandText = @"
                             INSERT INTO Account (Username, PasswordHash, Email, Role, FirstName, LastName, IsActive, DateCreated)
-                            VALUES ('liway2006', @PasswordHash1, 'rex.taeza@fitcheck.com', 'trainer', 'Rex', 'Taeza', 1, NOW());
+                            VALUES ('magnamalo2006', @PasswordHash1, 'rex.taeza@fitcheck.com', 'trainer', 'Rex', 'Taeza', 1, NOW());
                         ";
                         tableCmd.Parameters.Clear();
                         tableCmd.Parameters.AddWithValue("@PasswordHash1", Helpers.Helpers.HashingPassword("trainer123"));

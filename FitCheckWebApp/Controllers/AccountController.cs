@@ -633,11 +633,14 @@ namespace FitCheckWebApp.Controllers
         [Authorize(Roles = "trainer")]
         public IActionResult TrainerClass()
         {
-            int trainerId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
-            var classes = ClassManager.GetAllClassesForTrainer(trainerId);
+            var userId = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? "0");
+            var currentUser = AccountManager.FindById(userId);
 
-           
-            var classesByDay = classes
+            // Get only classes assigned to this trainer
+            var trainerClasses = ClassManager.GetAllClassesForTrainer(userId);
+
+            // Group classes by day
+            var classesByDay = trainerClasses
                 .GroupBy(c => c.Day)
                 .ToDictionary(
                     g => g.Key,
@@ -650,16 +653,20 @@ namespace FitCheckWebApp.Controllers
                         DurationMinutes = c.DurationMinutes,
                         ParticipantLimit = c.ParticipantLimit,
                         ParticipantsCount = c.ParticipantsCount
-                    }).ToList()
+                    })
+                    .OrderBy(c => c.Time)
+                    .ToList()
                 );
 
             var model = new ClassesUserViewModel
             {
-                ClassesByDay = classesByDay
+                ClassesByDay = classesByDay,
+                TrainerName = currentUser != null ? $"{currentUser.FirstName} {currentUser.LastName}" : "Trainer"
             };
 
             return View(model);
         }
+
 
 
 
