@@ -231,7 +231,7 @@ main {
 
 .btn-container {
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
     width: 100%;
     margin-top: 1.5rem;
@@ -241,12 +241,13 @@ main {
         width: 100%;
         max-width: 300px;
         display: flex;
-        justify-content: center;
+        justify-content:center;
+        
     }
 
 
-.print-btn {
-    width: 100%;
+.btn {
+    width: 80%;
     background: #d2f801;
     color: #1a1a1a;
     font-size: 16px;
@@ -260,13 +261,13 @@ main {
     text-transform: uppercase;
 }
 
-    .print-btn:hover {
+    .btn:hover {
         background: #d4ff33;
         transform: translateY(-2px);
         box-shadow: 0 5px 20px rgba(200, 255, 0, 0.4);
     }
 
-    .print-btn:active {
+    .btn:active {
     transform: translateY(0);
 }
 

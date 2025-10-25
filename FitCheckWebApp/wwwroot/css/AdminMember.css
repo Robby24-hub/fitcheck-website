@@ -169,13 +169,15 @@ table {
 }
 
 th, td {
-  padding: 15px;
-  text-align: left;
+    padding: 15px;
+    text-align: left;
+    text-align: center;
 }
 
 th {
   color: #D2F801;
   border-bottom: 1px solid #333;
+  
 }
 
 td {
