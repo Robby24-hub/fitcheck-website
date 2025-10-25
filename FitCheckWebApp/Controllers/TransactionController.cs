@@ -29,10 +29,8 @@ namespace FitCheckWebApp.Controllers
         public IActionResult PaymentMethod(TransactionViewModel newtransaction)
         {
             int accountId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
-
             if (!ModelState.IsValid)
                 return View(newtransaction);
-
             if (!User.Identity!.IsAuthenticated)
                 return RedirectToAction("Login", "Account");
 
@@ -43,17 +41,14 @@ namespace FitCheckWebApp.Controllers
             DateTime startDate;
             if (isExtension)
             {
-                
                 startDate = lastTransaction.EndDate.AddDays(1);
             }
             else
             {
-                
                 startDate = DateTime.Now;
             }
 
             DateTime endDate = startDate.AddMonths(1);
-
 
             decimal amount = newtransaction.MembershipPlan switch
             {
@@ -63,11 +58,9 @@ namespace FitCheckWebApp.Controllers
                 _ => 0m
             };
 
-
             var status = newtransaction.PaymentMethod.ToString() == "Cash"
                 ? TransactionStatus.Pending
                 : TransactionStatus.Active;
-
 
             var transaction = new Transaction
             {
@@ -81,24 +74,48 @@ namespace FitCheckWebApp.Controllers
                 Amount = amount
             };
 
-
             TransactionManager.PostTransaction(transaction);
 
+            var account = AccountManager.FindById(accountId);
 
             if (transaction.Status == TransactionStatus.Active)
             {
-                var account = AccountManager.FindById(accountId);
                 if (account != null)
                 {
                     if (string.IsNullOrEmpty(account.MemberID))
                     {
                         account.MemberID = Helpers.Helpers.MemberIdGenerator();
                     }
-
                     account.MembershipPlan = newtransaction.MembershipPlan;
                     AccountManager.UpdateAccount(account);
+
+                    // ===== SEND EMAIL RECEIPT =====
+                    try
+                    {
+                        var savedTransaction = TransactionManager.FindLatestActiveByAccount(accountId);
+                        string fullName = $"{account.FirstName} {account.LastName}";
+                        string referenceNumber = $"REF-{DateTime.Now:yyyyMMdd}-{savedTransaction?.TransactionID ?? 0:D6}";
+
+                        EmailHelper.SendTransactionReceipt(
+                            toEmail: account.Email!,
+                            userName: fullName,
+                            membershipPlan: newtransaction.MembershipPlan.ToString(),
+                            amount: amount,
+                            transactionDate: transaction.TransactionDate,
+                            endDate: endDate,
+                            transactionId: (savedTransaction?.TransactionID ?? 0).ToString(),
+                            referenceNumber: referenceNumber
+                        );
+
+                        Console.WriteLine($"✅ Receipt sent to {account.Email}");
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"⚠️ Email failed: {ex.Message}");
+                    }
                 }
             }
+
             return RedirectToAction("UserMembership");
         }
 
@@ -162,7 +179,7 @@ namespace FitCheckWebApp.Controllers
 
             var transactions = TransactionManager.GetTransactionsByUser(userId);
 
-            // Map from Transaction -> UserTransactionViewModel
+
             var model = new TransactionHistoryViewModel
             {
                 Transactions = transactions.Select(t => new UserTransactionViewModel
