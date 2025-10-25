@@ -298,6 +298,37 @@ namespace FitCheckWebApp.DataAccess
         }
 
 
+        public static List<Account> GetAllAccounts()
+        {
+            var accounts = new List<Account>();
+
+            using (var connection = new MySqlConnection(connectionString))
+            {
+                connection.Open();
+                using (var cmd = connection.CreateCommand())
+                {
+                    cmd.CommandText = "SELECT Id, FirstName, LastName, Role FROM Account WHERE IsActive = 1";
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var acc = new Account
+                            {
+                                Id = reader.GetInt32("Id"),
+                                FirstName = reader["FirstName"]?.ToString() ?? "",
+                                LastName = reader["LastName"]?.ToString() ?? "",
+                                Role = reader["Role"]?.ToString() ?? ""
+                            };
+                            accounts.Add(acc);
+                        }
+                    }
+                }
+            }
+
+            return accounts;
+        }
+
+
 
     }
 

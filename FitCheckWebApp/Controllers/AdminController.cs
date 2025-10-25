@@ -3,8 +3,6 @@ using FitCheckWebApp.Models;
 using FitCheckWebApp.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MySql.Data.MySqlClient;
-
 
 namespace FitCheckWebApp.Controllers
 {
@@ -15,7 +13,7 @@ namespace FitCheckWebApp.Controllers
         {
             var model = new AdminDashbViewModel
             {
-                ActiveMembers = TransactionManager.CountActiveMembers(),  
+                ActiveMembers = TransactionManager.CountActiveMembers(),
                 PendingPayments = TransactionManager.CountPendingPayment(),
                 UpcomingClasses = 3,
                 AdminName = User.Identity?.Name ?? "Admin"
@@ -24,36 +22,60 @@ namespace FitCheckWebApp.Controllers
             return View(model);
         }
 
-
         [Authorize(Roles = "admin")]
         public IActionResult AdminPayment()
         {
             var pendingTransactions = TransactionManager.GetPendingTransactions();
 
-            var pendingViewModels = pendingTransactions.Select(t => new PendingTransactionViewModel
+            var pendingViewModels = pendingTransactions.Select(t => new PendingMembershipViewModel
             {
-                TransactionId = t.TransactionID,
-                AccountName = t.AccountName,
-                MembershipPlan = t.MembershipPlan.ToString(),
-                PaymentMethod = t.PaymentMethod.ToString(),
-                Amount = t.Amount,
-                TransactionDate = t.TransactionDate
+                Id = t.TransactionID,
+                Name = t.AccountName,
+                Plan = t.MembershipPlan.ToString(),
+                Payment = t.Amount
             }).ToList();
 
             var model = new AdminPaymentViewModel
             {
-                PendingTransactions = pendingViewModels
+                PendingMemberships = pendingViewModels
             };
 
             return View(model);
-
         }
 
-
-
         [Authorize(Roles = "admin")]
-        public IActionResult AdminClass() => View();
+        public IActionResult AdminClass()
+        {
+            try
+            {
+                // Get all classes
+                var classes = ClassManager.GetAllClasses();
 
+                // Get trainers
+                var trainers = AccountManager.GetAllAccounts()
+                                .Where(a => !string.IsNullOrEmpty(a.Role) && a.Role.ToLower() == "trainer")
+                                .ToList();
+
+                // Debug output to console
+                Console.WriteLine($"=== AdminClass Debug ===");
+                Console.WriteLine($"Total trainers found: {trainers.Count}");
+                foreach (var t in trainers)
+                {
+                    Console.WriteLine($"Trainer: ID={t.Id}, Name={t.FirstName} {t.LastName}, Role={t.Role}");
+                }
+
+                // Pass to view
+                ViewBag.Trainers = trainers;
+
+                return View(classes);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"ERROR in AdminClass: {ex.Message}");
+                Console.WriteLine($"Stack trace: {ex.StackTrace}");
+                throw;
+            }
+        }
 
         [Authorize(Roles = "admin")]
         public IActionResult AdminMember()
@@ -66,7 +88,6 @@ namespace FitCheckWebApp.Controllers
             return View(model);
         }
 
-
         [Authorize(Roles = "admin")]
         [HttpPost]
         public IActionResult DeleteMember(int id)
@@ -75,30 +96,19 @@ namespace FitCheckWebApp.Controllers
             return RedirectToAction("AdminMember");
         }
 
-
-
-
-
         [HttpPost, Authorize(Roles = "admin")]
-        public IActionResult ApproveMembership(int transactionId)
+        public IActionResult ApproveMembership(int id)
         {
-            
-            var transaction = TransactionManager.FindById(transactionId);
+            var transaction = TransactionManager.FindById(id);
             if (transaction == null)
                 return NotFound();
 
-            
             transaction.Status = TransactionStatus.Active;
-
-            
             transaction.StartDate = DateTime.Now;
             transaction.EndDate = transaction.StartDate.AddMonths(1);
             transaction.TransactionDate = DateTime.Now;
-
-            
             TransactionManager.UpdateTransaction(transaction);
 
-            
             var account = AccountManager.FindById(transaction.AccountID);
             if (account != null)
             {
@@ -112,17 +122,60 @@ namespace FitCheckWebApp.Controllers
         }
 
         [HttpPost, Authorize(Roles = "admin")]
-        public IActionResult DeclineMembership(int transactionId)
+        public IActionResult DeclineMembership(int id)
         {
-            var transaction = TransactionManager.FindById(transactionId);
+            var transaction = TransactionManager.FindById(id);
             if (transaction == null)
                 return NotFound();
 
-            
             transaction.Status = TransactionStatus.Declined;
             TransactionManager.UpdateTransaction(transaction);
 
             return RedirectToAction("AdminPayment");
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "admin")]
+        public IActionResult AddClass(Class cls)
+        {
+            try
+            {
+                ClassManager.AddClass(cls);
+                TempData["SuccessMessage"] = "Class added successfully!";
+            }
+            catch (InvalidOperationException ex)
+            {
+                TempData["ErrorMessage"] = ex.Message;
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "An error occurred while adding the class.";
+                Console.WriteLine($"Error adding class: {ex.Message}");
+            }
+
+            return RedirectToAction("AdminClass");
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "admin")]
+        public IActionResult EditClass(Class cls)
+        {
+            try
+            {
+                ClassManager.UpdateClass(cls);
+                TempData["SuccessMessage"] = "Class updated successfully!";
+            }
+            catch (InvalidOperationException ex)
+            {
+                TempData["ErrorMessage"] = ex.Message;
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "An error occurred while updating the class.";
+                Console.WriteLine($"Error updating class: {ex.Message}");
+            }
+
+            return RedirectToAction("AdminClass");
         }
 
     }

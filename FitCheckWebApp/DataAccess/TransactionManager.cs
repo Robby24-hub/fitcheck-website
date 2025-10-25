@@ -415,7 +415,58 @@ namespace FitCheckWebApp.DataAccess
         }
 
 
+        public static Transaction? GetActiveTransactionByAccountId(int accountId)
+        {
+            using var connection = new MySqlConnection(connectionString);
+            connection.Open();
+            using var cmd = connection.CreateCommand();
 
+            cmd.CommandText = @"
+                SELECT TransactionID, AccountID, MembershipPlan, PaymentMethod, TransactionDate, StartDate, EndDate, Amount, Status
+                FROM transaction 
+                WHERE AccountID = @AccountID 
+                AND Status = 'Active' 
+                AND EndDate >= NOW()
+                ORDER BY EndDate DESC 
+                LIMIT 1
+            ";
+            cmd.Parameters.AddWithValue("@AccountID", accountId);
+
+            using var reader = cmd.ExecuteReader();
+            if (reader.Read())
+            {
+                string? membershipValue = reader["MembershipPlan"]?.ToString();
+                string? paymentValue = reader["PaymentMethod"]?.ToString();
+                string? statusValue = reader["Status"]?.ToString();
+
+                MembershipPlan membershipPlan;
+                PaymentMethod paymentMethod;
+                TransactionStatus status;
+
+                if (!Enum.TryParse(membershipValue, out membershipPlan))
+                    membershipPlan = MembershipPlan.None;
+
+                if (!Enum.TryParse(paymentValue, out paymentMethod))
+                    paymentMethod = PaymentMethod.None;
+
+                if (!Enum.TryParse(statusValue, out status))
+                    status = TransactionStatus.Active;
+
+                return new Transaction
+                {
+                    TransactionID = reader.GetInt32("TransactionID"),
+                    AccountID = reader.GetInt32("AccountID"),
+                    MembershipPlan = membershipPlan,
+                    PaymentMethod = paymentMethod,
+                    TransactionDate = reader.GetDateTime("TransactionDate"),
+                    StartDate = reader.GetDateTime("StartDate"),
+                    EndDate = reader.GetDateTime("EndDate"),
+                    Amount = reader.GetDecimal("Amount"),
+                    Status = status
+                };
+            }
+            return null;
+        }
 
     }
 }

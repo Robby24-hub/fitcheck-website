@@ -57,7 +57,6 @@ namespace FitCheckWebApp.Models.Database
                     tableCmd.ExecuteNonQuery();
 
 
-
                     tableCmd.CommandText = @"
                         CREATE TABLE IF NOT EXISTS `Transaction` (
                             TransactionID INT AUTO_INCREMENT PRIMARY KEY,
@@ -72,6 +71,22 @@ namespace FitCheckWebApp.Models.Database
                             FOREIGN KEY (AccountID) REFERENCES Account(Id)
                         );";
                     tableCmd.ExecuteNonQuery();
+
+
+                    tableCmd.CommandText = @"
+                    CREATE TABLE IF NOT EXISTS Class (
+                        Id INT AUTO_INCREMENT PRIMARY KEY,
+                        AccountID INT NOT NULL,                       
+                        Day ENUM('Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday') NOT NULL,
+                        Type ENUM('Yoga','Zumba','Pilates','CrossFit','HIIT','StrengthTraining','Cardio','DanceFitness') NOT NULL,
+                        Time TIME NOT NULL,
+                        DurationMinutes INT NOT NULL,
+                        ParticipantLimit INT NOT NULL,
+                        ParticipantsCount INT DEFAULT 0,
+                        FOREIGN KEY (AccountID) REFERENCES Account(Id)
+                    );";
+                    tableCmd.ExecuteNonQuery();
+
 
 
                     tableCmd.CommandText = "SELECT COUNT(*) FROM Account WHERE Username = 'admin'";
