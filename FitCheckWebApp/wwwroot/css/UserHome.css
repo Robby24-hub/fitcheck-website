@@ -245,13 +245,6 @@ main {
     align-items: center;
 }
 
-.photo {
-    width: 110px;
-    height: 130px;
-    background: #d3d3d3;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(210, 248, 1, 0.3);
-}
 
 .pass-details p {
     font-size: 0.95rem;
@@ -270,13 +263,13 @@ main {
 
     .pass-details span.label {
         color: #d2f801;
-        font-size: 0.95rem;
+        font-size: 1.1rem;
         font-weight: normal;
     }
 
     .pass-details span.value {
         color: #fff;
-        font-size: 0.95rem;
+        font-size: 1.1rem;
         font-weight: normal;
     }
 
