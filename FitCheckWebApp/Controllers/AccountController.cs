@@ -28,7 +28,7 @@ namespace FitCheckWebApp.Controllers
 
             if (account != null && verifyPassword(model.Password!, account.PasswordHash!))
             {
-
+                    
                 if (!account.IsActive)
                 {
                     ModelState.AddModelError("", "This account has been deactivated. Please contact support.");
