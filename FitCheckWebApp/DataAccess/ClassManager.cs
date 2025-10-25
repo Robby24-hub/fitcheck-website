@@ -261,6 +261,30 @@ namespace FitCheckWebApp.DataAccess
             cmd.ExecuteNonQuery();
         }
 
+        public static int CountUpcomingClassesToday()
+        {
+            using var connection = new MySqlConnection(connectionString);
+            connection.Open();
+            using var cmd = connection.CreateCommand();
+
+            // Get today's day name (e.g., "Monday", "Tuesday")
+            string today = DateTime.Now.DayOfWeek.ToString();
+
+            // Get current time
+            TimeSpan currentTime = DateTime.Now.TimeOfDay;
+
+            cmd.CommandText = @"
+                SELECT COUNT(*) 
+                FROM Class 
+                WHERE Day = @Day 
+                AND Time > @CurrentTime
+            ";
+            cmd.Parameters.AddWithValue("@Day", today);
+            cmd.Parameters.AddWithValue("@CurrentTime", currentTime);
+
+            return Convert.ToInt32(cmd.ExecuteScalar());
+        }
+
         public static List<Class> GetAllClassesForTrainer(int trainerId)
         {
             

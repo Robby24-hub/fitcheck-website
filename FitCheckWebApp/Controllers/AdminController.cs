@@ -15,12 +15,12 @@ namespace FitCheckWebApp.Controllers
             {
                 ActiveMembers = TransactionManager.CountActiveMembers(),
                 PendingPayments = TransactionManager.CountPendingPayment(),
-                UpcomingClasses = 3,
+                UpcomingClasses = ClassManager.CountUpcomingClassesToday(),
                 AdminName = User.Identity?.Name ?? "Admin"
             };
 
             return View(model);
-        }
+        }   
 
         [Authorize(Roles = "admin")]
         public IActionResult AdminPayment()
