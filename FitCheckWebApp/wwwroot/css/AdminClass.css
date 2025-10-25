@@ -264,17 +264,17 @@ button:hover {
 }
 
 .submit-btn {
-  background-color: #D2F801;
-  border: none;
-  width: 11%;
-
-  padding: 12px;
-  border-radius: 6px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: 0.2s;
-  color: black;
+    background-color: #D2F801;
+    border: none;
+    min-width: 120px; /* Adjust to your design */
+    padding: 12px;
+    border-radius: 6px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s;
+    color: black;
 }
+
 
 .submit-btn:hover {
   background-color: #b9e200;
