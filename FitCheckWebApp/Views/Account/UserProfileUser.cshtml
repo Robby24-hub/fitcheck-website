@@ -28,36 +28,46 @@
     <main>
         <h2 class="page-title">USER PROFILE</h2>
 
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+        }
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-error">@TempData["ErrorMessage"]</div>
+        }
+
         <section class="form-section">
-            
-            <form class="form" asp-controller="Account" asp-action="UpdateProfile" method="post">
+            <form id="profileForm" class="form" asp-controller="Account" asp-action="UpdateProfile" method="post">
+
+                <input type="hidden" asp-for="Id" />
+
                 <!-- PERSONAL INFORMATION -->
                 <h3 class="section-title">PERSONAL INFORMATION</h3>
                 <div class="form-grid single-last">
-                    <input asp-for="FirstName" type="text" placeholder="First Name" class="input-field" />
-                    <input asp-for="LastName" type="text" placeholder="Last Name" class="input-field" />
-                    <input asp-for="BirthDate" type="date" placeholder="dd/mm/yyyy" class="input-field" />
-                    <input asp-for="Age" type="number" placeholder="Age" class="input-field" />
-                    <select asp-for="Gender" placeholder="Gender" class="input-field">
-                        <option value="" disabled selected hidden>Gender</option>
+                    <input asp-for="FirstName" type="text" placeholder="First Name" class="input-field" required />
+                    <input asp-for="LastName" type="text" placeholder="Last Name" class="input-field" required />
+                    <input asp-for="BirthDate" type="date" class="input-field" required />
+                    <input asp-for="Age" type="number" placeholder="Age" class="input-field" readonly />
+                    <select asp-for="Gender" class="input-field" required>
+                        <option value="" disabled>Gender</option>
                         <option value="Male">Male</option>
                         <option value="Female">Female</option>
                         <option value="Other">Other</option>
                     </select>
-                    <input asp-for="ContactNumber" type="text" placeholder="Contact Number" class="input-field" />
-                    <input asp-for="Email" type="email" placeholder="Email Address" class="input-field email-field" />
+                    <input asp-for="ContactNumber" type="text" placeholder="Contact Number" class="input-field" required />
+                    <input asp-for="Email" type="email" placeholder="Email Address" class="input-field email-field" required />
                 </div>
 
                 <!-- EMERGENCY CONTACT -->
                 <h3 class="section-title">EMERGENCY CONTACT</h3>
                 <div class="form-grid emergency">
-                    <input asp-for="EmergencyName" type="text" placeholder="Full Name" class="input-field" />
-                    <input asp-for="EmergencyContact" type="text" placeholder="Cellphone Number" class="input-field" />
+                    <input asp-for="EmergencyName" type="text" placeholder="Full Name" class="input-field" required />
+                    <input asp-for="EmergencyContact" type="text" placeholder="Cellphone Number" class="input-field" required />
                 </div>
 
                 <!-- BUTTONS -->
                 <div class="button-group">
-                   
                     <button type="button" class="btn-save" onclick="openConfirmModal()">Save Changes</button>
                     <a asp-controller="Account" asp-action="AccountUser" class="btn-cancel">Cancel</a>
                 </div>
@@ -93,7 +103,7 @@
 
             <button class="btn-continue" onclick="verifyProfileCode()">CONTINUE</button>
             <p class="resend-text">
-                Didn’t get the code?
+                Didn't get the code?
                 <a href="#" class="resend-link" onclick="resendProfileCode(); return false;">Resend</a>
             </p>
         </div>
@@ -103,10 +113,29 @@
     <script>
         lucide.createIcons();
 
+
+        document.querySelector('input[name="BirthDate"]').addEventListener('change', function() {
+            const birthDate = new Date(this.value);
+            const today = new Date();
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const monthDiff = today.getMonth() - birthDate.getMonth();
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            document.querySelector('input[name="Age"]').value = age;
+        });
+
         // --- CONFIRM MODAL ---
         function openConfirmModal() {
+           
+            const form = document.getElementById('profileForm');
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
             document.getElementById("confirmModal").style.display = "flex";
         }
+
         function closeConfirmModal() {
             document.getElementById("confirmModal").style.display = "none";
         }
@@ -114,35 +143,91 @@
         // --- EMAIL VERIFICATION ---
         async function startEmailVerification() {
             closeConfirmModal();
+
+            console.log('Sending profile verification request...');
+
             try {
-                const response = await fetch('/Account/SendVerificationCode', { method: 'POST', headers: { 'Content-Type': 'application/json' } });
+                const response = await fetch('/Account/SendVerificationCode', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({ type: 'profile' })
+                });
+
+                console.log('Response received:', response);
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
                 const result = await response.json();
-                if (result.success) openVerificationPopup();
-                else alert(result.message || 'Failed to send verification code');
-            } catch (err) { console.error(err); alert('Error sending verification code'); }
+                if (result.success) {
+                    openVerificationPopup();
+                } else {
+                    alert(result.message || 'Failed to send verification code');
+                }
+            } catch (err) {
+                console.error(err);
+                alert('Error sending verification code. Please try again.');
+            }
         }
 
         function openVerificationPopup() {
             document.getElementById("emailVerificationPopup").style.display = "flex";
             document.getElementById('code1').focus();
         }
+
         function closeVerificationPopup() {
             document.getElementById("emailVerificationPopup").style.display = "none";
             clearCodeInputs();
         }
+
         function clearCodeInputs() {
             document.querySelectorAll('#emailVerificationPopup .code-box').forEach(i => i.value='');
             document.getElementById('code1').focus();
         }
 
+        // Code input navigation
         document.querySelectorAll('#emailVerificationPopup .code-box').forEach((input, idx, arr) => {
-            input.addEventListener('input', () => { if (input.value.length===1 && idx<arr.length-1) arr[idx+1].focus(); });
-            input.addEventListener('keydown', e => { if (e.key==='Backspace' && input.value==='' && idx>0) arr[idx-1].focus(); });
+            input.addEventListener('input', (e) => {
+                // Only allow numbers
+                e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                if (input.value.length === 1 && idx < arr.length - 1) {
+                    arr[idx + 1].focus();
+                }
+            });
+            input.addEventListener('keydown', e => {
+                if (e.key === 'Backspace' && input.value === '' && idx > 0) {
+                    arr[idx - 1].focus();
+                }
+            });
+            input.addEventListener('paste', (e) => {
+                e.preventDefault();
+                const pasteData = e.clipboardData.getData('text').replace(/[^0-9]/g, '');
+                const codes = pasteData.split('');
+                codes.forEach((char, i) => {
+                    if (idx + i < arr.length) {
+                        arr[idx + i].value = char;
+                    }
+                });
+                if (idx + codes.length < arr.length) {
+                    arr[idx + codes.length].focus();
+                } else {
+                    arr[arr.length - 1].focus();
+                }
+            });
         });
 
         async function verifyProfileCode() {
-            const code = Array.from(document.querySelectorAll('#emailVerificationPopup .code-box')).map(i=>i.value).join('');
-            if (code.length!==4) { alert('Enter all 4 digits'); return; }
+            const code = Array.from(document.querySelectorAll('#emailVerificationPopup .code-box'))
+                .map(i => i.value).join('');
+
+            if (code.length !== 4) {
+                alert('Please enter all 4 digits');
+                return;
+            }
 
             try {
                 const response = await fetch('/Account/VerifyCode', {
@@ -150,29 +235,55 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ code: code })
                 });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
                 const result = await response.json();
                 if (result.success) {
                     closeVerificationPopup();
-                    document.querySelector(".form").submit(); 
+
+                    document.getElementById('profileForm').submit();
                 } else {
-                    alert(result.message || 'Invalid or expired code'); clearCodeInputs();
+                    alert(result.message || 'Invalid or expired code');
+                    clearCodeInputs();
                 }
-            } catch (err) { console.error(err); alert('Error verifying code'); }
+            } catch (err) {
+                console.error(err);
+                alert('Error verifying code. Please try again.');
+            }
         }
 
         async function resendProfileCode() {
             try {
-                const response = await fetch('/Account/SendVerificationCode', { method:'POST', headers:{'Content-Type':'application/json'} });
+                const response = await fetch('/Account/SendVerificationCode', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ type: 'profile' })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
                 const result = await response.json();
-                if (result.success) { alert('New code sent!'); clearCodeInputs(); }
-                else alert(result.message || 'Failed to resend code');
-            } catch(err) { console.error(err); alert('Error resending code'); }
+                if (result.success) {
+                    alert('New code sent to your email!');
+                    clearCodeInputs();
+                } else {
+                    alert(result.message || 'Failed to resend code');
+                }
+            } catch(err) {
+                console.error(err);
+                alert('Error resending code. Please try again.');
+            }
         }
 
-        
+
         window.addEventListener('load', () => {
-            document.getElementById("emailVerificationPopup").style.display="none";
-            document.getElementById("confirmModal").style.display="none";
+            document.getElementById("emailVerificationPopup").style.display = "none";
+            document.getElementById("confirmModal").style.display = "none";
         });
     </script>
 </body>

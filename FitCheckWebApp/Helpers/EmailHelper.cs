@@ -13,7 +13,7 @@ namespace FitCheckWebApp.Helpers
         public static void SendEmail(string toEmail, string subject, string body)
         {
             var email = new MimeMessage();
-            email.From.Add(new MailboxAddress("FitCheck Gym", "fitcheck.noreply@gmail.com")); 
+            email.From.Add(new MailboxAddress("FitCheck Gym", "fitcheck.noreply@gmail.com"));
             email.To.Add(MailboxAddress.Parse(toEmail));
             email.Subject = subject;
 
@@ -25,7 +25,7 @@ namespace FitCheckWebApp.Helpers
             using (var smtp = new SmtpClient())
             {
                 smtp.Connect("smtp.gmail.com", 587, MailKit.Security.SecureSocketOptions.StartTls);
-                smtp.Authenticate("fitcheckgymservice@gmail.com", "uwqp gjxn psvv asbi"); 
+                smtp.Authenticate("fitcheckgymservice@gmail.com", "uwqp gjxn psvv asbi");
                 smtp.Send(email);
                 smtp.Disconnect(true);
             }
@@ -89,6 +89,7 @@ namespace FitCheckWebApp.Helpers
             }
         }
 
+
         public static void SendVerificationCode(string toEmail, string code, string userName)
         {
             string subject = "🔐 Your FitCheck Password Reset Code";
@@ -113,6 +114,30 @@ namespace FitCheckWebApp.Helpers
             SendEmail(toEmail, subject, body);
         }
 
+
+        public static void SendProfileUpdateVerificationCode(string toEmail, string code, string userName)
+        {
+            string subject = "✏️ Verify Your FitCheck Profile Update";
+            string body = $@"
+                <div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;'>
+                    <h2 style='color: #333;'>Hi {userName},</h2>
+                    <p>You're about to update your profile information. To confirm this change, please use the verification code below:</p>
+            
+                    <div style='background: #f5f5f5; padding: 20px; text-align: center; margin: 20px 0; border-radius: 8px;'>
+                        <h1 style='color: #d2f801; font-size: 48px; letter-spacing: 10px; margin: 0;'>{code}</h1>
+                    </div>
+            
+                    <p>This code will expire in <b>10 minutes</b>.</p>
+                    <p>If you didn't request this profile update, please contact us immediately.</p>
+            
+                    <br>
+                    <p>Stay fit,</p>
+                    <p><b>The FitCheck Team</b></p>
+                </div>
+            ";
+
+            SendEmail(toEmail, subject, body);
+        }
 
     }
 }
