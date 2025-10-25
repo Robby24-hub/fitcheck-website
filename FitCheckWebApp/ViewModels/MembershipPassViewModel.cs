@@ -18,6 +18,9 @@
 
 
         public int TransactionId { get; set; }
+
+        public string? EmergencyName { get; set; }
+        public string? EmergencyContact { get; set; }
     }
 
 }

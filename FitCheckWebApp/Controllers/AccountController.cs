@@ -223,7 +223,7 @@ namespace FitCheckWebApp.Controllers
         {
             if (!User.Identity!.IsAuthenticated)
             {
-                return RedirectToAction("Login", "Account");
+                return RedirectToAction("Logi   n", "Account");
             }
 
             int accountId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
@@ -243,11 +243,15 @@ namespace FitCheckWebApp.Controllers
 
             if (transaction != null)
             {
-                model.TransactionId = transaction.TransactionID; 
+                model.TransactionId = transaction.TransactionID;
                 model.MembershipPlan = transaction.MembershipPlan.ToString();
                 model.TransactionDate = transaction.TransactionDate;
                 model.EndDate = transaction.EndDate;
                 model.Status = transaction.Status.ToString();
+
+                // Add emergency contact info
+                model.EmergencyName = account.EmergencyName ?? "Unknown";
+                model.EmergencyContact = account.EmergencyContact ?? "N/A";
 
                 if (transaction.EndDate <= DateTime.Now)
                 {
@@ -265,7 +269,11 @@ namespace FitCheckWebApp.Controllers
                 model.EndDate = null;
                 model.Status = "N/A";
                 model.WarningMessage = "You do not have an active membership.";
+
+                model.EmergencyName = account.EmergencyName ?? "Unknown";
+                model.EmergencyContact = account.EmergencyContact ?? "N/A";
             }
+
 
             return View(model);
         }

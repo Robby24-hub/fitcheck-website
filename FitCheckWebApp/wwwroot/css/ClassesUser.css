@@ -215,6 +215,7 @@ main {
     bottom: 1rem;
     right: 1rem;
     transition: all 0.3s ease;
+    
 }
 
     /* Button hover effect */
@@ -578,6 +579,8 @@ footer .right-side-footer {
     box-shadow: 0 0 10px rgba(210, 248, 1, 0.6);
     
 }
+
+
 
 /* Responsive fixes */
 @media (max-width: 1024px) {
