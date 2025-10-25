@@ -149,9 +149,9 @@ table {
 }
 
 th, td {
-  padding: 15px;
-  text-align: left;
-  
+    padding: 15px;
+    text-align: left;
+    text-align: center;
 }
 
 th {
@@ -256,10 +256,18 @@ button:hover {
   flex: 1;
 }
 
+.btn-container {
+    display:flex;
+    width: 100%;
+    justify-content: flex-start;
+    margin: 1.5rem;
+}
+
 .submit-btn {
   background-color: #D2F801;
   border: none;
-  width: 100%;
+  width: 11%;
+
   padding: 12px;
   border-radius: 6px;
   font-weight: 700;
