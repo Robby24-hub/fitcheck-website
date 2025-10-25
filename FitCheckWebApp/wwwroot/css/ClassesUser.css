@@ -484,3 +484,110 @@ footer .right-side-footer {
         width: 25px;
         height: auto;
     }
+
+    /* === FIX CLASS CARD FORMAT === */
+
+.schedule-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    justify-content: center;
+    align-items: start;
+}
+
+.day-column {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+.day-header {
+    width: 100%;
+    text-align: center;
+    padding: 1rem;
+    background-color: #d2f801;
+    color: black;
+    font-size: 1.5rem;
+    font-weight: bold;
+    border-radius: 8px;
+}
+
+.class-card {
+    background-color: #252525;
+    border-radius: 12px;
+    padding: 1.5rem;
+    width: 100%;
+    min-height: 160px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    position: relative;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+}
+
+.class-card:hover {
+    transform: translateY(-6px);
+    background-color: #323232;
+}
+
+.class-time {
+    font-size: 1rem;
+    color: #d2f801;
+    margin-bottom: 0.4rem;
+}
+
+.class-name {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 0.4rem;
+}
+
+.class-instructor {
+    font-size: 0.9rem;
+    color: #bbb;
+    margin-bottom: 0.4rem;
+}
+
+.class-duration {
+    font-size: 0.85rem;
+    color: #999;
+}
+
+.join-btn {
+    background-color: #d2f801;
+    color: black;
+    border: none;
+    border-radius: 8px;
+    padding: 0.4rem 1rem;
+    font-weight: bold;
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.join-btn:hover {
+    background-color: #e8ff4d;
+    transform: scale(1.05);
+    box-shadow: 0 0 10px rgba(210, 248, 1, 0.6);
+    
+}
+
+/* Responsive fixes */
+@media (max-width: 1024px) {
+    .schedule-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .schedule-container {
+        grid-template-columns: 1fr;
+    }
+}
