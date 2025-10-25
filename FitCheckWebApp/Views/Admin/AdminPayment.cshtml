@@ -24,15 +24,21 @@
             <a asp-controller="Admin" asp-action="AdminPayment">Payment</a>
             <a asp-controller="Admin" asp-action="AdminClass">Classes</a>
             <a asp-controller="Admin" asp-action="AdminMember">Members</a>
-            <form asp-controller="Account" asp-action="Logout" method="post" style="display:inline;">
-                <button type="submit" class="logout-btn">Logout</button>
+
+            <form method="post" style="display:inline;">
+                <button type="button" class="logout-btn" onclick="openLogoutModal()">Logout</button>
             </form>
+
+
         </nav>
     </header>
 
+    <!-- Main -->
+
+
     <main>
         <h2>WELCOME Admin,</h2>
-        <h3>PENDING MEMBERSHIPS</h3>
+        <h3>PENDING MEMBERSHIP</h3>
 
         <div class="table-container">
             <table>
@@ -68,8 +74,125 @@
         </div>
     </main>
 
+    <!-- Logout Modal -->
+    <div id="logoutModal" class="modal-overlay">
+        <div class="modal-content">
+            <h3>Confirm Log Out</h3>
+            <p>Are you sure you want to log out?</p>
+            <div class="modal-buttons">
+                <form id="logoutForm" asp-controller="Account" asp-action="Logout" method="post">
+                    <button type="submit" class="btn-yes">Yes</button>
+                    <button type="button" class="btn-no" onclick="closeLogoutModal()">No</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+                function openLogoutModal() {
+            document.getElementById("logoutModal").style.display = "flex";
+        }
+
+        function closeLogoutModal() {
+            document.getElementById("logoutModal").style.display = "none";
+        }
+
+        // Optional: close modal if user clicks outside content
+        window.onclick = function(event) {
+            const modal = document.getElementById("logoutModal");
+            if (event.target == modal) {
+                closeLogoutModal();
+            }
+        }
+
+    </script>
+
+    <div class="hr-container">
+        <hr>
+    </div>
+
+
+    <div class="hr-container">
+        <hr>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Plan</th>
+                <th>Payment</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var t in Model.PendingTransactions)
+            {
+                <tr>
+                    <td>@t.AccountName</td>
+                    <td>@t.MembershipPlan</td>
+                    <td>@t.Amount</td>
+                    <td>
+
+                        <form asp-controller="Admin" asp-action="ApproveMembership" method="post" style="display:inline;">
+                            <input type="hidden" name="transactionId" value="@t.TransactionId" />
+                            <button type="submit" class="approve">Approve</button>
+                        </form>
+
+                        <form asp-controller="Admin" asp-action="DeclineMembership" method="post" style="display:inline;">
+                            <input type="hidden" name="transactionId" value="@t.TransactionId" />
+                            <button type="submit" class="decline">Decline</button>
+                        </form>
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+    </div>
+    </main>
+
+
+    <div class="hr-container">
+        <hr>
+    </div>
+
+
+    <div class="hr-container">
+        <hr>
+    </div>
+
     <footer>
-        <!-- footer content here -->
+        <div class="footer-container">
+            <div class="left-side-footer">
+                <div class="description-footer">
+                    <img class="fitcheck-logo-footer" src="~/images_fitcheck/fitcheckicon.png">
+                    <p>Transform your body and mind at FitCheck Gym. With state-of-the-art equipment, expert trainers, and a supportive community, we're here to help you achieve your fitness goals.</p>
+                </div>
+                <div class="follow-socials-container">
+                    <h4 class="follow-us-footer">FOLLOW US</h4>
+                    <div class="social-media-container">
+                        <a target="_blank" href="https://www.facebook.com/"><img src="~/images_fitcheck/icon_fb-removebg-preview.png"></a>
+                        <a target="_blank" href="https://www.linkedin.com/"><img src="~/images_fitcheck/Icon_linkedin-removebg-preview.png"></a>
+                        <a target="_blank" href="https://www.youtube.com/"><img src="~/images_fitcheck/icon_youtube-removebg-preview.png"></a>
+                        <a target="_blank" href="https://www.instagram.com/"><img src="~/images_fitcheck/icon_instagram-removebg-preview.png"></a>
+                    </div>
+                </div>
+            </div>
+            <div class="right-side-footer">
+                <div class="address">
+                    <img src="~/images_fitcheck/icon_location-removebg-preview.png">
+                    <p>Street 1, Congressional Rd Caloocan City</p>
+                </div>
+                <div class="email-address">
+                    <img src="~/images_fitcheck/icon_email-removebg-preview.png">
+                    <p>info@fitcheckgym.com</p>
+                </div>
+                <div class="contact-number">
+                    <img src="~/images_fitcheck/icon_mobile-removebg-preview.png">
+                    <p>09192344890 / 09365144587</p>
+                </div>
+            </div>
+        </div>
     </footer>
 </body>
 </html>
