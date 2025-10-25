@@ -1,0 +1,98 @@
+﻿@model FitCheckWebApp.ViewModels.ClassesUserViewModel
+
+@{
+    Layout = null;
+    var trainerName = User.Identity?.Name?.Trim().ToLower() ?? "";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/css/TrainerClass.css" asp-append-version="true" />
+    <link rel="icon" href="~/images_fitcheck/fitcheckicon.png" />
+    <title>Classes | FitCheck Gym</title>
+</head>
+<body>
+    <header>
+        <div class="brand-container">
+            <img asp-append-version="true" src="~/images_fitcheck/fitcheckicon.png" alt="logo" class="logo" />
+            <h1 class="brand">FITCHECK</h1>
+        </div>
+
+        <nav class="navbar">
+            <a asp-controller="Account" asp-action="TrainerClass">Schedule</a>
+
+            <form asp-controller="Account" asp-action="Logout" method="post" style="display:inline;">
+                <button type="submit" class="logout-btn">Logout</button>
+            </form>
+        </nav>
+    </header>
+
+    <main>
+        <div class="classes-header">
+            <h2 id="welcome-text">WELCOME Trainer, <span id="trainer-name">@User.Identity.Name</span></h2>
+            <h3 class="overview">CLASS OVERVIEW</h3>
+            <p class="subtitle">SEE YOUR CLASSES THIS WEEK</p>
+        </div>
+
+        <div class="schedule-container">
+            @foreach (var day in Model.ClassesByDay)
+            {
+                <div class="day-column">
+                    <div class="day-header">@day.Key.ToString().ToUpper()</div>
+
+                    @foreach (var c in day.Value.OrderBy(c => c.Time))
+                    {
+                        <div class="class-card @(c.InstructorName.Trim().ToLower() == trainerName ? "glow" : "") @(c.IsFull ? "full" : "")">
+                            <div class="class-time">@c.Time.ToString(@"hh\:mm tt")</div>
+                            <h3 class="class-name">@c.Type</h3>
+                            <p class="class-instructor">with @c.InstructorName</p>
+                            <p class="class-duration">@c.DurationMinutes min | Max @c.ParticipantLimit | Joined: @c.ParticipantsCount</p>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </main>
+
+    <div class="hr-container">
+        <hr>
+    </div>
+
+    <footer>
+        <div class="footer-container">
+            <div class="left-side-footer">
+                <div class="description-footer">
+                    <img class="fitcheck-logo-footer" src="~/images_fitcheck/fitcheckicon.png">
+                    <p>Transform your body and mind at FitCheck Gym. With state-of-the-art equipment, expert trainers, and a supportive community, we're here to help you achieve your fitness goals.</p>
+                </div>
+                <div class="follow-socials-container">
+                    <h4 class="follow-us-footer">FOLLOW US</h4>
+                    <div class="social-media-container">
+                        <a target="_blank" href="https://www.facebook.com/"><img src="~/images_fitcheck/icon_fb-removebg-preview.png"></a>
+                        <a target="_blank" href="https://www.linkedin.com/"><img src="~/images_fitcheck/Icon_linkedin-removebg-preview.png"></a>
+                        <a target="_blank" href="https://www.youtube.com/"><img src="~/images_fitcheck/icon_youtube-removebg-preview.png"></a>
+                        <a target="_blank" href="https://www.instagram.com/"><img src="~/images_fitcheck/icon_instagram-removebg-preview.png"></a>
+                    </div>
+                </div>
+            </div>
+            <div class="right-side-footer">
+                <div class="address">
+                    <img src="~/images_fitcheck/icon_location-removebg-preview.png">
+                    <p>Street 1, Congressional Rd Caloocan City</p>
+                </div>
+                <div class="email-address">
+                    <img src="~/images_fitcheck/icon_email-removebg-preview.png">
+                    <p>info@fitcheckgym.com</p>
+                </div>
+                <div class="contact-number">
+                    <img src="~/images_fitcheck/icon_mobile-removebg-preview.png">
+                    <p>09192344890 / 09365144587</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

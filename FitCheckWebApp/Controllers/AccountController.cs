@@ -57,8 +57,13 @@ namespace FitCheckWebApp.Controllers
                 {
                     return RedirectToAction("AdminHome", "Admin");
                 }
+                else if (account.Role == "trainer")
+                {
+                    return RedirectToAction("TrainerClass");
+                }
 
                 return RedirectToAction("UserHome");
+
             }
 
             ModelState.AddModelError("", "Invalid email or password");
@@ -560,6 +565,78 @@ namespace FitCheckWebApp.Controllers
                 return Json(new { success = false, message = "Failed to reset password" });
             }
         }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult UpdateProfile([FromForm] Account model)
+        {
+            try
+            {
+                var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+                var account = AccountManager.FindById(userId);
+
+                if (account == null)
+                    return RedirectToAction("Login");
+
+                // Update properties
+                account.FirstName = model.FirstName;
+                account.LastName = model.LastName;
+                account.BirthDate = model.BirthDate;
+                account.Age = Helpers.Helpers.CalculateAge(model.BirthDate);
+                account.Gender = model.Gender;
+                account.ContactNumber = model.ContactNumber;
+                account.Email = model.Email;
+                account.EmergencyName = model.EmergencyName;
+                account.EmergencyContact = model.EmergencyContact;
+
+                // Save to database
+                AccountManager.UpdateAccount(account);
+
+                TempData["SuccessMessage"] = "Profile updated successfully!";
+                return RedirectToAction("UserProfileUser");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error updating profile: {ex.Message}");
+                TempData["ErrorMessage"] = "Failed to update profile.";
+                return RedirectToAction("UserProfileUser");
+            }
+        }
+
+        [Authorize(Roles = "trainer")]
+        public IActionResult TrainerClass()
+        {
+            int trainerId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+            var classes = ClassManager.GetAllClassesForTrainer(trainerId);
+
+            // group classes by day
+            var classesByDay = classes
+                .GroupBy(c => c.Day)
+                .ToDictionary(
+                    g => g.Key,
+                    g => g.Select(c => new ClassDisplayViewModel
+                    {
+                        Id = c.Id,
+                        Type = FormatClassType(c.Type),
+                        InstructorName = c.InstructorName ?? "Unassigned",
+                        Time = c.Time,
+                        DurationMinutes = c.DurationMinutes,
+                        ParticipantLimit = c.ParticipantLimit,
+                        ParticipantsCount = c.ParticipantsCount
+                    }).ToList()
+                );
+
+            var model = new ClassesUserViewModel
+            {
+                ClassesByDay = classesByDay
+            };
+
+            return View(model);
+        }
+
+
+
+
 
     }
 }

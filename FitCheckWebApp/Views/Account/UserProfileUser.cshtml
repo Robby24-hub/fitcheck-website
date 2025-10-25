@@ -18,29 +18,27 @@
             <img asp-append-version="true" src="~/images_fitcheck/fitcheckicon.png" alt="logo" class="logo" />
             <h1 class="brand">FITCHECK</h1>
         </div>
-
         <nav class="navbar">
             <a asp-controller="Account" asp-action="AccountUser" class="back-link">
-                <i data-lucide="arrow-left"></i>
-                <span>Back</span>
+                <i data-lucide="arrow-left"></i><span>Back</span>
             </a>
         </nav>
     </header>
-	
+
     <main>
         <h2 class="page-title">USER PROFILE</h2>
 
         <section class="form-section">
-            <form class="form">
+            
+            <form class="form" asp-controller="Account" asp-action="UpdateProfile" method="post">
                 <!-- PERSONAL INFORMATION -->
                 <h3 class="section-title">PERSONAL INFORMATION</h3>
-
                 <div class="form-grid single-last">
                     <input asp-for="FirstName" type="text" placeholder="First Name" class="input-field" />
                     <input asp-for="LastName" type="text" placeholder="Last Name" class="input-field" />
                     <input asp-for="BirthDate" type="date" placeholder="dd/mm/yyyy" class="input-field" />
                     <input asp-for="Age" type="number" placeholder="Age" class="input-field" />
-					<select asp-for="Gender" placeholder="Gender" class="input-field">
+                    <select asp-for="Gender" placeholder="Gender" class="input-field">
                         <option value="" disabled selected hidden>Gender</option>
                         <option value="Male">Male</option>
                         <option value="Female">Female</option>
@@ -59,173 +57,123 @@
 
                 <!-- BUTTONS -->
                 <div class="button-group">
-                    <button type="submit" class="btn-save" onclick="openVerificationPopup()">Save Changes</button>
-                    <button asp-controller="Account" asp-action="AccountUser" class="btn-cancel">Cancel</button>
+                   
+                    <button type="button" class="btn-save" onclick="openConfirmModal()">Save Changes</button>
+                    <a asp-controller="Account" asp-action="AccountUser" class="btn-cancel">Cancel</a>
                 </div>
             </form>
         </section>
     </main>
 
+    <!-- CONFIRM SAVE MODAL -->
+    <div id="confirmModal" class="popup-container">
+        <div class="popup">
+            <h2 class="popup-title">CONFIRM SAVE</h2>
+            <p class="popup-text">Are you sure you want to save these changes?</p>
+            <div class="button-group">
+                <button class="btn-yes" onclick="startEmailVerification()">Yes</button>
+                <button class="btn-no" onclick="closeConfirmModal()">No</button>
+            </div>
+        </div>
+    </div>
 
-    <!-- Ito yung form -->
-    <!-- Email Verification Popup -->
+    <!-- EMAIL VERIFICATION POPUP -->
     <div id="emailVerificationPopup" class="popup-container">
         <div class="popup">
-            <button class="close-btn" onclick="closePopup()">&times;</button>
+            <button class="close-btn" onclick="closeVerificationPopup()">&times;</button>
             <h2 class="popup-title">VERIFY EMAIL</h2>
-            <p class="popup-text">To change your infomations, verify your email. We sent you a 4-digit code.</p>
+            <p class="popup-text">To save your changes, verify your email. We sent you a 4-digit code.</p>
 
             <div class="code-inputs">
-                <input type="text" maxlength="1" class="code-box" />
-                <input type="text" maxlength="1" class="code-box" />
-                <input type="text" maxlength="1" class="code-box" />
-                <input type="text" maxlength="1" class="code-box" />
+                <input type="text" maxlength="1" class="code-box" id="code1" />
+                <input type="text" maxlength="1" class="code-box" id="code2" />
+                <input type="text" maxlength="1" class="code-box" id="code3" />
+                <input type="text" maxlength="1" class="code-box" id="code4" />
             </div>
 
-            <button class="btn-continue">CONTINUE</button>
-            <p class="resend-text">Didn’t get the code? <a href="#" class="resend-link">Resend</a></p>
+            <button class="btn-continue" onclick="verifyProfileCode()">CONTINUE</button>
+            <p class="resend-text">
+                Didn’t get the code?
+                <a href="#" class="resend-link" onclick="resendProfileCode(); return false;">Resend</a>
+            </p>
         </div>
     </div>
-
-    <script>
-        function openVerificationPopup() {
-            document.getElementById("emailVerificationPopup").style.display = "flex";
-        }
-
-        function closePopup() {
-            document.getElementById("emailVerificationPopup").style.display = "none";
-        }
-
-        // Ensure popup never shows on reload
-        window.addEventListener('load', function () {
-            document.getElementById("emailVerificationPopup").style.display = "none";
-        });
-    </script>
-
-    <!-- Hanggang js -->
-
-
-     <script src="https://unpkg.com/lucide@0.268.0/dist/umd/lucide.min.js"></script>
-    <script>
-        lucide.createIcons();
-
-        document.addEventListener("DOMContentLoaded", () => {
-            const saveBtn = document.querySelector(".btn-save");
-            const modal = document.getElementById("saveModal");
-            const yesBtn = document.querySelector(".btn-yes");
-            const noBtn = document.querySelector(".btn-no");
-            const closeBtn = document.querySelector(".close-btn");
-            const form = document.querySelector(".form");
-
-            if (!saveBtn || !modal || !yesBtn || !noBtn || !form) return;
-
-
-            // Open modal
-            saveBtn.addEventListener("click", (e) => {
-                e.preventDefault();
-                modal.style.display = "flex";
-            });
-
-            // Close modal (No or X)
-            noBtn.addEventListener("click", () => modal.style.display = "none");
-
-            // Confirm save
-            yesBtn.addEventListener("click", () => {
-                modal.style.display = "none";
-                form.submit();
-            });
-
-            // Click outside to close
-            window.addEventListener("click", (e) => {
-                if (e.target === modal) modal.style.display = "none";
-            });
-        });
-    </script>
-
-
-
-
-    <div class="hr-container">
-        <hr>
-    </div>
-
-    <footer>
-        <div class="footer-container">
-            <div class="left-side-footer">
-                <div class="description-footer">
-                    <img class="fitcheck-logo-footer" src="~/images_fitcheck/fitcheckicon.png" />
-                    <p>
-                        Transform your body and mind at FitCheck Gym. With state-of-the-art equipment,
-                        expert trainers, and a supportive community, we're here to help you achieve your fitness goals.
-                    </p>
-                </div>
-                <div class="follow-socials-container">
-                    <h4 class="follow-us-footer">FOLLOW US</h4>
-                    <div class="social-media-container">
-                        <a target="_blank" href="https://www.facebook.com/"><img src="~/images_fitcheck/icon_fb-removebg-preview.png" /></a>
-                        <a target="_blank" href="https://www.linkedin.com/"><img src="~/images_fitcheck/Icon_linkedin-removebg-preview.png" /></a>
-                        <a target="_blank" href="https://www.youtube.com/"><img src="~/images_fitcheck/icon_youtube-removebg-preview.png" /></a>
-                        <a target="_blank" href="https://www.instagram.com/"><img src="~/images_fitcheck/icon_instagram-removebg-preview.png" /></a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="right-side-footer">
-                <div class="address">
-                    <img src="~/images_fitcheck/icon_location-removebg-preview.png" />
-                    <p>Street 1, Congressional Rd Caloocan City</p>
-                </div>
-                <div class="email-address">
-                    <img src="~/images_fitcheck/icon_email-removebg-preview.png" />
-                    <p>info@fitcheckgym.com</p>
-                </div>
-                <div class="contact-number">
-                    <img src="~/images_fitcheck/icon_mobile-removebg-preview.png" />
-                    <p>09192344890 / 09365144587</p>
-                </div>
-            </div>
-        </div>
-    </footer>
 
     <script src="https://unpkg.com/lucide@0.268.0/dist/umd/lucide.min.js"></script>
     <script>
         lucide.createIcons();
-    </script>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const saveBtn = document.querySelector(".btn-save");
-            const modal = document.getElementById("saveModal");
-            const yesBtn = document.querySelector(".btn-yes");
-            const noBtn = document.querySelector(".btn-no");
-            const form = document.querySelector(".form");
+        // --- CONFIRM MODAL ---
+        function openConfirmModal() {
+            document.getElementById("confirmModal").style.display = "flex";
+        }
+        function closeConfirmModal() {
+            document.getElementById("confirmModal").style.display = "none";
+        }
 
-            // Open modal when clicking SAVE
-            saveBtn.addEventListener("click", (e) => {
-                e.preventDefault();
-                modal.style.display = "flex";
-            });
+        // --- EMAIL VERIFICATION ---
+        async function startEmailVerification() {
+            closeConfirmModal();
+            try {
+                const response = await fetch('/Account/SendVerificationCode', { method: 'POST', headers: { 'Content-Type': 'application/json' } });
+                const result = await response.json();
+                if (result.success) openVerificationPopup();
+                else alert(result.message || 'Failed to send verification code');
+            } catch (err) { console.error(err); alert('Error sending verification code'); }
+        }
 
-            // Close modal (No, Not Now)
-            noBtn.addEventListener("click", () => {
-                modal.style.display = "none";
-            });
+        function openVerificationPopup() {
+            document.getElementById("emailVerificationPopup").style.display = "flex";
+            document.getElementById('code1').focus();
+        }
+        function closeVerificationPopup() {
+            document.getElementById("emailVerificationPopup").style.display = "none";
+            clearCodeInputs();
+        }
+        function clearCodeInputs() {
+            document.querySelectorAll('#emailVerificationPopup .code-box').forEach(i => i.value='');
+            document.getElementById('code1').focus();
+        }
 
-            // Confirm save
-            yesBtn.addEventListener("click", () => {
-                modal.style.display = "none";
-                form.submit(); // proceed with saving
-            });
+        document.querySelectorAll('#emailVerificationPopup .code-box').forEach((input, idx, arr) => {
+            input.addEventListener('input', () => { if (input.value.length===1 && idx<arr.length-1) arr[idx+1].focus(); });
+            input.addEventListener('keydown', e => { if (e.key==='Backspace' && input.value==='' && idx>0) arr[idx-1].focus(); });
+        });
 
-            // Close modal if clicked outside
-            window.addEventListener("click", (e) => {
-                if (e.target === modal) {
-                    modal.style.display = "none";
+        async function verifyProfileCode() {
+            const code = Array.from(document.querySelectorAll('#emailVerificationPopup .code-box')).map(i=>i.value).join('');
+            if (code.length!==4) { alert('Enter all 4 digits'); return; }
+
+            try {
+                const response = await fetch('/Account/VerifyCode', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ code: code })
+                });
+                const result = await response.json();
+                if (result.success) {
+                    closeVerificationPopup();
+                    document.querySelector(".form").submit(); 
+                } else {
+                    alert(result.message || 'Invalid or expired code'); clearCodeInputs();
                 }
-            });
+            } catch (err) { console.error(err); alert('Error verifying code'); }
+        }
+
+        async function resendProfileCode() {
+            try {
+                const response = await fetch('/Account/SendVerificationCode', { method:'POST', headers:{'Content-Type':'application/json'} });
+                const result = await response.json();
+                if (result.success) { alert('New code sent!'); clearCodeInputs(); }
+                else alert(result.message || 'Failed to resend code');
+            } catch(err) { console.error(err); alert('Error resending code'); }
+        }
+
+        
+        window.addEventListener('load', () => {
+            document.getElementById("emailVerificationPopup").style.display="none";
+            document.getElementById("confirmModal").style.display="none";
         });
     </script>
-
-
 </body>
 </html>

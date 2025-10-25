@@ -106,13 +106,13 @@ namespace FitCheckWebApp.DataAccess
             connection.Open();
             using var cmd = connection.CreateCommand();
 
-            // Use a transaction to ensure data consistency
+
             using var transaction = connection.BeginTransaction();
             cmd.Transaction = transaction;
 
             try
             {
-                // First check if class exists and is not full
+
                 cmd.CommandText = @"
             SELECT ParticipantsCount, ParticipantLimit 
             FROM Class 
@@ -125,7 +125,7 @@ namespace FitCheckWebApp.DataAccess
                     if (!reader.Read())
                     {
                         transaction.Rollback();
-                        return false; // Class not found
+                        return false; 
                     }
 
                     int currentCount = reader.GetInt32("ParticipantsCount");
@@ -134,11 +134,11 @@ namespace FitCheckWebApp.DataAccess
                     if (currentCount >= limit)
                     {
                         transaction.Rollback();
-                        return false; // Class is full
+                        return false; 
                     }
                 }
 
-                // Increment the count
+               
                 cmd.Parameters.Clear();
                 cmd.CommandText = @"
                     UPDATE Class 
@@ -260,5 +260,17 @@ namespace FitCheckWebApp.DataAccess
 
             cmd.ExecuteNonQuery();
         }
+
+        public static List<Class> GetAllClassesForTrainer(int trainerId)
+        {
+            
+            var allClasses = GetAllClasses();
+
+            
+            return allClasses.Where(c => c.AccountID == trainerId).ToList();
+        }
+
+
+
     }
 }
