@@ -18,11 +18,14 @@ namespace FitCheckWebApp.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-         
+        public IActionResult Privacy() => View();
+
+        public IActionResult Classes() => View();
+
+        public IActionResult AboutUs() => View();
+
+        public IActionResult Membership() => View();
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
