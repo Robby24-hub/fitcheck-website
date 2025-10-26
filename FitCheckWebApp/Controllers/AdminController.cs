@@ -1,6 +1,6 @@
 ﻿using FitCheckWebApp.DataAccess;
 using FitCheckWebApp.Models;
-using FitCheckWebApp.ViewModels;
+using FitCheckWebApp.ViewModels.Admin;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
