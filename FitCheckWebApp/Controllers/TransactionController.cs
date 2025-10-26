@@ -3,6 +3,7 @@ using FitCheckWebApp.DataAccess;
 using FitCheckWebApp.Helpers;
 using FitCheckWebApp.Models;
 using FitCheckWebApp.ViewModels;
+using FitCheckWebApp.ViewModels.Transaction;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -162,7 +163,7 @@ namespace FitCheckWebApp.Controllers
 
 
         // ===== PAGES =====
-        public IActionResult Membership() => View();
+
 
         public IActionResult UserMembership() => View();
 

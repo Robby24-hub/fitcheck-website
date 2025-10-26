@@ -3,6 +3,7 @@ using FitCheckWebApp.DataAccess;
 using FitCheckWebApp.Helpers;
 using FitCheckWebApp.Models;
 using FitCheckWebApp.ViewModels;
+using FitCheckWebApp.ViewModels.Account;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -65,10 +66,10 @@ namespace FitCheckWebApp.Controllers
                 }
                 else if (account.Role == "trainer")
                 {
-                    return RedirectToAction("TrainerClass");
+                    return RedirectToAction("TrainerClass", "Trainer");
                 }
 
-                return RedirectToAction("UserHome");
+                return RedirectToAction("UserHome", "Account");
 
             }
 
@@ -402,9 +403,9 @@ namespace FitCheckWebApp.Controllers
         }
 
 
-        public IActionResult AboutUs() => View();
+        
 
-        public IActionResult Classes() => View();
+
         public IActionResult Products() => View();
 
         public IActionResult AccountUser() => View();
@@ -630,42 +631,7 @@ namespace FitCheckWebApp.Controllers
             }
         }
 
-        [Authorize(Roles = "trainer")]
-        public IActionResult TrainerClass()
-        {
-            var userId = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? "0");
-            var currentUser = AccountManager.FindById(userId);
-
-            // Get only classes assigned to this trainer
-            var trainerClasses = ClassManager.GetAllClassesForTrainer(userId);
-
-            // Group classes by day
-            var classesByDay = trainerClasses
-                .GroupBy(c => c.Day)
-                .ToDictionary(
-                    g => g.Key,
-                    g => g.Select(c => new ClassDisplayViewModel
-                    {
-                        Id = c.Id,
-                        Type = FormatClassType(c.Type),
-                        InstructorName = c.InstructorName ?? "Unassigned",
-                        Time = c.Time,
-                        DurationMinutes = c.DurationMinutes,
-                        ParticipantLimit = c.ParticipantLimit,
-                        ParticipantsCount = c.ParticipantsCount
-                    })
-                    .OrderBy(c => c.Time)
-                    .ToList()
-                );
-
-            var model = new ClassesUserViewModel
-            {
-                ClassesByDay = classesByDay,
-                TrainerName = currentUser != null ? $"{currentUser.FirstName} {currentUser.LastName}" : "Trainer"
-            };
-
-            return View(model);
-        }
+        
 
 
 

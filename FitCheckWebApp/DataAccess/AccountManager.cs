@@ -1,5 +1,5 @@
 ﻿using FitCheckWebApp.Models;
-using FitCheckWebApp.ViewModels;
+using FitCheckWebApp.ViewModels.Admin;
 using MySql.Data.MySqlClient;
 using Mysqlx.Crud;
 

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace FitCheckWebApp.ViewModels
+namespace FitCheckWebApp.ViewModels.Account
 {
     public class LoginViewModel
     {

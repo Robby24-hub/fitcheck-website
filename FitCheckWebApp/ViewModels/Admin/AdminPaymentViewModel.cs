@@ -1,4 +1,4 @@
-﻿namespace FitCheckWebApp.ViewModels
+﻿namespace FitCheckWebApp.ViewModels.Admin
 {
     public class AdminPaymentViewModel
     {
