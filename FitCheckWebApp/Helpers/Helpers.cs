@@ -49,7 +49,8 @@ namespace FitCheckWebApp.Helpers
             var today = DateTime.Today;
 
             int age = today.Year - date.Year;
-            if (date > today.AddYears(-age))
+
+            if (date.Month > today.Month || (date.Month == today.Month && date.Day > today.Day))
                 age--;
 
             return age < 0 ? 0 : age;

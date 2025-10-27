@@ -15,7 +15,10 @@ namespace FitCheckWebApp.Controllers
     [NoCache]
     public class AccountController : Controller
     {
-        // ===== LOGIN =====
+        // ==========================
+        // ===== LOGIN & LOGOUT =====
+        // ==========================
+        #region Login & Logout
         [HttpGet]
         public IActionResult Login()
         {
@@ -29,7 +32,6 @@ namespace FitCheckWebApp.Controllers
 
             if (account != null && verifyPassword(model.Password!, account.PasswordHash!))
             {
-                    
                 if (!account.IsActive)
                 {
                     ModelState.AddModelError("", "This account has been deactivated. Please contact support.");
@@ -44,7 +46,6 @@ namespace FitCheckWebApp.Controllers
                     new Claim(ClaimTypes.Role, account.Role)
                 };
 
-
                 var claimsIdentity = new ClaimsIdentity(
                     claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
@@ -53,7 +54,6 @@ namespace FitCheckWebApp.Controllers
                     IsPersistent = true,
                     ExpiresUtc = DateTimeOffset.UtcNow.AddHours(1)
                 };
-
 
                 await HttpContext.SignInAsync(
                     CookieAuthenticationDefaults.AuthenticationScheme,
@@ -70,7 +70,6 @@ namespace FitCheckWebApp.Controllers
                 }
 
                 return RedirectToAction("UserHome", "Account");
-
             }
 
             ModelState.AddModelError("", "Invalid email or password");
@@ -83,9 +82,13 @@ namespace FitCheckWebApp.Controllers
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Login", "Account");
         }
+        #endregion
 
 
-        // ===== REGISTER =====
+        // ==========================
+        // ===== REGISTRATION =======
+        // ==========================
+        #region Registration
         [HttpGet]
         public IActionResult Register()
         {
@@ -95,6 +98,20 @@ namespace FitCheckWebApp.Controllers
         [HttpPost]
         public IActionResult Register(RegistrationViewModel model)
         {
+
+            if (!model.AgreeTerms)
+            {
+                ModelState.AddModelError(nameof(model.AgreeTerms), "You must agree to the Terms and Conditions.");
+            }
+
+            if (!model.AgreePrivacy)
+            {
+                ModelState.AddModelError(nameof(model.AgreePrivacy), "You must agree to the Privacy Policy.");
+            }
+
+            if (!ModelState.IsValid)
+                return View(model);
+
             if (!Helpers.Helpers.IsBirthdayValid(model.BirthDate))
             {
                 ModelState.AddModelError("BirthDate", "Birth date cannot be a future date.");
@@ -109,8 +126,7 @@ namespace FitCheckWebApp.Controllers
                 return View(model);
             }
 
-            if (!ModelState.IsValid)
-                return View(model);
+            
 
             if (AccountManager.FindByEmail(model.Email!) != null)
             {
@@ -134,18 +150,29 @@ namespace FitCheckWebApp.Controllers
             };
 
             AccountManager.PostAccount(account);
-
             return RedirectToAction("Login");
         }
+        #endregion
 
 
-        // ===== PAGES =====
-
+        // ==========================
+        // ===== STATIC PAGES =======
+        // ==========================
+        #region Static Pages
         public IActionResult TermsAndConditions() => View();
-
         public IActionResult PrivacyPolicy() => View();
+        public IActionResult Products() => View();
+        public IActionResult AccountUser() => View();
+        public IActionResult AboutFitcheckUser() => View();
+        public IActionResult PrivacyPolicyUser() => View();
+        public IActionResult TermsConditionsUser() => View();
+        #endregion
 
 
+        // ==========================
+        // ===== USER PAGES ========
+        // ==========================
+        #region User Pages
         [Authorize]
         public IActionResult PaymentMethod() => View();
 
@@ -160,10 +187,8 @@ namespace FitCheckWebApp.Controllers
             }
 
             int accountId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
-
             var account = AccountManager.FindById(accountId);
             var transaction = TransactionManager.FindLatestActiveByAccount(accountId);
-
 
             if (account == null)
                 return RedirectToAction("Login", "Account");
@@ -172,7 +197,6 @@ namespace FitCheckWebApp.Controllers
             {
                 FullName = $"{account.FirstName} {account.LastName}",
                 MemberID = account.MemberID,
-
             };
 
             if (transaction != null)
@@ -199,7 +223,6 @@ namespace FitCheckWebApp.Controllers
                 {
                     model.WarningMessage = null;
                 }
-
             }
             else
             {
@@ -209,30 +232,23 @@ namespace FitCheckWebApp.Controllers
                 model.Status = "N/A";
             }
 
-
             Console.WriteLine($"ACCOUNT: {account.Id}, PLAN: {account.MembershipPlan}");
             Console.WriteLine($"TRANSACTION: {(transaction == null ? "NULL" : transaction.MembershipPlan.ToString())}");
 
             return View(model);
-
-
         }
-
 
         [Authorize]
         public IActionResult ManageMembershipUser()
         {
             if (!User.Identity!.IsAuthenticated)
-            {
                 return RedirectToAction("Login", "Account");
-            }
 
             int accountId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
             var account = AccountManager.FindById(accountId);
 
             if (account == null)
                 return RedirectToAction("Login", "Account");
-
 
             var transaction = TransactionManager.FindLatestActiveByAccount(accountId);
 
@@ -244,7 +260,7 @@ namespace FitCheckWebApp.Controllers
 
             if (transaction != null)
             {
-                model.TransactionId = transaction.TransactionID; 
+                model.TransactionId = transaction.TransactionID;
                 model.MembershipPlan = transaction.MembershipPlan.ToString();
                 model.TransactionDate = transaction.TransactionDate;
                 model.EndDate = transaction.EndDate;
@@ -271,15 +287,12 @@ namespace FitCheckWebApp.Controllers
             return View(model);
         }
 
-
         [Authorize]
         public IActionResult ClassesUser()
         {
             var userId = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? "0");
             var currentUser = AccountManager.FindById(userId);
-
             var allClasses = ClassManager.GetAllClasses();
-
 
             var classesByDay = allClasses
                 .GroupBy(c => c.Day)
@@ -299,22 +312,17 @@ namespace FitCheckWebApp.Controllers
                     .ToList()
                 );
 
-            
             bool hasActiveMembership = false;
             string? membershipPlan = null;
 
             if (currentUser != null)
             {
-               
                 hasActiveMembership = currentUser.MembershipPlan != null && currentUser.MembershipPlan != MembershipPlan.None;
                 membershipPlan = currentUser.MembershipPlan.ToString();
 
-                
                 var activeTransaction = TransactionManager.GetActiveTransactionByAccountId(userId);
                 if (activeTransaction == null || activeTransaction.Status != TransactionStatus.Active || activeTransaction.EndDate < DateTime.Now)
-                {
                     hasActiveMembership = false;
-                }
             }
 
             var model = new ClassesUserViewModel
@@ -327,7 +335,6 @@ namespace FitCheckWebApp.Controllers
             return View(model);
         }
 
-
         [HttpPost]
         [Authorize]
         public IActionResult JoinClass([FromBody] JoinClassRequest request)
@@ -337,35 +344,29 @@ namespace FitCheckWebApp.Controllers
                 var userId = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? "0");
                 var currentUser = AccountManager.FindById(userId);
 
-               
                 if (currentUser == null || currentUser.MembershipPlan == null)
                 {
                     return Json(new { success = false, message = "You need an active membership to join classes. Please purchase a membership first." });
                 }
 
-               
                 var activeTransaction = TransactionManager.GetActiveTransactionByAccountId(userId);
                 if (activeTransaction == null || activeTransaction.Status != TransactionStatus.Active || activeTransaction.EndDate < DateTime.Now)
                 {
                     return Json(new { success = false, message = "Your membership has expired. Please renew your membership to join classes." });
                 }
 
-                
                 var classToJoin = ClassManager.GetClassById(request.ClassId);
 
                 if (classToJoin == null)
                     return Json(new { success = false, message = "Class not found" });
 
-                
                 if (classToJoin.ParticipantsCount >= classToJoin.ParticipantLimit)
                     return Json(new { success = false, message = "Class is full" });
 
-                
                 bool joined = ClassManager.IncrementParticipantCount(request.ClassId);
 
                 if (joined)
                 {
-                    
                     var updatedClass = ClassManager.GetClassById(request.ClassId);
                     bool isFull = updatedClass != null && updatedClass.ParticipantsCount >= updatedClass.ParticipantLimit;
 
@@ -389,30 +390,13 @@ namespace FitCheckWebApp.Controllers
                 return Json(new { success = false, message = "An error occurred while joining the class" });
             }
         }
-
-        
-        public class JoinClassRequest
-        {
-            public int ClassId { get; set; }
-        }
+        #endregion
 
 
-        private string FormatClassType(ClassType type)
-        {
-            return System.Text.RegularExpressions.Regex.Replace(type.ToString(), "([a-z])([A-Z])", "$1 $2");
-        }
-
-
-        
-
-
-        public IActionResult Products() => View();
-
-        public IActionResult AccountUser() => View();
-        public IActionResult AboutFitcheckUser() => View();
-        public IActionResult PrivacyPolicyUser() => View();
-        public IActionResult TermsConditionsUser() => View();
-
+        // ==========================
+        // ===== PROFILE & PASSWORD ==
+        // ==========================
+        #region Profile & Password
         [Authorize]
         public IActionResult UserProfileUser()
         {
@@ -422,22 +406,11 @@ namespace FitCheckWebApp.Controllers
                 return RedirectToAction("Login");
 
             account.Age = Helpers.Helpers.CalculateAge(account.BirthDate);
-
-
-
             return View(account);
         }
 
-
-        //CHANGE PASSWORD
-
         [Authorize]
-        public IActionResult ChangePasswordUser()
-        {
-            return View();
-        }
-
-
+        public IActionResult ChangePasswordUser() => View();
 
         [HttpPost]
         [Authorize]
@@ -451,24 +424,18 @@ namespace FitCheckWebApp.Controllers
                 if (user == null)
                     return Json(new { success = false, message = "User not found" });
 
-
                 string code = VerificationCodeManager.GenerateCode();
-
                 VerificationCodeManager.SaveCode(user.Email, code);
-
 
                 string contextType = context?.Type ?? "password";
 
-
                 if (contextType == "profile")
                 {
-
                     Console.WriteLine("Sending PROFILE UPDATE email");
                     EmailHelper.SendProfileUpdateVerificationCode(user.Email, code, user.FirstName ?? "User");
                 }
                 else
                 {
-
                     Console.WriteLine("Sending PASSWORD RESET email");
                     EmailHelper.SendVerificationCode(user.Email, code, user.FirstName ?? "User");
                 }
@@ -480,12 +447,6 @@ namespace FitCheckWebApp.Controllers
                 Console.WriteLine($"Error sending verification code: {ex.Message}");
                 return Json(new { success = false, message = "Failed to send verification code" });
             }
-        }
-
-
-        public class VerificationContext
-        {
-            public string Type { get; set; } = "password"; 
         }
 
         [HttpPost]
@@ -503,13 +464,9 @@ namespace FitCheckWebApp.Controllers
                 bool isValid = VerificationCodeManager.VerifyCode(user.Email, model.Code);
 
                 if (isValid)
-                {
                     return Json(new { success = true, message = "Code verified successfully" });
-                }
                 else
-                {
                     return Json(new { success = false, message = "Invalid or expired code" });
-                }
             }
             catch (Exception ex)
             {
@@ -530,18 +487,15 @@ namespace FitCheckWebApp.Controllers
                 if (user == null)
                     return Json(new { success = false, message = "User not found" });
 
-                
                 if (!Helpers.Helpers.verifyPassword(model.CurrentPassword, user.PasswordHash))
                     return Json(new { success = false, message = "Current password is incorrect" });
 
-                
                 if (model.NewPassword != model.ConfirmPassword)
                     return Json(new { success = false, message = "New passwords do not match" });
 
                 if (model.NewPassword.Length < 6)
                     return Json(new { success = false, message = "Password must be at least 6 characters" });
 
-                
                 user.PasswordHash = Helpers.Helpers.HashingPassword(model.NewPassword);
                 AccountManager.UpdateAccount(user);
 
@@ -566,23 +520,19 @@ namespace FitCheckWebApp.Controllers
                 if (user == null)
                     return Json(new { success = false, message = "User not found" });
 
-                
                 bool isValid = VerificationCodeManager.VerifyCode(user.Email, model.Code);
                 if (!isValid)
                     return Json(new { success = false, message = "Invalid or expired code" });
 
-                
                 if (model.NewPassword != model.ConfirmPassword)
                     return Json(new { success = false, message = "Passwords do not match" });
 
                 if (model.NewPassword.Length < 6)
                     return Json(new { success = false, message = "Password must be at least 6 characters" });
 
-                
                 user.PasswordHash = Helpers.Helpers.HashingPassword(model.NewPassword);
                 AccountManager.UpdateAccount(user);
 
-                
                 VerificationCodeManager.MarkCodeAsUsed(user.Email, model.Code);
 
                 return Json(new { success = true, message = "Password reset successfully" });
@@ -606,7 +556,6 @@ namespace FitCheckWebApp.Controllers
                 if (account == null)
                     return RedirectToAction("Login");
 
-                
                 account.FirstName = model.FirstName;
                 account.LastName = model.LastName;
                 account.BirthDate = model.BirthDate;
@@ -617,7 +566,6 @@ namespace FitCheckWebApp.Controllers
                 account.EmergencyName = model.EmergencyName;
                 account.EmergencyContact = model.EmergencyContact;
 
-                
                 AccountManager.UpdateAccount(account);
 
                 TempData["SuccessMessage"] = "Profile updated successfully!";
@@ -630,13 +578,27 @@ namespace FitCheckWebApp.Controllers
                 return RedirectToAction("UserProfileUser");
             }
         }
-
-        
-
+        #endregion
 
 
+        // ==========================
+        // ===== HELPERS & CLASSES ==
+        // ==========================
+        #region Helper Classes
+        public class JoinClassRequest
+        {
+            public int ClassId { get; set; }
+        }
 
+        public class VerificationContext
+        {
+            public string Type { get; set; } = "password";
+        }
 
-
+        private string FormatClassType(ClassType type)
+        {
+            return System.Text.RegularExpressions.Regex.Replace(type.ToString(), "([a-z])([A-Z])", "$1 $2");
+        }
+        #endregion
     }
 }

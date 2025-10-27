@@ -433,3 +433,31 @@ footer .right-side-footer {
         width: 25px;
         height: auto;
     }
+
+
+//Rex - error message quick fix:
+
+.input-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.input-wrapper .text-danger {
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+        display: block;
+        min-height: 1.25rem; 
+}
+
+.checkbox-wrapper {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+}
+
+.checkbox-wrapper .text-danger {
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+        margin-left: 1.5rem; 
+}
