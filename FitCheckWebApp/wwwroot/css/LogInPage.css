@@ -1,9 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap');
+
 /* Reset */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Lato', sans-serif;
 }
 
 body {
@@ -82,17 +84,20 @@ main {
 
 .form-container {
     background-color: black;
-    padding: 2rem 3rem;
-    justify-content: center;
-    width: 180%;
-    max-width: 800px;
-    transform: translateX(-23%);
-    border: solid black;
-    border-radius: 3rem;
+    padding: 3rem 4rem;
+    border-radius: 2rem;
+    border: solid 2px #1C1C1C;
     display: flex;
     flex-direction: column;
     gap: 1.3rem;
+    width: 50vw;
+    max-width: 900px;
+    margin: 0 auto;
+    box-shadow: 0 0 30px rgba(210, 248, 1, 0.15);
 }
+
+
+
 
 .txt-sign-in {
     align-self: center;
@@ -111,7 +116,18 @@ main {
     width: 100%;
     height: 40px;
     border-radius: 10px;
+    padding-left: 12px;
+    padding-right: 12px;
+    border: none;
+    outline: none;
+    font-size: 1rem;
 }
+
+::placeholder {
+    color: #666; /* soft gray */
+    font-size: 0.95rem;
+}
+
 
 .forgot-password {
     text-decoration: none;
@@ -140,26 +156,145 @@ button {
         background: #d4ff33;
         transform: translateY(-2px);
         box-shadow: 0 5px 20px rgba(200, 255, 0, 0.4);
+        transition: .3s;
     }
 
 /*register section*/
 .bottom-links {
-    text-align:center;
+    text-align: center;
     width: 100%;
     font-size: .9rem;
 }
 
-    .txt-register-here a {
-        color: white;
-        text-decoration: none;
+.txt-register-here a {
+    color: white;
+    text-decoration: none;
+}
+
+    .txt-register-here a:hover {
+        text-decoration: underline;
+        color: #d2f801;
+        cursor: pointer;
     }
 
-        .txt-register-here a:hover {
-            text-decoration: underline;
-            color: #d2f801;
-            cursor: pointer;
-            
-        }
+.text-danger {
+    color: #ff4444;
+    font-size: 0.9rem;
+    height: 1rem; /* Keeps space even when empty */
+    display: block;
+    margin-top: 0.3rem;
+}
+
+@media (max-width: 700px) {
+    .form-container {
+        width: 90vw;
+        padding: 2rem;
+    }
+}
+
+/* css ng popup */
+/* Popup Background (hidden by default) */
+.popup-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: none; /* Hide by default */
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+}
+
+/* Popup Box */
+.popup {
+    background-color: #111;
+    color: #fff;
+    border-radius: 15px;
+    padding: 30px 40px;
+    width: 400px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 0 15px rgba(255, 255, 0, 0.4);
+}
+
+/* Close Button */
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 22px;
+    color: #d1d1d1;
+    cursor: pointer;
+}
+
+.popup-title {
+    color: #d4ff00;
+    font-weight: 700;
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+}
+
+.popup-text {
+    font-size: 0.95rem;
+    color: #ccc;
+    margin-bottom: 25px;
+}
+
+/* Code Input Fields */
+.code-inputs {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.code-box {
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    font-size: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid #d4ff00;
+    background-color: #222;
+    color: #fff;
+    outline: none;
+}
+
+/* Continue Button */
+.btn-continue {
+    background-color: #d4ff00;
+    color: #000;
+    border: none;
+    font-weight: 600;
+    padding: 10px 0;
+    width: 100%;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+    .btn-continue:hover {
+        opacity: 0.9;
+    }
+
+/* Resend Text */
+.resend-text {
+    color: #999;
+    font-size: 0.9rem;
+}
+
+.resend-link {
+    color: #d4ff00;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+/* Hanggang dito css */
+
 
 
 /*===========================================*/
@@ -291,3 +426,20 @@ footer .right-side-footer {
         width: 25px;
         height: auto;
     }
+
+.error-message {
+    background-color: rgba(255, 59, 59, 0.1);
+    color: #ff4d4d;
+    border: 1px solid rgba(255, 59, 59, 0.3);
+    padding: 10px 15px;
+    border-radius: 8px;
+    text-align: center;
+    margin-bottom: 15px;
+    font-size: 0.95rem;
+    width: 100%;
+    box-shadow: 0 4px 10px rgba(255, 0, 0, 0.05);
+}
+
+
+
+

@@ -1,4 +1,5 @@
-﻿@model FitCheckWebApp.ViewModels.MembershipPassViewModel
+﻿@using FitCheckWebApp.ViewModels.Account
+@model MembershipPassViewModel
 
 @{
     Layout = null;
@@ -44,7 +45,6 @@
                 </div>
 
                 <div class="pass-body">
-                    <div class="photo"></div>
                     <div class="pass-details">
                         <p>
                             <span class="label">Name :</span>
@@ -68,10 +68,32 @@
                 <div class="pass-footer"></div>
             </div>
 
-            <div class="btn-container">
-                <form><button class="print-btn">Print</button></form>
+            <div class="pass-card">
+                <div class="pass-header">
+                    <img src="~/images_fitcheck/fitcheckicon.png" alt="FitCheck Logo">
+                    <h3>MEMBERSHIP PASS</h3>
+                </div>
+
+                <div class="pass-body emergency-body">
+                    <h5>Emergency Contact</h5>
+                    <div class="pass-details emergency-details">
+                        <p>
+                            <span class="label">Name :</span>
+                            <span class="value">@(!string.IsNullOrEmpty(Model?.FullName) ? Model.FullName : "Unknown")</span>
+                        </p>
+                        <p>
+                            <span class="label">Contact Number :</span>
+                            <span class="value">@(!string.IsNullOrEmpty(Model?.MemberID) ? Model.MemberID : "N/A")</span>
+                        </p>
+                        
+                    </div>
+                </div>
+
+                <div class="pass-footer"></div>
             </div>
-        </section>
+		</section>
+            
+       
 
 
         <hr class="separator">
@@ -83,23 +105,57 @@
             <p>You can manage your current membership plan below.</p>
 
             <div class="manage-options">
-                <form asp-controller="Transaction" asp-action="CancelMembership" method="post">
-                    <input type="hidden" name="transactionId" value="@Model.TransactionId" />
-                    <button type="submit" class="manage-btn cancel">Cancel Membership</button>
-                </form>
 
-                <form asp-controller="Membership" asp-action="RenewMembership" method="post">
-                    <button type="submit" class="manage-btn renew">Renew Membership</button>
-                </form>
+                @if (Model.HasActiveMembership)
+                {
+                    <form id="cancelForm" asp-controller="Transaction" asp-action="CancelMembership" method="post">
+                        <input type="hidden" name="transactionId" value="@Model.TransactionId" />
+                        <button type="submit" class="manage-btn cancel">Cancel Membership</button>
+                    </form>
+                }
 
-                <form asp-controller="Membership" asp-action="UpgradeMembership" method="get">
+                @if (Model.CanRenew)
+                {
+                    <form asp-controller="Transaction" asp-action="RenewMembership" method="post">
+                        <button type="submit" class="manage-btn renew">Renew Membership</button>
+                    </form>
+                }
+
+                <form asp-controller="Transaction" asp-action="UserMembership" method="post">
                     <button type="submit" class="manage-btn upgrade">Upgrade Plan</button>
                 </form>
+                    
+
             </div>
         </section>
 
         
     </main>
+
+    <!-- Cancel Membership Confirmation Modal -->
+    <div id="cancelModal" class="modal-overlay">
+        <div class="modal-content">
+            <h3>Cancel Membership?</h3>
+            <p>Are you sure you want to cancel your current membership?<br>This action cannot be undone.</p>
+            <div class="modal-buttons">
+                <button class="modal-btn confirm-cancel">Yes, Cancel</button>
+                <button class="modal-btn close-keep-it">No, Keep It</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Renew Membership Confirmation Modal -->
+    <div id="renewModal" class="modal-overlay">
+        <div class="modal-content">
+            <h3>Renew Membership?</h3>
+            <p>Would you like to renew your membership for another term?</p>
+            <div class="modal-buttons">
+                <button class="modal-btn confirm-renew">Yes, Renew</button>
+                <button class="modal-btn close-not-now">No, Not Now</button>
+            </div>
+        </div>
+    </div>
+
 
     <div class="hr-container">
         <hr>
@@ -143,6 +199,52 @@
     <script>
         lucide.createIcons();
     </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const cancelBtn = document.querySelector(".manage-btn.cancel");
+            const renewBtn = document.querySelector(".manage-btn.renew");
+
+            const cancelModal = document.getElementById("cancelModal");
+            const renewModal = document.getElementById("renewModal");
+
+            const closeCancel = document.querySelector(".close-keep-it");
+            const closeRenew = document.querySelector(".close-not-now");
+            const confirmCancel = document.querySelector(".confirm-cancel");
+            const confirmRenew = document.querySelector(".confirm-renew");
+
+            // --- Open Modals ---
+            cancelBtn.addEventListener("click", (e) => {
+                e.preventDefault();
+                cancelModal.style.display = "flex";
+            });
+
+            renewBtn.addEventListener("click", (e) => {
+                e.preventDefault();
+                renewModal.style.display = "flex";
+            });
+
+            // --- Close Modals ---
+            closeCancel.addEventListener("click", () => {
+                cancelModal.style.display = "none";
+            });
+
+            closeRenew.addEventListener("click", () => {
+                renewModal.style.display = "none";
+            });
+
+            // --- Confirm Actions ---
+            confirmCancel.addEventListener("click", () => {
+                cancelModal.style.display = "none";
+                document.getElementById("cancelForm").submit();
+            });
+
+            confirmRenew.addEventListener("click", () => {
+                renewModal.style.display = "none";
+                document.getElementById("renewForm").submit();
+            });
+        });
+    </script>
+
 
 </body>
 </html>

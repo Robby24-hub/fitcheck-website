@@ -1,5 +1,7 @@
 ﻿using FitCheckWebApp.Models;
+using FitCheckWebApp.ViewModels.Admin;
 using MySql.Data.MySqlClient;
+using Mysqlx.Crud;
 
 namespace FitCheckWebApp.DataAccess
 {
@@ -157,10 +159,11 @@ namespace FitCheckWebApp.DataAccess
                 using (var cmd = connection.CreateCommand())
                 {
                     cmd.CommandText = @"
-                SELECT Id, MemberID, Username, PasswordHash, Email, Role, DateCreated, IsActive, MembershipPlan,
-                       FirstName, LastName, BirthDate, Gender, ContactNumber, EmergencyName, EmergencyContact
-                FROM account
-                WHERE Id = @id";
+                        SELECT Id, MemberID, Username, PasswordHash, Email, Role, DateCreated, IsActive, MembershipPlan,
+                        FirstName, LastName, BirthDate, Gender, ContactNumber, EmergencyName, EmergencyContact
+                        FROM account
+                        WHERE Id = @id
+                    ";
 
                     cmd.Parameters.AddWithValue("@id", id);
                     using var reader = cmd.ExecuteReader();
@@ -194,6 +197,139 @@ namespace FitCheckWebApp.DataAccess
                 }
             }
         }
+
+
+        public static List<MemberViewModel> GetAllMembers()
+        {
+            var members = new List<MemberViewModel>();
+
+            using var connection = new MySqlConnection(connectionString);
+            connection.Open();
+
+            using var cmd = connection.CreateCommand();
+            cmd.CommandText = @"
+                SELECT a.Id, a.MemberID, a.FirstName, a.LastName, a.Email, a.MembershipPlan,
+                       t.EndDate AS PaymentDue, a.IsActive
+                FROM account a
+                LEFT JOIN transaction t ON t.AccountID = a.Id
+                WHERE a.IsActive = 1 AND Role != 'admin'
+                ORDER BY a.FirstName;
+            ";
+
+
+
+
+
+            using var reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                members.Add(new MemberViewModel
+                {
+                    AccountID = reader.GetInt32("Id"),
+                    MemberID = reader["MemberID"]?.ToString() ?? "",
+                    Name = reader["FirstName"] + " " + reader["LastName"],
+                    Email = reader["Email"]?.ToString() ?? "",
+                    MembershipPlan = reader["MembershipPlan"]?.ToString() ?? "",
+                    Status = (reader["IsActive"] != DBNull.Value && Convert.ToBoolean(reader["IsActive"]))
+                        ? "Active"
+                        : "Inactive",
+                    PaymentDue = reader["PaymentDue"] != DBNull.Value
+                        ? (DateTime?)reader.GetDateTime("PaymentDue")
+                        : null
+
+
+                });
+            }
+
+            return members;
+        }
+
+
+        public static void DeleteAccount(int accountId)
+        {
+            using var connection = new MySqlConnection(connectionString);
+            connection.Open();
+
+            using var cmd = connection.CreateCommand();
+            cmd.CommandText = "DELETE FROM account WHERE Id = @accountId";
+            cmd.Parameters.AddWithValue("@accountId", accountId);
+
+            cmd.ExecuteNonQuery();
+        }
+
+        public static void SoftDeleteMember(int accountId)
+        {
+            using var connection = new MySqlConnection(connectionString);
+            connection.Open();
+
+            using var transaction = connection.BeginTransaction(); 
+
+            using var cmd = connection.CreateCommand();
+            cmd.Transaction = transaction;
+
+            try
+            {
+                
+                cmd.CommandText = @"
+                    UPDATE account 
+                    SET IsActive = 0
+                    WHERE Id = @id AND Role != 'admin';
+                ";
+                cmd.Parameters.AddWithValue("@id", accountId);
+                cmd.ExecuteNonQuery();
+
+                
+                cmd.Parameters.Clear(); 
+                cmd.CommandText = @"
+                    UPDATE transaction
+                    SET Status = 'Cancelled'
+                    WHERE AccountID = @id;
+                ";
+                cmd.Parameters.AddWithValue("@id", accountId);
+                cmd.ExecuteNonQuery();
+
+                transaction.Commit(); 
+            }
+            catch
+            {
+                transaction.Rollback(); 
+                throw;
+            }
+        }
+
+
+        public static List<Account> GetAllAccounts()
+        {
+            var accounts = new List<Account>();
+
+            using (var connection = new MySqlConnection(connectionString))
+            {
+                connection.Open();
+                using (var cmd = connection.CreateCommand())
+                {
+                    cmd.CommandText = "SELECT Id, FirstName, LastName, Role FROM Account WHERE IsActive = 1";
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var acc = new Account
+                            {
+                                Id = reader.GetInt32("Id"),
+                                FirstName = reader["FirstName"]?.ToString() ?? "",
+                                LastName = reader["LastName"]?.ToString() ?? "",
+                                Role = reader["Role"]?.ToString() ?? ""
+                            };
+                            accounts.Add(acc);
+                        }
+                    }
+                }
+            }
+
+            return accounts;
+        }
+
+
+
     }
 
 }

@@ -36,7 +36,7 @@ namespace FitCheckWebApp.Models.Database
 
                     tableCmd.CommandText = @"
                         CREATE TABLE IF NOT EXISTS Account (
-                            Id INT(11) AUTO_INCREMENT PRIMARY KEY,
+                            Id INT(11) AUTO_INCREMENT PRIMARY KEY,  
                             MemberID VARCHAR(20) UNIQUE,
                             Username VARCHAR(100) NOT NULL UNIQUE,
                             PasswordHash TEXT NOT NULL,
@@ -57,19 +57,46 @@ namespace FitCheckWebApp.Models.Database
                     tableCmd.ExecuteNonQuery();
 
 
-
                     tableCmd.CommandText = @"
                         CREATE TABLE IF NOT EXISTS `Transaction` (
                             TransactionID INT AUTO_INCREMENT PRIMARY KEY,
                             AccountID INT NOT NULL,
                             MembershipPlan ENUM('FitStart','FitElite','FitPro') NOT NULL,
-                            PaymentMethod ENUM('credit','debit','cash') NOT NULL,
+                            PaymentMethod ENUM('Credit','Debit','Cash','None') NOT NULL,
                             TransactionDate DATETIME DEFAULT CURRENT_TIMESTAMP,
                             StartDate DATETIME NOT NULL,
                             EndDate DATETIME NOT NULL,
-                            Status ENUM('Active','Expired','Cancelled') DEFAULT 'Active',
+                            Amount DECIMAL(10,2) NOT NULL,
+                            Status ENUM('Active','Expired','Cancelled', 'Pending', 'Declined') DEFAULT 'Active',
                             FOREIGN KEY (AccountID) REFERENCES Account(Id)
                         );";
+                    tableCmd.ExecuteNonQuery();
+
+
+                    tableCmd.CommandText = @"
+                    CREATE TABLE IF NOT EXISTS Class (
+                        Id INT AUTO_INCREMENT PRIMARY KEY,
+                        AccountID INT NOT NULL,                       
+                        Day ENUM('Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday') NOT NULL,
+                        Type ENUM('Yoga','Zumba','Pilates','CrossFit','HIIT','StrengthTraining','Cardio','DanceFitness') NOT NULL,
+                        Time TIME NOT NULL,
+                        DurationMinutes INT NOT NULL,
+                        ParticipantLimit INT NOT NULL,
+                        ParticipantsCount INT DEFAULT 0,
+                        FOREIGN KEY (AccountID) REFERENCES Account(Id)
+                    );";
+                    tableCmd.ExecuteNonQuery();
+
+                    tableCmd.CommandText = @"
+                    CREATE TABLE IF NOT EXISTS VerificationCode (
+                        Id INT AUTO_INCREMENT PRIMARY KEY,
+                        Email VARCHAR(150) NOT NULL,
+                        Code VARCHAR(4) NOT NULL,
+                        CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+                        ExpiresAt DATETIME NOT NULL,
+                        IsUsed TINYINT(1) DEFAULT 0,
+                        INDEX idx_email_code (Email, Code)
+                    );";
                     tableCmd.ExecuteNonQuery();
 
 
@@ -87,6 +114,62 @@ namespace FitCheckWebApp.Models.Database
                         tableCmd.ExecuteNonQuery();
                     }
 
+                    
+
+                    tableCmd.CommandText = "SELECT COUNT(*) FROM Account WHERE Username = 'magnamalo2006'";
+                    long trainer1Count = (long)tableCmd.ExecuteScalar();
+                    if (trainer1Count == 0)
+                    {
+                        tableCmd.CommandText = @"
+                            INSERT INTO Account (Username, PasswordHash, Email, Role, FirstName, LastName, IsActive, DateCreated)
+                            VALUES ('magnamalo2006', @PasswordHash1, 'rex.taeza@fitcheck.com', 'trainer', 'Rex', 'Taeza', 1, NOW());
+                        ";
+                        tableCmd.Parameters.Clear();
+                        tableCmd.Parameters.AddWithValue("@PasswordHash1", Helpers.Helpers.HashingPassword("trainer123"));
+                        tableCmd.ExecuteNonQuery();
+                    }
+
+
+                    tableCmd.CommandText = "SELECT COUNT(*) FROM Account WHERE Username = 'rcandano'";
+                    long trainer2Count = (long)tableCmd.ExecuteScalar();
+                    if (trainer2Count == 0)
+                    {
+                        tableCmd.CommandText = @"
+                            INSERT INTO Account (Username, PasswordHash, Email, Role, FirstName, LastName, IsActive, DateCreated)
+                            VALUES ('rcandano', @PasswordHash2, 'robby.candano@fitcheck.com', 'trainer', 'Robby', 'Candano', 1, NOW());
+                        ";
+                        tableCmd.Parameters.Clear();
+                        tableCmd.Parameters.AddWithValue("@PasswordHash2", Helpers.Helpers.HashingPassword("trainer123"));
+                        tableCmd.ExecuteNonQuery();
+                    }
+
+  
+                    tableCmd.CommandText = "SELECT COUNT(*) FROM Account WHERE Username = 'mlitang'";
+                    long trainer3Count = (long)tableCmd.ExecuteScalar();
+                    if (trainer3Count == 0)
+                    {
+                        tableCmd.CommandText = @"
+                            INSERT INTO Account (Username, PasswordHash, Email, Role, FirstName, LastName, IsActive, DateCreated)
+                            VALUES ('mlitang', @PasswordHash3, 'michael.litang@fitcheck.com', 'trainer', 'Michael', 'Litang', 1, NOW());
+                        ";
+                        tableCmd.Parameters.Clear();
+                        tableCmd.Parameters.AddWithValue("@PasswordHash3", Helpers.Helpers.HashingPassword("trainer123"));
+                        tableCmd.ExecuteNonQuery();
+                    }
+
+
+                    tableCmd.CommandText = "SELECT COUNT(*) FROM Account WHERE Username = 'ssollano'";
+                    long trainer4Count = (long)tableCmd.ExecuteScalar();
+                    if (trainer4Count == 0)
+                    {
+                        tableCmd.CommandText = @"
+                            INSERT INTO Account (Username, PasswordHash, Email, Role, FirstName, LastName, IsActive, DateCreated)
+                            VALUES ('ssollano', @PasswordHash4, 'shaira.sollano@fitcheck.com', 'trainer', 'Shaira', 'Sollano', 1, NOW());
+                        ";
+                        tableCmd.Parameters.Clear();
+                        tableCmd.Parameters.AddWithValue("@PasswordHash4", Helpers.Helpers.HashingPassword("trainer123"));
+                        tableCmd.ExecuteNonQuery();
+                    }
 
                 }
 

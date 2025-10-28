@@ -25,9 +25,9 @@
 
         <nav class="navbar">
             <a asp-controller="Home" asp-action="Index">Home</a>
-            <a asp-controller="Transaction" asp-action="Membership">Membership</a>
-            <a asp-controller="Account" asp-action="Classes">Classes</a>
-            <a asp-controller="Account" asp-action="AboutUs">About Us</a>
+            <a asp-controller="Home" asp-action="Membership">Membership</a>
+            <a asp-controller="Home" asp-action="Classes">Classes</a>
+            <a asp-controller="Home" asp-action="AboutUs">About Us</a>
             <a asp-controller="Account" asp-action="Login">Log In</a>
         </nav>
     </header>
@@ -40,7 +40,8 @@
                     <h1><span class="body">BODY</span> <span class="shape">SHAPE</span></h1>
                 </div>
                 <p>WITH THE WIDEST RANGE OF CARDIO, STRENGTH AND GROUP TRAINING EQUIPMENT IN THE FITNESS INDUSTRY, OUR MISSION IS TO SOLUTIONS</p>
-                <button>START NOW</button>
+                <a asp-controller="Account" asp-action="Register"><button> START NOW </button></a>
+				
             </div>
         </section>
 
@@ -86,17 +87,17 @@
                 <div class="fitstart">
                     <h2>FITSTART</h2>
                     <p>Perfect for all beginners who want unlimited full gym access at an affordable monthly rate.</p>
-                    <button class="btn-view-plans">View Plans</button>
+					<a asp-controller="Transaction" asp-action="Membership"><button class="btn-view-plans">View Plans</button></a>
                 </div>
                 <div class="fitelite">
                     <h2>FITELITE</h2>
                     <p>Designed for individuals who seek more than just a workout, our gym offers the ultimate fitness lifestyle with a touch of exclusivity. Here, you'll find premium facilities, personalized experiences, and an environment tailored for those who value health, performance, and luxury.</p>
-                    <button class="btn-view-plans">View Plans</button>
+					<a asp-controller="Transaction" asp-action="Membership"><button class="btn-view-plans">View Plans</button></a>
                 </div>
                 <div class="fitpro">
                     <h2>FITPRO</h2>
                     <p>Perfect for dedicated gym-goers who want variety in their workouts, consistent motivation, and extra benefits that elevate their fitness journey.</p>
-                    <button class="btn-view-plans">View Plans</button>
+					<a asp-controller="Transaction" asp-action="Membership"><button class="btn-view-plans">View Plans</button></a>
                 </div>
             </div>
         </section>

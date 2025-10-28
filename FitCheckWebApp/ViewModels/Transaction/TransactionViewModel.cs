@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using FitCheckWebApp.Models;
 
-namespace FitCheckWebApp.ViewModels
+namespace FitCheckWebApp.ViewModels.Transaction
 {
     public class TransactionViewModel
     {

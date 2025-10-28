@@ -1,449 +1,381 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model List<FitCheckWebApp.Models.Class>
 @{
-
     Layout = null;
-
+    var trainers = ViewBag.Trainers as List<FitCheckWebApp.Models.Account>;
 }
-
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Fitcheck</title>
-  <link rel="stylesheet" href="AdminClass.css" asp-append-version="true" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Classes | FitCheck Gym</title>
+    <link rel="stylesheet" href="~/css/AdminClass.css" asp-append-version="true" />
 </head>
 <body>
-  <header>
+    <header>
         <div class="brand-container">
-            <img alt="logo" class="logo" src="IMAGES/LOGO.png">
+            <img alt="logo" class="logo" src="~/images_fitcheck/fitcheckicon.png">
             <h1 class="brand">FITCHECK</h1>
         </div>
         <nav class="navbar">
-            <a asp-controller="Account" asp-action="UserHome">Home</a>
-            <a asp-controller="Transaction" asp-action="Membership">Payment</a>
-            <a asp-controller="Account" asp-action="ClassesUser">Member</a>
-            <a asp-controller="Account" asp-action="Products">Classes</a>
-             <a asp-controller="Account" asp-action="Products">Log out</a>
-              
-          
+            <a asp-controller="Admin" asp-action="AdminHome">Home</a>
+            <a asp-controller="Admin" asp-action="AdminPayment">Payment</a>
+            <a asp-controller="Admin" asp-action="AdminClass">Classes</a>
+            <a asp-controller="Admin" asp-action="AdminMember">Members</a>
 
-        </nav>   
+            <form method="post" style="display:inline;">
+                <button type="button" class="logout-btn" onclick="openLogoutModal()">Logout</button>
+            </form>
+        </nav>
     </header>
-    
-    <!-- Main -->
 
-<!-- MAIN -->
-  <main>
-    <h2>WELCOME Admin,</h2>
-    <h3>CLASS OVERVIEW</h3>
+    <main>
 
-
-     <div class="table-container">
-      <table aria-describedby="class-overview">
-        <thead>
-          <tr>
-            <th>Day</th>
-            <th>Instructor</th>
-            <th>Type</th>
-            <th>Time</th>
-            <th>Duration</th>
-            <th>Participant</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody id="classesTableBody">
-          <!-- rows rendered by JS -->
-        </tbody>
-      </table>
-    </div>
-  </main>
-
- <!-- POPUP FORM -->
-<div class="popup-overlay" id="popupForm">
-  <div class="popup">
-    <h3>CLASS DETAIL</h3>
-    <form>
-      <label>Instructor</label>
-      <select>
-        <option value="" disabled selected>Select instructor</option>
-        <option>Shaira Sollano</option>
-        <option>Michael Reyes</option>
-        <option>Angela Cruz</option>
-        <option>Rico Santos</option>
-        <option>Maria Dela Cruz</option>
-        <option>John Villanueva</option>
-        <option>Kim Bautista</option>
-      </select>
-
-      <label>Type</label>
-      <select>
-        <option value="" disabled selected>Select class type</option>
-        <option>Yoga</option>
-        <option>Zumba</option>
-        <option>Pilates</option>
-        <option>CrossFit</option>
-        <option>HIIT</option>
-        <option>Strength Training</option>
-        <option>Cardio</option>
-        <option>Dance Fitness</option>
-      </select>
-
-      <div class="form-row">
-        <div>
-          <label>Day</label>
-      <select>
-        <option value="" disabled selected>Select</option>
-        <option>Monday</option>
-        <option>Tuesday</option>
-        <option>Wednesday</option>
-        <option>Thursday</option>
-        <option>Friday</option>
-        <option>Saturday</option>
-      </select>
-        </div>
-        <div>
-          <label>Time</label>
-          <input type="time">
-        </div>
-         <div>
-          <label>Duration</label>
-      <select>
-        <option value="" disabled selected>Select</option>
-        <option>30min</option>
-        <option>45min</option>
-        <option>60min</option>
-        <option>75min</option>
-        <option>80min</option>
-        <option>90min</option>
-      </select>
-        </div>
-      </div>
-
-      <label>Participant Limit</label>
-      <select id="participantLimit" name="participantLimit">
-        <option value="" disabled selected>Select limit</option>
-        <!-- Generate 1–30 -->
-        <script>
-          for (let i = 1; i <= 30; i++) {
-            document.write(`<option value="${i}">${i}</option>`);
-          }
-        </script>
-      </select>
-
-      <button type="submit" class="submit-btn">ADD CLASS</button>
-    </form>
-    <span class="close-btn" id="closeFormBtn">&times;</span>
-  </div>
-</div>
-
-
-  <!-- EDIT POPUP FORM -->
-  <div class="popup-overlay" id="editForm">
-    <div class="popup" role="dialog" aria-modal="true" aria-labelledby="editTitle">
-      <h3 id="editTitle">EDIT CLASS DETAIL</h3>
-      <form id="editClassForm">
-        <label for="editInstructor">Instructor</label>
-        <select id="editInstructor" required>
-          <option value="" disabled>Select instructor</option>
-          <option>Shaira Sollano</option>
-          <option>Michael Reyes</option>
-          <option>Angela Cruz</option>
-          <option>Rico Santos</option>
-          <option>Maria Dela Cruz</option>
-          <option>John Villanueva</option>
-          <option>Kim Bautista</option>
-        </select>
-
-        <label for="editType">Type</label>
-        <select id="editType" required>
-          <option value="" disabled>Select class type</option>
-          <option>Yoga</option>
-          <option>Zumba</option>
-          <option>Pilates</option>
-          <option>CrossFit</option>
-          <option>HIIT</option>
-          <option>Strength Training</option>
-          <option>Cardio</option>
-          <option>Dance Fitness</option>
-        </select>
-
-        <div class="form-row">
-          <div>
-            <label for="editDay">Day</label>
-            <select id="editDay" disabled>
-              <option value="" disabled>Select</option>
-              <option>Monday</option>
-              <option>Tuesday</option>
-              <option>Wednesday</option>
-              <option>Thursday</option>
-              <option>Friday</option>
-              <option>Saturday</option>
-            </select>
-          </div>
-          <div>
-            <label for="editTime">Time</label>
-            <input id="editTime" type="time" required>
-          </div>
-          <div>
-            <label for="editDuration">Duration</label>
-            <select id="editDuration" required>
-              <option value="" disabled>Select</option>
-              <option>30min</option>
-              <option>45min</option>
-              <option>60min</option>
-              <option>75min</option>
-              <option>80min</option>
-              <option>90min</option>
-            </select>
-          </div>
-        </div>
-
-        <label for="editParticipantLimit">Participant Limit</label>
-        <select id="editParticipantLimit" name="editParticipantLimit" required>
-          <option value="" disabled>Select limit</option>
-        </select>
-
-        <button type="submit" class="submit-btn">UPDATE CLASS</button>
-      </form>
-      <span class="close-btn" id="closeEditBtn" title="Close">&times;</span>
-    </div>
-  </div>
-
-
-   <!-- JavaScript (renders table, handles edit popup and update) -->
-  <script>
-    // Seed data: 3 placeholders per day (MONDAY to SATURDAY)
-    const classes = [
-      // Monday
-      { day: 'MONDAY', instructor: 'Shaira Sollano', type: 'Yoga', time: '10:00', duration: '90min', participants: 20 },
-      { day: 'MONDAY', instructor: 'Michael Reyes', type: 'HIIT', time: '12:00', duration: '60min', participants: 18 },
-      { day: 'MONDAY', instructor: 'Angela Cruz', type: 'Zumba', time: '18:00', duration: '45min', participants: 25 },
-
-      // Tuesday
-      { day: 'TUESDAY', instructor: 'Rico Santos', type: 'CrossFit', time: '08:00', duration: '60min', participants: 15 },
-      { day: 'TUESDAY', instructor: 'Maria Dela Cruz', type: 'Pilates', time: '11:00', duration: '45min', participants: 12 },
-      { day: 'TUESDAY', instructor: 'John Villanueva', type: 'Cardio', time: '19:00', duration: '60min', participants: 22 },
-
-      // Wednesday
-      { day: 'WEDNESDAY', instructor: 'Kim Bautista', type: 'Strength Training', time: '07:00', duration: '75min', participants: 14 },
-      { day: 'WEDNESDAY', instructor: 'Shaira Sollano', type: 'Yoga', time: '09:00', duration: '90min', participants: 20 },
-      { day: 'WEDNESDAY', instructor: 'Michael Reyes', type: 'HIIT', time: '17:00', duration: '60min', participants: 16 },
-
-      // Thursday
-      { day: 'THURSDAY', instructor: 'Angela Cruz', type: 'Dance Fitness', time: '13:00', duration: '60min', participants: 24 },
-      { day: 'THURSDAY', instructor: 'Rico Santos', type: 'CrossFit', time: '15:00', duration: '60min', participants: 10 },
-      { day: 'THURSDAY', instructor: 'Maria Dela Cruz', type: 'Pilates', time: '18:30', duration: '45min', participants: 12 },
-
-      // Friday
-      { day: 'FRIDAY', instructor: 'John Villanueva', type: 'Cardio', time: '08:30', duration: '60min', participants: 18 },
-      { day: 'FRIDAY', instructor: 'Kim Bautista', type: 'Strength Training', time: '12:00', duration: '75min', participants: 13 },
-      { day: 'FRIDAY', instructor: 'Shaira Sollano', type: 'Yoga', time: '19:30', duration: '90min', participants: 20 },
-
-      // Saturday
-      { day: 'SATURDAY', instructor: 'Michael Reyes', type: 'HIIT', time: '09:00', duration: '60min', participants: 17 },
-      { day: 'SATURDAY', instructor: 'Angela Cruz', type: 'Zumba', time: '10:30', duration: '45min', participants: 26 },
-      { day: 'SATURDAY', instructor: 'Rico Santos', type: 'CrossFit', time: '16:00', duration: '60min', participants: 11 },
-    ];
-
-    // DOM refs
-    const tbody = document.getElementById('classesTableBody');
-    const editFormOverlay = document.getElementById('editForm');
-    const editForm = document.getElementById('editClassForm');
-    const closeEditBtn = document.getElementById('closeEditBtn');
-
-    const editInstructor = document.getElementById('editInstructor');
-    const editType = document.getElementById('editType');
-    const editDay = document.getElementById('editDay');
-    const editTime = document.getElementById('editTime');
-    const editDuration = document.getElementById('editDuration');
-    const editParticipantLimit = document.getElementById('editParticipantLimit');
-
-    let currentEditIndex = null;
-
-    // Populate participant select options (1-30)
-    function populateParticipantOptions(selectEl) {
-      selectEl.innerHTML = '<option value="" disabled>Select limit</option>';
-      for (let i = 1; i <= 30; i++) {
-        const opt = document.createElement('option');
-        opt.value = i;
-        opt.textContent = i;
-        selectEl.appendChild(opt);
-      }
-    }
-    populateParticipantOptions(editParticipantLimit);
-
-    // Render table rows from classes array
-    function renderTable() {
-      tbody.innerHTML = '';
-      classes.forEach((c, idx) => {
-        const tr = document.createElement('tr');
-
-        const tdDay = document.createElement('td');
-        tdDay.className = 'day-cell';
-        tdDay.textContent = c.day;
-        tr.appendChild(tdDay);
-
-        const tdInstructor = document.createElement('td');
-        tdInstructor.textContent = c.instructor;
-        tr.appendChild(tdInstructor);
-
-        const tdType = document.createElement('td');
-        tdType.textContent = c.type;
-        tr.appendChild(tdType);
-
-        const tdTime = document.createElement('td');
-        tdTime.className = 'time-cell';
-        // display time in hh:mmAM/PM style for table (but keep underlying in 24h when editing)
-        tdTime.textContent = formatTimeDisplay(c.time);
-        tr.appendChild(tdTime);
-
-        const tdDuration = document.createElement('td');
-        tdDuration.className = 'duration-cell';
-        tdDuration.textContent = c.duration;
-        tr.appendChild(tdDuration);
-
-        const tdParticipants = document.createElement('td');
-        tdParticipants.className = 'participant-cell';
-        tdParticipants.textContent = c.participants;
-        tr.appendChild(tdParticipants);
-
-        const tdActions = document.createElement('td');
-        const editBtn = document.createElement('button');
-        editBtn.className = 'edit';
-        editBtn.textContent = 'Edit';
-        editBtn.setAttribute('aria-label', `Edit ${c.day} ${c.type} class`);
-        editBtn.dataset.index = idx;
-        editBtn.addEventListener('click', onEditClick);
-        tdActions.appendChild(editBtn);
-        tr.appendChild(tdActions);
-
-        tbody.appendChild(tr);
-      });
-    }
-
-    // Format time for table display -> 24h input to 12-hour AM/PM
-    function formatTimeDisplay(time24) {
-      if (!time24) return '';
-      // time24 expected 'HH:MM' (24h)
-      const [hhStr, mm] = time24.split(':');
-      let hh = parseInt(hhStr, 10);
-      const ampm = hh >= 12 ? 'PM' : 'AM';
-      hh = hh % 12;
-      if (hh === 0) hh = 12;
-      return `${hh}:${mm}${ampm}`;
-    }
-
-    // Handler when Edit button clicked
-    function onEditClick(e) {
-      const idx = Number(e.currentTarget.dataset.index);
-      currentEditIndex = idx;
-      const cls = classes[idx];
-
-      // populate fields
-      editInstructor.value = cls.instructor;
-      editType.value = cls.type;
-
-      // set day - display as human readable like 'Monday'
-      // our stored days are uppercase; make first-letter capital for select
-      const dayHuman = cls.day.charAt(0) + cls.day.slice(1).toLowerCase();
-      // Ensure option exists and set value
-      Array.from(editDay.options).forEach(opt => {
-        if (opt.textContent.toLowerCase() === dayHuman.toLowerCase()) {
-          editDay.value = opt.textContent;
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div style="background: #d4edda; color: #155724; padding: 15px; margin: 10px 0; border: 1px solid #c3e6cb; border-radius: 5px;">
+                @TempData["SuccessMessage"]
+            </div>
         }
-      });
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div style="background: #f8d7da; color: #721c24; padding: 15px; margin: 10px 0; border: 1px solid #f5c6cb; border-radius: 5px;">
+                @TempData["ErrorMessage"]
+            </div>
+        }
 
-      // set time to HH:MM (24h) for input value
-      // ensure time format is HH:MM
-      editTime.value = normalizeTimeForInput(cls.time);
+        <h2>WELCOME Admin,</h2>
+        <h3>CLASS OVERVIEW</h3>
+        <div class="btn-container">
+			<button id="openAddFormBtn" class="submit-btn">ADD CLASS</button>
+        </div>
+        
 
-      editDuration.value = cls.duration;
-      editParticipantLimit.value = cls.participants;
+        <div class="table-container">
+            <table aria-describedby="class-overview">
+                <thead>
+                    <tr>
+                        <th>Day</th>
+                        <th>Instructor</th>
+                        <th>Type</th>
+                        <th>Time</th>
+                        <th>Duration</th>
+                        <th>Participants</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        @foreach (var c in Model)
+                        {
+                            <tr data-id="@c.Id"
+                                data-accountid="@c.AccountID"
+                                data-day="@c.Day"
+                                data-type="@c.Type"
+                                data-time="@c.Time"
+                                data-duration="@c.DurationMinutes"
+                                data-limit="@c.ParticipantLimit"
+                                data-count="@c.ParticipantsCount">
+                                <td>@c.Day</td>
+                                <td>@(c.InstructorName ?? "Unassigned")</td>
+                                <td>@c.Type</td>
+                                <td>@(TimeSpanTo12Hour(c.Time))</td>
+                                <td>@c.DurationMinutes min</td>
+                                <td>@c.ParticipantsCount / @c.ParticipantLimit</td>
+                                <td>
+                                    <button class="edit-btn" onclick="openEditForm(@c.Id)">Edit</button>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="7" style="text-align: center;">No classes available</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </main>
 
-      // day must remain non-editable (disabled)
-      editDay.disabled = true;
+    <!-- ADD CLASS POPUP -->
+    <div class="popup-overlay" id="addPopupForm">
+        <div class="popup">
+            <h3>ADD CLASS</h3>
+            <form id="addClassForm" method="post" asp-action="AddClass">
+                <input type="hidden" name="ParticipantsCount" value="0" />
 
-      // show overlay
-      editFormOverlay.style.display = 'flex';
+                <label>Instructor</label>
+                <select name="AccountID" required>
+                    <option value="" disabled selected>Select instructor</option>
+                    @if (trainers != null && trainers.Any())
+                    {
+                        foreach (var t in trainers)
+                        {
+                            <option value="@t.Id">@t.FirstName @t.LastName</option>
+                        }
+                    }
+                    else
+                    {
+                        <option disabled>No trainers available</option>
+                    }
+                </select>
 
-      // focus first input
-      setTimeout(() => editInstructor.focus(), 80);
+                <label>Type</label>
+                <select name="Type" required>
+                    <option value="" disabled selected>Select class type</option>
+                    <option value="Yoga">Yoga</option>
+                    <option value="Zumba">Zumba</option>
+                    <option value="Pilates">Pilates</option>
+                    <option value="CrossFit">CrossFit</option>
+                    <option value="HIIT">HIIT</option>
+                    <option value="StrengthTraining">Strength Training</option>
+                    <option value="Cardio">Cardio</option>
+                    <option value="DanceFitness">Dance Fitness</option>
+                </select>
+
+                <label>Day</label>
+                <select name="Day" required>
+                    <option value="" disabled selected>Select day</option>
+                    <option value="Monday">Monday</option>
+                    <option value="Tuesday">Tuesday</option>
+                    <option value="Wednesday">Wednesday</option>
+                    <option value="Thursday">Thursday</option>
+                    <option value="Friday">Friday</option>
+                    <option value="Saturday">Saturday</option>
+                    <option value="Sunday">Sunday</option>
+                </select>
+
+                <label>Time</label>
+                <input type="time" name="Time" required />
+
+                <label>Duration (minutes)</label>
+                <select name="DurationMinutes" required>
+                    <option value="" disabled selected>Select duration</option>
+                    <option value="30">30</option>
+                    <option value="45">45</option>
+                    <option value="60">60</option>
+                    <option value="75">75</option>
+                    <option value="90">90</option>
+                </select>
+
+                <label>Participant Limit</label>
+                <select name="ParticipantLimit" required>
+                    <option value="" disabled selected>Select limit</option>
+                    @for (int i = 5; i <= 30; i += 5)
+                    {
+                        <option value="@i">@i</option>
+                    }
+                </select>
+
+                <button type="submit" class="submit-btn">ADD CLASS</button>
+            </form>
+            <span class="close-btn" id="closeAddBtn">&times;</span>
+        </div>
+    </div>
+
+    <!-- EDIT CLASS POPUP -->
+    <div class="popup-overlay" id="editPopupForm">
+        <div class="popup">
+            <h3>EDIT CLASS</h3>
+            <form id="editClassForm" method="post" asp-action="EditClass">
+                <input type="hidden" id="editId" name="Id" />
+                <input type="hidden" id="editParticipantsCount" name="ParticipantsCount" />
+
+                <label>Instructor</label>
+                <select id="editAccountID" name="AccountID" required>
+                    <option value="" disabled>Select instructor</option>
+                    @if (trainers != null && trainers.Any())
+                    {
+                        foreach (var t in trainers)
+                        {
+                            <option value="@t.Id">@t.FirstName @t.LastName</option>
+                        }
+                    }
+                </select>
+
+                <label>Type</label>
+                <select id="editType" name="Type" required>
+                    <option value="" disabled>Select class type</option>
+                    <option value="Yoga">Yoga</option>
+                    <option value="Zumba">Zumba</option>
+                    <option value="Pilates">Pilates</option>
+                    <option value="CrossFit">CrossFit</option>
+                    <option value="HIIT">HIIT</option>
+                    <option value="StrengthTraining">Strength Training</option>
+                    <option value="Cardio">Cardio</option>
+                    <option value="DanceFitness">Dance Fitness</option>
+                </select>
+
+                <label>Day</label>
+                <select id="editDay" name="Day" required>
+                    <option value="" disabled>Select day</option>
+                    <option value="Monday">Monday</option>
+                    <option value="Tuesday">Tuesday</option>
+                    <option value="Wednesday">Wednesday</option>
+                    <option value="Thursday">Thursday</option>
+                    <option value="Friday">Friday</option>
+                    <option value="Saturday">Saturday</option>
+                    <option value="Sunday">Sunday</option>
+                </select>
+
+                <label>Time</label>
+                <input type="time" id="editTime" name="Time" required />
+
+                <label>Duration (minutes)</label>
+                <select id="editDuration" name="DurationMinutes" required>
+                    <option value="" disabled>Select duration</option>
+                    <option value="30">30</option>
+                    <option value="45">45</option>
+                    <option value="60">60</option>
+                    <option value="75">75</option>
+                    <option value="90">90</option>
+                </select>
+
+                <label>Participant Limit</label>
+                <select id="editLimit" name="ParticipantLimit" required>
+                    <option value="" disabled>Select limit</option>
+                    @for (int i = 5; i <= 30; i += 5)
+                    {
+                        <option value="@i">@i</option>
+                    }
+                </select>
+
+                <div class="button-row">
+                    <button type="submit" class="submit-btn">UPDATE CLASS</button>
+                    <button type="button" class="delete-btn" onclick="deleteClass()">DELETE CLASS</button>
+                </div>
+
+            </form>
+            <span class="close-btn" id="closeEditBtn">&times;</span>
+        </div>
+    </div>
+
+    @functions {
+        private string TimeSpanTo12Hour(TimeSpan t)
+        {
+            int h = t.Hours % 12;
+            if (h == 0) h = 12;
+            string ampm = t.Hours >= 12 ? "PM" : "AM";
+            return $"{h}:{t.Minutes:D2} {ampm}";
+        }
     }
 
-    // Normalize time values for input[type=time]
-    function normalizeTimeForInput(value) {
-      if (!value) return '';
-      // if value like '9:00' -> make '09:00'; if '19:30' keep as is
-      const parts = value.split(':');
-      if (parts.length !== 2) return value;
-      const hh = parts[0].padStart(2, '0');
-      const mm = parts[1].padStart(2, '0');
-      return `${hh}:${mm}`;
-    }
+    <script>
+        // Add Class Popup
+        const openAddBtn = document.getElementById('openAddFormBtn');
+        const addPopup = document.getElementById('addPopupForm');
+        const closeAddBtn = document.getElementById('closeAddBtn');
 
-    // Close overlay handlers
-    closeEditBtn.addEventListener('click', () => {
-      editFormOverlay.style.display = 'none';
-      currentEditIndex = null;
-    });
+        openAddBtn.addEventListener('click', () => addPopup.style.display = 'flex');
+        closeAddBtn.addEventListener('click', () => addPopup.style.display = 'none');
 
-    // click outside popup to close
-    window.addEventListener('click', (e) => {
-      if (e.target === editFormOverlay) {
-        editFormOverlay.style.display = 'none';
-        currentEditIndex = null;
-      }
-    });
+        // Edit Class Popup
+        const editPopup = document.getElementById('editPopupForm');
+        const closeEditBtn = document.getElementById('closeEditBtn');
 
-    // handle form submission (update class)
-    editForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      if (currentEditIndex === null) return;
+        closeEditBtn.addEventListener('click', () => editPopup.style.display = 'none');
 
-      // read values
-      const updated = {
-        ...classes[currentEditIndex],
-        instructor: editInstructor.value,
-        type: editType.value,
-        // day remains unchanged
-        time: editTime.value,
-        duration: editDuration.value,
-        participants: Number(editParticipantLimit.value)
-      };
+        // Close on overlay click
+        window.addEventListener('click', e => {
+            if (e.target === addPopup) addPopup.style.display = 'none';
+            if (e.target === editPopup) editPopup.style.display = 'none';
+        });
 
-      // validate basic (time, instructor, type, participants)
-      if (!updated.instructor || !updated.type || !updated.time || !updated.duration || !updated.participants) {
-        alert('Please complete all required fields.');
-        return;
-      }
+        // Open Edit Form with data
+        function openEditForm(id) {
+            const row = document.querySelector(`tr[data-id="${id}"]`);
 
-      // apply changes
-      classes[currentEditIndex] = updated;
+            if (!row) {
+                alert('Error: Could not find class data');
+                return;
+            }
 
-      // re-render table
-      renderTable();
+            document.getElementById('editId').value = id;
+            document.getElementById('editAccountID').value = row.dataset.accountid;
+            document.getElementById('editDay').value = row.dataset.day;
+            document.getElementById('editType').value = row.dataset.type;
+            document.getElementById('editTime').value = row.dataset.time;
+            document.getElementById('editDuration').value = row.dataset.duration;
+            document.getElementById('editLimit').value = row.dataset.limit;
+            document.getElementById('editParticipantsCount').value = row.dataset.count;
 
-      // close popup
-      editFormOverlay.style.display = 'none';
-      currentEditIndex = null;
-    });
+            editPopup.style.display = 'flex';
+        }
+    </script>
 
-    // initialize
-    renderTable();
-  </script>
-    
+    <!-- Logout Modal -->
+    <div id="logoutModal" class="modal-overlay">
+        <div class="modal-content">
+            <h3>Confirm Log Out</h3>
+            <p>Are you sure you want to log out?</p>
+            <div class="modal-buttons">
+                <form id="logoutForm" asp-controller="Account" asp-action="Logout" method="post">
+                    <button type="submit" class="btn-yes">Yes</button>
+                    <button type="button" class="btn-no" onclick="closeLogoutModal()">No</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+                function openLogoutModal() {
+            document.getElementById("logoutModal").style.display = "flex";
+        }
+
+        function closeLogoutModal() {
+            document.getElementById("logoutModal").style.display = "none";
+        }
+
+        // Optional: close modal if user clicks outside content
+        window.onclick = function(event) {
+            const modal = document.getElementById("logoutModal");
+            if (event.target == modal) {
+                closeLogoutModal();
+            }
+        }
+
+    </script>
+
+    <script>
+        function deleteClass() {
+            const id = document.getElementById('editId').value;
+            if (!id) {
+                alert("Error: No class selected to delete.");
+                return;
+            }
+
+            if (confirm("Are you sure you want to delete this class? This action cannot be undone.")) {
+                fetch(`/Admin/DeleteClass/${id}`, {
+                    method: "POST"
+                })
+                .then(response => {
+                    if (response.ok) {
+                        alert("Class deleted successfully!");
+                        location.reload(); // refresh table
+                    } else {
+                        alert("Failed to delete class.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    alert("An error occurred while deleting the class.");
+                });
+            }
+        }
+    </script>
 
 
-   <div class="hr-container">
+
+
+    <div class="hr-container">
         <hr>
     </div>
 
 
-  <div class="hr-container">
+    <div class="hr-container">
         <hr>
     </div>
 

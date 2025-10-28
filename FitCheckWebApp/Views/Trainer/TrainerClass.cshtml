@@ -1,62 +1,71 @@
-﻿@*
-    
-*@
+﻿@model FitCheckWebApp.ViewModels.ClassesUserViewModel
 @{
-
     Layout = null;
-
+    string[] daysOfWeek = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
 }
-
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Home | Fitcheck</title>
-    <link rel="stylesheet" href="~/css/AdminHome.css" asp-append-version="true">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/css/TrainerClass.css" asp-append-version="true" />
     <link rel="icon" href="~/images_fitcheck/fitcheckicon.png" />
+    <title>Classes | FitCheck Gym</title>
 </head>
 <body>
     <header>
         <div class="brand-container">
-            <img alt="logo" class="logo" src="~/images_fitcheck/fitcheckicon.png">
+            <img asp-append-version="true" src="~/images_fitcheck/fitcheckicon.png" alt="logo" class="logo" />
             <h1 class="brand">FITCHECK</h1>
         </div>
-        <nav class="navbar">
-            <a asp-controller="Admin" asp-action="AdminHome">Home</a>
-            <a asp-controller="Admin" asp-action="AdminPayment">Payment</a>
-            <a asp-controller="Admin" asp-action="AdminClass">Classes</a>
-            <a asp-controller="Admin" asp-action="AdminMember">Members</a>
 
+        <nav class="navbar">
+            <a asp-controller="Trainer" asp-action="TrainerClass">Schedule</a>
             <form method="post" style="display:inline;">
                 <button type="button" class="logout-btn" onclick="openLogoutModal()">Logout</button>
             </form>
-
-
         </nav>
     </header>
 
-    
-    <!-- Main -->
-
-
     <main>
-        <h2>WELCOME @Model.AdminName,</h2>
+        <div class="classes-header">
+            <h2>WELCOME Trainer, <span id="trainer-name">@Model.TrainerName</span></h2>
+            <h3 class="overview">CLASS OVERVIEW</h3>
+            <p class="subtitle">SEE ALL CLASSES THIS WEEK</p>
+        </div>
 
-        <div class="status-cards">
-            <div class="card">
-                <h3>@Model.ActiveMembers</h3>
-                <p>Active Members</p>
-            </div>
-            <div class="card">
-                <h3>@Model.PendingPayments</h3>
-                <p>Pending Payments</p>
-            </div>
-            <div class="card">
-                <h3>@Model.UpcomingClasses</h3>
-                <p>Upcoming Classes</p>
-            </div>
+        <div class="schedule-container">
+            @foreach (var day in daysOfWeek)
+            {
+                var dayEnum = Enum.Parse<FitCheckWebApp.Models.DayOfWeekClass>(day);
+                var classesForDay = Model.ClassesByDay.ContainsKey(dayEnum)
+                ? Model.ClassesByDay[dayEnum]
+                : new List<FitCheckWebApp.ViewModels.ClassDisplayViewModel>();
+
+                <div class="day-column">
+                    <div class="day-header">@day.ToUpper()</div>
+
+                    @if (classesForDay.Any())
+                    {
+                        @foreach (var cls in classesForDay)
+                        {
+                            <div class="class-card @(cls.InstructorName.Trim() == Model.TrainerName.Trim() ? "glow" : "") @(cls.IsFull ? "full" : "")">
+                                <div class="class-time">@FormatTime(cls.Time)</div>
+                                <h3 class="class-name">@cls.Type.ToUpper()</h3>
+                                <p class="class-instructor">with @cls.InstructorName</p>
+                                <p class="class-duration">@cls.DurationMinutes min | Max @cls.ParticipantLimit | Joined: @cls.ParticipantsCount</p>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="class-card" style="text-align: center; padding: 40px 20px;">
+                            <p style="color: #999;">No classes scheduled</p>
+                        </div>
+                    }
+                </div>
+            }
         </div>
     </main>
 
@@ -92,13 +101,7 @@
 
     </script>
 
-
     <div class="hr-container">
-        <hr>
-    </div>
-
-
-  <div class="hr-container">
         <hr>
     </div>
 
@@ -135,5 +138,15 @@
             </div>
         </div>
     </footer>
+
+    @functions {
+        private string FormatTime(TimeSpan t)
+        {
+            int h = t.Hours % 12;
+            if (h == 0) h = 12;
+            string ampm = t.Hours >= 12 ? "PM" : "AM";
+            return $"{h}:{t.Minutes:D2} {ampm}";
+        }
+    }
 </body>
 </html>

@@ -1,4 +1,8 @@
-﻿@*
+﻿@using FitCheckWebApp.ViewModels.Admin
+
+
+
+@*
     
 *@
 @{
@@ -12,7 +16,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Fitcheck</title>
+    <title>Members | FitCheck Gym</title>
     <link rel="stylesheet" href="~/css/AdminMember.css" asp-append-version="true" />
 </head>
 <body>
@@ -28,8 +32,8 @@
             <a asp-controller="Admin" asp-action="AdminClass">Classes</a>
             <a asp-controller="Admin" asp-action="AdminMember">Members</a>
 
-            <form asp-controller="Account" asp-action="Logout" method="post" style="display:inline;">
-                <button type="submit" class="logout-btn">Logout</button>
+            <form method="post" style="display:inline;">
+                <button type="button" class="logout-btn" onclick="openLogoutModal()">Logout</button>
             </form>
 
 
@@ -58,18 +62,25 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>23810 - FEL</td>
-                        <td>Juan Dela Cruz</td>
-                        <td>juandelacruz@gmail.com</td>
-                        <td>FitElite</td>
-                        <td class="active-status">Active</td>
-                        <td>11-30-25</td>
-                        <td>
-                            <button class="delete">Delete</button>
-                        </td>
-                    </tr>
+                    @foreach (var m in Model.Members)
+                    {
+                        <tr>
+                            <td>@m.MemberID</td>
+                            <td>@m.Name</td>
+                            <td>@m.Email</td>
+                            <td>@m.MembershipPlan</td>
+                            <td class="@(m.Status == "Active" ? "active-status" : "inactive-status")">@m.Status</td>
+                            <td>@m.PaymentDue?.ToString("MM-dd-yy")</td>
+                            <td>
+                                <form asp-controller="Admin" asp-action="DeleteMember" method="post">
+                                    <input type="hidden" name="id" value="@m.AccountID" />
+                                    <button type="submit" class="delete">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
                 </tbody>
+
             </table>
         </div>
 
@@ -77,6 +88,37 @@
 
     </main>
 
+    <!-- Logout Modal -->
+    <div id="logoutModal" class="modal-overlay">
+        <div class="modal-content">
+            <h3>Confirm Log Out</h3>
+            <p>Are you sure you want to log out?</p>
+            <div class="modal-buttons">
+                <form id="logoutForm" asp-controller="Account" asp-action="Logout" method="post">
+                    <button type="submit" class="btn-yes">Yes</button>
+                    <button type="button" class="btn-no" onclick="closeLogoutModal()">No</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+                function openLogoutModal() {
+            document.getElementById("logoutModal").style.display = "flex";
+        }
+
+        function closeLogoutModal() {
+            document.getElementById("logoutModal").style.display = "none";
+        }
+
+        // Optional: close modal if user clicks outside content
+        window.onclick = function(event) {
+            const modal = document.getElementById("logoutModal");
+            if (event.target == modal) {
+                closeLogoutModal();
+            }
+        }
+
+    </script>
 
     <!-- FOOTER -->
 

@@ -1,7 +1,10 @@
+﻿@using FitCheckWebApp.ViewModels.Account
+
 @{
     Layout = null;
 }
-@model FitCheckWebApp.ViewModels.LoginViewModel
+
+@model LoginViewModel
 
 <!DOCTYPE html>
 <html lang="en">
@@ -11,7 +14,7 @@
 
     <link rel="stylesheet" href="~/css/LogInPage.css" asp-append-version="true">
     <link rel="icon" href="~/images_fitcheck/fitcheckicon.png" type="image/png">
-    <title>Log In | Fitcheck Gym</title>
+    <title>Log In | FitCheck Gym</title>
 </head>
 <body>
     <header>
@@ -22,12 +25,13 @@
 
         <nav class="navbar">
             <a asp-controller="Home" asp-action="Index">Home</a>
-            <a asp-controller="Transaction" asp-action="Membership">Membership</a>
-            <a asp-controller="Account" asp-action="Classes">Classes</a>
-            <a asp-controller="Account" asp-action="AboutUs">About Us</a>
+            <a asp-controller="Home" asp-action="Membership">Membership</a>
+            <a asp-controller="Home" asp-action="Classes">Classes</a>
+            <a asp-controller="Home" asp-action="AboutUs">About Us</a>
             <a asp-controller="Account" asp-action="Login">Log In</a>
         </nav>
     </header>
+
 
     <main>
         <h1 class="txt-welcome">WELCOME TO FITCHECK</h1>
@@ -35,19 +39,28 @@
             <div class="form-container">
                 <h2 class="txt-sign-in">Sign in to your account</h2>
 
+                <!-- 🔴 Error message section -->
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <div class="error-message">
+                        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                        {
+                            <p>@error.ErrorMessage</p>
+                        }
+                    </div>
+                }
+
                 <div>
-                    <h5 class="txt-email">Email</h5>
-                    <input asp-for="Email" type="email" class="email-field" required />
+                    <input asp-for="Email" type="email" class="email-field" placeholder="Email" required />
                     <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
 
                 <div>
-                    <h5 class="txt-password">Password</h5>
-                    <input asp-for="Password" type="password" class="password-field" required />
+                    <input asp-for="Password" type="password" class="password-field" placeholder="Password" required />
                     <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
 
-                <a asp-controller="Account" asp-action="ForgotPassword" class="forgot-password">
+                <a href="#" class="forgot-password" onclick="openVerificationPopup()">
                     <p>Forgot Password?</p>
                 </a>
 
@@ -62,6 +75,43 @@
             </div>
         </form>
     </main>
+
+    <!-- Ito yung form -->
+    <!-- Email Verification Popup -->
+    <div id="emailVerificationPopup" class="popup-container">
+        <div class="popup">
+            <button class="close-btn" onclick="closePopup()">&times;</button>
+            <h2 class="popup-title">VERIFY EMAIL</h2>
+            <p class="popup-text">To log in, verify your email. We sent you a 4-digit code.</p>
+
+            <div class="code-inputs">
+                <input type="text" maxlength="1" class="code-box" />
+                <input type="text" maxlength="1" class="code-box" />
+                <input type="text" maxlength="1" class="code-box" />
+                <input type="text" maxlength="1" class="code-box" />
+            </div>
+
+            <button class="btn-continue">CONTINUE</button>
+            <p class="resend-text">Didn�t get the code? <a href="#" class="resend-link">Resend</a></p>
+        </div>
+    </div>
+
+    <script>
+        function openVerificationPopup() {
+            document.getElementById("emailVerificationPopup").style.display = "flex";
+        }
+
+        function closePopup() {
+            document.getElementById("emailVerificationPopup").style.display = "none";
+        }
+
+        // Ensure popup never shows on reload
+        window.addEventListener('load', function () {
+            document.getElementById("emailVerificationPopup").style.display = "none";
+        });
+    </script>
+
+    <!-- Hanggang js -->
 
     <div class="hr-container">
         <hr>

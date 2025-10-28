@@ -138,7 +138,7 @@ main {
 
 .input-row {
     display: flex;
-    gap: 15px;
+    gap: 10px;
 }
 
 /* Input fields */
@@ -151,6 +151,7 @@ main {
     color: #333;
     outline: none;
     transition: all 0.3s ease;
+    flex: 1; /* default size for fields */
 }
 
     .input-field:focus {
@@ -171,10 +172,12 @@ main {
 
     .input-field.medium {
         flex: 1;
+        min-width: 200px;
     }
 
     .input-field.small {
-        flex: 0.6;
+        flex: 0.5; /* smaller but not tiny */
+        min-width: 100px;
     }
 
 /* First Name / Last Name adjustments */
@@ -192,12 +195,14 @@ main {
 }
 
 select.input-field {
-    cursor: pointer;
     appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23999' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D'http://www.w3.org/2000/svg'%20viewBox%3D'0%200%204%205'%3E%3Cpath%20fill%3D'%23999'%20d%3D'M2%205L0%200h4z'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
-    background-position: right 15px center;
-    padding-right: 40px;
+    background-position: right 10px center;
+    background-size: 8px 10px;
+    padding-right: 30px;
 }
 
 .terms-section {
@@ -428,3 +433,31 @@ footer .right-side-footer {
         width: 25px;
         height: auto;
     }
+
+
+//Rex - error message quick fix:
+
+.input-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.input-wrapper .text-danger {
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+        display: block;
+        min-height: 1.25rem; 
+}
+
+.checkbox-wrapper {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+}
+
+.checkbox-wrapper .text-danger {
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+        margin-left: 1.5rem; 
+}
