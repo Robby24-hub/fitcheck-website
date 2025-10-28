@@ -36,11 +36,17 @@ namespace FitCheckWebApp.Controllers
                 return RedirectToAction("Login", "Account");
 
             var lastTransaction = TransactionManager.FindLatestActiveByAccount(accountId);
-            bool isRenewal = lastTransaction != null && lastTransaction.Status == TransactionStatus.Expired;
+
+            bool isRenewal = TempData["IsRenewal"] != null && (bool)TempData["IsRenewal"];
             bool isExtension = lastTransaction != null && lastTransaction.Status == TransactionStatus.Active;
 
+            if (isRenewal && lastTransaction != null)
+            {
+                newtransaction.MembershipPlan = lastTransaction.MembershipPlan;
+            }
+
             DateTime startDate;
-            if (isExtension)
+            if (isExtension && lastTransaction != null)
             {
                 startDate = lastTransaction.EndDate.AddDays(1);
             }
@@ -198,6 +204,44 @@ namespace FitCheckWebApp.Controllers
 
 
 
+        [HttpPost]
+        [Authorize]
+        public IActionResult RenewMembership()
+        {
+            int accountId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+            var account = AccountManager.FindById(accountId);
+
+
+            if (account == null)
+                return RedirectToAction("Login", "Account");
+
+            var lastTransaction = TransactionManager.FindLatestByAccount(accountId);
+
+            if (lastTransaction == null)
+            {
+                TempData["Error"] = "No previous membership found. Please choose a plan.";
+                return RedirectToAction("UserMembership", "Transaction");
+            }
+
+            if (lastTransaction.Status == TransactionStatus.Active)
+            {
+                TempData["Notice"] = "Your membership is still active. You can extend it instead.";
+                return RedirectToAction("UserMembership", "Transaction");
+            }
+
+            if (lastTransaction.Status == TransactionStatus.Expired)
+            {
+
+                TempData["IsRenewal"] = true;
+                TempData["RenewPlan"] = lastTransaction.MembershipPlan;
+
+                return RedirectToAction("PaymentMethod", "Transaction");
+            }
+
+            TempData["Error"] = "Unable to process renewal. Please try again later.";
+            return RedirectToAction("UserMembership", "Transaction");
+
+        }
 
     }
 }

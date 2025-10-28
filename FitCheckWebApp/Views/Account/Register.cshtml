@@ -35,43 +35,54 @@
             <div class="container">
                 <h1 class="txt-membership-registration">FITCHECK MEMBERSHIP REGISTRATION</h1>
                 <form class="registration-form" method="post" asp-controller="Account" asp-action="Register">
-                    
+
                     <!-- Personal Information -->
                     <section class="form-section">
                         <h2 class="section-title">PERSONAL INFORMATION</h2>
                         <div class="form-group">
                             <div class="input-row">
-                                <input asp-for="FirstName" type="text" placeholder="First Name" class="input-field medium" required>
-                                <span asp-validation-for="FirstName" class="text-danger"></span>
+                                <div class="input-wrapper">
+                                    <input asp-for="FirstName" type="text" placeholder="First Name" class="input-field medium" required>
+                                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                                </div>
 
-                                <input asp-for="LastName" type="text" placeholder="Last Name" class="input-field medium" required>
-                                <span asp-validation-for="LastName" class="text-danger"></span>
-
-                                
+                                <div class="input-wrapper">
+                                    <input asp-for="LastName" type="text" placeholder="Last Name" class="input-field medium" required>
+                                    <span asp-validation-for="LastName" class="text-danger"></span>
+                                </div>
                             </div>
 
                             <div class="input-row">
-                                <input asp-for="BirthDate" type="date" placeholder="Birthday" class="input-field medium" required>
-                                <span asp-validation-for="BirthDate" class="text-danger"></span>
+                                <div class="input-wrapper">
+                                    <input asp-for="BirthDate" type="date" placeholder="Birthday" class="input-field medium" required>
+                                    <span asp-validation-for="BirthDate" class="text-danger"></span>
+                                </div>
 
-                                <input asp-for="Age" type="number" id="ageOutput" placeholder="Age" class="input-field small" readonly>
+                                <div class="input-wrapper">
+                                    <input asp-for="Age" type="number" id="ageOutput" placeholder="Age" class="input-field small" readonly>
+                                </div>
 
-                                <select asp-for="Gender" class="input-field small">
-                                    <option value="" disabled selected hidden>Gender</option>
-                                    <option value="Male">Male</option>
-                                    <option value="Female">Female</option>
-                                    <option value="Other">Other</option>
-                                </select>
-                                <span asp-validation-for="Gender" class="text-danger"></span>
+                                <div class="input-wrapper">
+                                    <select asp-for="Gender" class="input-field small">
+                                        <option value="" disabled selected hidden>Gender</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                    <span asp-validation-for="Gender" class="text-danger"></span>
+                                </div>
                             </div>
 
-
                             <div class="input-row">
-                                <input asp-for="ContactNumber" type="tel" placeholder="Contact Number" class="input-field medium" required>
-                                <span asp-validation-for="ContactNumber" class="text-danger"></span>
+                                <div class="input-wrapper">
+                                    <input asp-for="ContactNumber" type="tel" placeholder="Contact Number" class="input-field medium" required>
+                                    <span asp-validation-for="ContactNumber" class="text-danger"></span>
+                                </div>
 
-                                <input asp-for="Email" type="email" placeholder="Email Address" class="input-field medium" required>
-                                <span asp-validation-for="Email" class="text-danger"></span>
+                                <div class="input-wrapper">
+                                    <input asp-for="Email" type="email" placeholder="Email Address" class="input-field medium" required>
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
                             </div>
                         </div>
                     </section>
@@ -80,49 +91,62 @@
                     <section class="form-section">
                         <h2 class="section-title">ACCOUNT SETUP</h2>
                         <div class="form-group">
-                            <input asp-for="Username" type="text" placeholder="Create Username" class="input-field full" required>
-                            <span asp-validation-for="Username" class="text-danger"></span>
+                            <div class="input-wrapper">
+                                <input asp-for="Username" type="text" placeholder="Create Username" class="input-field full" required>
+                                <span asp-validation-for="Username" class="text-danger"></span>
+                            </div>
 
-                            <input asp-for="Password" type="password" placeholder="Create Password" class="input-field full" required>
-                            <span asp-validation-for="Password" class="text-danger"></span>
+                            <div class="input-wrapper">
+                                <input asp-for="Password" type="password" placeholder="Create Password" class="input-field full" required>
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                            </div>
 
-                            <input asp-for="ConfirmPassword" type="password" placeholder="Confirm Password" class="input-field full" required>
-                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                            <div class="input-wrapper">
+                                <input asp-for="ConfirmPassword" type="password" placeholder="Confirm Password" class="input-field full" required>
+                                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                            </div>
                         </div>
                     </section>
-
 
                     <!-- Emergency Contact -->
                     <section class="form-section">
                         <h2 class="section-title">EMERGENCY CONTACT</h2>
                         <div class="form-group">
-                            <input asp-for="FullName" type="text" placeholder="Full Name" class="input-field full" required>
-                            <span asp-validation-for="FullName" class="text-danger"></span>
+                            <div class="input-wrapper">
+                                <input asp-for="FullName" type="text" placeholder="Full Name" class="input-field full" required>
+                                <span asp-validation-for="FullName" class="text-danger"></span>
+                            </div>
 
-                            <input asp-for="EmergencyContactNumber" type="tel" placeholder="Cellphone Number" class="input-field full" required>
-                            <span asp-validation-for="EmergencyContactNumber" class="text-danger"></span>
+                            <div class="input-wrapper">
+                                <input asp-for="EmergencyContactNumber" type="tel" placeholder="Cellphone Number" class="input-field full" required>
+                                <span asp-validation-for="EmergencyContactNumber" class="text-danger"></span>
+                            </div>
                         </div>
                     </section>
 
                     <!-- Terms and Conditions -->
                     <div class="terms-section">
-                        <label class="checkbox-label">
-                            <input asp-for="AgreeTerms" type="checkbox" class="checkbox" />
-                            <span>
-                                I agree to the
-                                <a asp-controller="Account" asp-action="TermsAndConditions" class="link">Terms and Conditions</a>
-                            </span>
-                        </label>
-                        <span asp-validation-for="AgreeTerms" class="text-danger"></span>
+                        <div class="checkbox-wrapper">
+                            <label class="checkbox-label">
+                                <input asp-for="AgreeTerms" type="checkbox" class="checkbox" />
+                                <span>
+                                    I agree to the
+                                    <a asp-controller="Account" asp-action="TermsAndConditions" class="link">Terms and Conditions</a>
+                                </span>
+                            </label>
+                            <span asp-validation-for="AgreeTerms" class="text-danger"></span>
+                        </div>
 
-                        <label class="checkbox-label">
-                            <input asp-for="AgreePrivacy" type="checkbox" class="checkbox" />
-                            <span>
-                                I agree to the
-                                <a asp-controller="Account" asp-action="PrivacyPolicy" class="link">Privacy Policy</a>
-                            </span>
-                        </label>
-                        <span asp-validation-for="AgreePrivacy" class="text-danger"></span>
+                        <div class="checkbox-wrapper">
+                            <label class="checkbox-label">
+                                <input asp-for="AgreePrivacy" type="checkbox" class="checkbox" />
+                                <span>
+                                    I agree to the
+                                    <a asp-controller="Account" asp-action="PrivacyPolicy" class="link">Privacy Policy</a>
+                                </span>
+                            </label>
+                            <span asp-validation-for="AgreePrivacy" class="text-danger"></span>
+                        </div>
                     </div>
 
                     <!-- Register Button -->
@@ -146,15 +170,17 @@
             <div class="left-side-footer">
                 <div class="description-footer">
                     <img class="fitcheck-logo-footer" src="/images_fitcheck/fitcheckicon.png">
-                    <p>Transform your body and mind at FitCheck Gym. With state-of-the-art equipment,
-                       expert trainers, and a supportive community, we're here to help you achieve your fitness goals.</p>
+                    <p>
+                        Transform your body and mind at FitCheck Gym. With state-of-the-art equipment,
+                        expert trainers, and a supportive community, we're here to help you achieve your fitness goals.
+                    </p>
                 </div>
 
                 <div class="follow-socials-container">
                     <h4 class="follow-us-footer">FOLLOW US</h4>
                     <div class="social-media-container">
                         <a target="_blank" href="https://www.facebook.com/"><img src="/images_fitcheck/icon_fb-removebg-preview.png"></a>
-                        <a target="_blank" href="https://www.linkedin.com/"><img src="/images_fitcheck/Icon_linkedin-removebg-preview.png"></a>
+                        <a target="_blank" href="https://www.linkedin.com/"><img src="/images_fitcheck/icon_linkedin-removebg-preview.png"></a>
                         <a target="_blank" href="https://www.youtube.com/"><img src="/images_fitcheck/icon_youtube-removebg-preview.png"></a>
                         <a target="_blank" href="https://www.instagram.com/"><img src="/images_fitcheck/icon_instagram-removebg-preview.png"></a>
                     </div>
@@ -189,9 +215,14 @@
             const ageOutput = document.getElementById("ageOutput");
 
             if (birthDateInput && ageOutput) {
-
+                // Set max date to today
                 const today = new Date().toISOString().split("T")[0];
                 birthDateInput.setAttribute("max", today);
+
+                // Set min date to 120 years ago (reasonable maximum human age)
+                const minDate = new Date();
+                minDate.setFullYear(minDate.getFullYear() - 120);
+                birthDateInput.setAttribute("min", minDate.toISOString().split("T")[0]);
 
                 birthDateInput.addEventListener("change", function () {
                     const birthDateValue = this.value;
@@ -200,26 +231,26 @@
                         return;
                     }
 
-                    const birthDate = new Date(birthDateValue);
+                    // Parse date components to avoid timezone issues
+                    const [year, month, day] = birthDateValue.split("-").map(Number);
                     const todayDate = new Date();
 
-                    let age = todayDate.getFullYear() - birthDate.getFullYear();
-                    const monthDiff = todayDate.getMonth() - birthDate.getMonth();
+                    let age = todayDate.getFullYear() - year;
 
-                    if (monthDiff < 0 || (monthDiff === 0 && todayDate.getDate() < birthDate.getDate())) {
+                    // Check if birthday hasn't occurred yet this year
+                    const currentMonth = todayDate.getMonth() + 1; // JavaScript months are 0-indexed
+                    const currentDay = todayDate.getDate();
+
+                    if (month > currentMonth || (month === currentMonth && day > currentDay)) {
                         age--;
                     }
 
-                    ageOutput.value = age >= 0 ? age : "";
+                    // Display age only if it's reasonable
+                    ageOutput.value = (age >= 0 && age <= 120) ? age : "";
                 });
             }
         });
     </script>
 
-
 </body>
-
 </html>
-
-
-

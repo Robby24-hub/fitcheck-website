@@ -12,6 +12,8 @@
         public DateTime? EndDate { get; set; }
         public string? Status { get; set; }
         public string? PaymentStatus { get; set; }
+        public bool CanRenew { get; set; }
+        public bool HasActiveMembership { get; set; }
 
 
         public string? WarningMessage { get; set; }
