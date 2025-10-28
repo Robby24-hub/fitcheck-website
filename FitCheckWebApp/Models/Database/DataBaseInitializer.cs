@@ -62,7 +62,7 @@ namespace FitCheckWebApp.Models.Database
                             TransactionID INT AUTO_INCREMENT PRIMARY KEY,
                             AccountID INT NOT NULL,
                             MembershipPlan ENUM('FitStart','FitElite','FitPro') NOT NULL,
-                            PaymentMethod ENUM('credit','debit','cash') NOT NULL,
+                            PaymentMethod ENUM('Credit','Debit','Cash','None') NOT NULL,
                             TransactionDate DATETIME DEFAULT CURRENT_TIMESTAMP,
                             StartDate DATETIME NOT NULL,
                             EndDate DATETIME NOT NULL,

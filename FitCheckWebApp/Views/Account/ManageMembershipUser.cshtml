@@ -110,18 +110,27 @@
             <p>You can manage your current membership plan below.</p>
 
             <div class="manage-options">
-                <form asp-controller="Transaction" asp-action="CancelMembership" method="post">
-                    <input type="hidden" name="transactionId" value="@Model.TransactionId" />
-                    <button type="submit" class="manage-btn cancel">Cancel Membership</button>
-                </form>
 
-                <form asp-controller="Membership" asp-action="RenewMembership" method="post">
-                    <button type="submit" class="manage-btn renew">Renew Membership</button>
-                </form>
+                @if (Model.HasActiveMembership)
+                {
+                    <form id="cancelForm" asp-controller="Transaction" asp-action="CancelMembership" method="post">
+                        <input type="hidden" name="transactionId" value="@Model.TransactionId" />
+                        <button type="submit" class="manage-btn cancel">Cancel Membership</button>
+                    </form>
+                }
 
-                <form asp-controller="Transaction" asp-action="UserMembership">
+                @if (Model.CanRenew)
+                {
+                    <form asp-controller="Transaction" asp-action="RenewMembership" method="post">
+                        <button type="submit" class="manage-btn renew">Renew Membership</button>
+                    </form>
+                }
+
+                <form asp-controller="Transaction" asp-action="UserMembership" method="post">
                     <button type="submit" class="manage-btn upgrade">Upgrade Plan</button>
                 </form>
+                    
+
             </div>
         </section>
 
@@ -231,12 +240,12 @@
             // --- Confirm Actions ---
             confirmCancel.addEventListener("click", () => {
                 cancelModal.style.display = "none";
-                document.querySelector('form[action$="CancelMembership"]').submit();
+                document.getElementById("cancelForm").submit();
             });
 
             confirmRenew.addEventListener("click", () => {
                 renewModal.style.display = "none";
-                document.querySelector('form[action$="RenewMembership"]').submit();
+                document.getElementById("renewForm").submit();
             });
         });
     </script>

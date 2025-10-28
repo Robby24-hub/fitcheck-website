@@ -266,6 +266,12 @@ namespace FitCheckWebApp.Controllers
                 model.EndDate = transaction.EndDate;
                 model.Status = transaction.Status.ToString();
 
+                model.HasActiveMembership = transaction.Status == TransactionStatus.Active && transaction.EndDate > DateTime.Now;
+                model.CanRenew = transaction.Status == TransactionStatus.Expired ||
+                                 (transaction.EndDate <= DateTime.Now && transaction.Status != TransactionStatus.Cancelled);
+
+
+
                 if (transaction.EndDate <= DateTime.Now)
                 {
                     model.WarningMessage = "Your membership has expired. Please renew to continue access.";
@@ -274,6 +280,7 @@ namespace FitCheckWebApp.Controllers
                 {
                     model.WarningMessage = $"Your membership will expire in {(transaction.EndDate - DateTime.Now).Days} days.";
                 }
+
             }
             else
             {
@@ -282,10 +289,27 @@ namespace FitCheckWebApp.Controllers
                 model.EndDate = null;
                 model.Status = "N/A";
                 model.WarningMessage = "You do not have an active membership.";
+
+                model.HasActiveMembership = false;
+                model.CanRenew = false;
+
+
             }
+
+            Console.WriteLine($"[DEBUG] Status: {transaction?.Status}");
+            Console.WriteLine($"[DEBUG] EndDate: {transaction?.EndDate}");
+            Console.WriteLine($"[DEBUG] Now: {DateTime.Now}");
+            Console.WriteLine($"[DEBUG] HasActiveMembership: {model.HasActiveMembership}");
+            Console.WriteLine($"[DEBUG] CanRenew: {model.CanRenew}");
+
+
 
             return View(model);
         }
+
+
+        
+
 
         [Authorize]
         public IActionResult ClassesUser()
