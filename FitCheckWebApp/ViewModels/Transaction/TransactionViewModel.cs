@@ -12,6 +12,10 @@ namespace FitCheckWebApp.ViewModels.Transaction
         [Required]
         public PaymentMethod PaymentMethod { get; set; }
 
+        public decimal Amount { get; set; }
+        public bool IsUpgrade { get; set; }
+        public string? CurrentPlan { get; set; }
+
 
     }
 

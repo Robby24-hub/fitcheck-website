@@ -21,10 +21,10 @@
 
         public enum MembershipPlan
         {
-            None,
-            FitStart,
-            FitElite,
-            FitPro
+            None = 0,
+            FitStart = 1,
+            FitElite = 3,
+            FitPro = 2
         }
 
         public enum PaymentMethod

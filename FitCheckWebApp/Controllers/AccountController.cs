@@ -173,8 +173,6 @@ namespace FitCheckWebApp.Controllers
         // ===== USER PAGES ========
         // ==========================
         #region User Pages
-        [Authorize]
-        public IActionResult PaymentMethod() => View();
 
         [Authorize]
         public IActionResult UserHome()
@@ -306,9 +304,6 @@ namespace FitCheckWebApp.Controllers
 
             return View(model);
         }
-
-
-        
 
 
         [Authorize]

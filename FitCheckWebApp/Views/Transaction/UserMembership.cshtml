@@ -1,4 +1,7 @@
-﻿@{
+﻿@using FitCheckWebApp.ViewModels.Account
+@model MembershipPassViewModel
+
+@{
     Layout = null;
 }
 
@@ -63,7 +66,19 @@
                         <li>Free member parking</li>
                     </ul>
 
-                    <a asp-controller="Transaction" asp-route-plan="FitStart" class="subscribe-btn" asp-action="PaymentMethod">SUBSCRIBE NOW</a>
+                    @if (Model.MembershipPlan == "FitStart" && Model.HasActiveMembership)
+                    {
+                        <button class="subscribe-btn" disabled>Current Plan</button>
+                    }
+                    else if (Model.MembershipPlan == "FitPro" || Model.MembershipPlan == "FitElite")
+                    {
+                        <button class="subscribe-btn" disabled>Lower Plan</button>
+                    }
+                    else
+                    {
+                        <a asp-controller="Transaction" asp-action="PaymentMethod" asp-route-plan="FitStart" class="subscribe-btn">Subscribe Now</a>
+                    }
+
 
                 </div>
 
@@ -89,7 +104,23 @@
                         <li>Free guest pass once a month</li>
                     </ul>
 
-                    <a asp-controller="Transaction" asp-route-plan="FitElite" class="subscribe-btn" asp-action="PaymentMethod">SUBSCRIBE NOW</a>
+                    @if (Model.MembershipPlan == "FitElite" && Model.HasActiveMembership)
+                    {
+                        <button class="subscribe-btn" disabled>Current Plan</button>
+                    }
+                    else if (Model.HasActiveMembership && (Model.MembershipPlan == "FitPro" || Model.MembershipPlan == "FitStart"))
+                    {
+                        <form asp-controller="Transaction" asp-action="UpgradeMembership" method="post">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="plan" value="FitElite" />
+                            <button type="submit" class="subscribe-btn">Upgrade</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <a asp-controller="Transaction" asp-action="PaymentMethod" asp-route-plan="FitElite" class="subscribe-btn">Subscribe Now</a>
+                    }
+
 
                 </div>
 
@@ -113,8 +144,26 @@
                         <li>20% discount on merchandise</li>
                     </ul>
 
-                    <a asp-controller="Transaction" asp-route-plan="FitPro" class="subscribe-btn" asp-action="PaymentMethod">SUBSCRIBE NOW</a>
-
+                    @if (Model.MembershipPlan == "FitPro" && Model.HasActiveMembership)
+                    {
+                        <button class="subscribe-btn" disabled>Current Plan</button>
+                    }
+                    else if (Model.MembershipPlan == "FitElite" && Model.HasActiveMembership)
+                    {
+                        <button class="subscribe-btn" disabled>Higher Plan Active</button>
+                    }
+                    else if (Model.MembershipPlan == "FitStart" && Model.HasActiveMembership)
+                    {
+                        <form asp-controller="Transaction" asp-action="UpgradeMembership" method="post">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="plan" value="FitPro" />
+                            <button type="submit" class="subscribe-btn">Upgrade</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <a asp-controller="Transaction" asp-action="PaymentMethod" asp-route-plan="FitPro" class="subscribe-btn">Subscribe Now</a>
+                    }
                 </div>
 
             </div>
