@@ -86,7 +86,28 @@ namespace FitCheckWebApp.Helpers
             }
         }
 
+        public static decimal UnusedMembershipCalculator(decimal currentAmount, decimal newAmount, DateTime startDate)
+        {
 
+            DateTime today = DateTime.Now;
+            int totalDays = 30;
+
+            TimeSpan usedSpan = today - startDate;
+
+            double daysUsed = usedSpan.TotalDays;
+            double daysUnused = totalDays - daysUsed;
+
+            double usedPercantege = daysUsed / totalDays;
+            double unusedPercentage = daysUnused / totalDays;
+
+
+            double unusedValue = Convert.ToDouble(currentAmount) * unusedPercentage;
+            double upgradeCost = Convert.ToDouble(newAmount) - unusedValue;
+
+            return Convert.ToDecimal(upgradeCost);
+
+
+        }
 
 
     }

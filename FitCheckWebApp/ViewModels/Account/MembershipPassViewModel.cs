@@ -13,6 +13,12 @@
         public string? Status { get; set; }
         public string? PaymentStatus { get; set; }
         public bool CanRenew { get; set; }
+        
+        public bool canUpgrade { get; set; }
+
+        public string CurrentPlanLabel { get; set; } = string.Empty;
+        public string NextPlanLabel { get; set; } = string.Empty;
+
         public bool HasActiveMembership { get; set; }
 
 
@@ -20,6 +26,8 @@
 
 
         public int TransactionId { get; set; }
+
+
     }
 
 }

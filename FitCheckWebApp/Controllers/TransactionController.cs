@@ -1,8 +1,9 @@
-﻿using System.Security.Claims;
+﻿using System.Diagnostics;
+using System.Security.Claims;
 using FitCheckWebApp.DataAccess;
 using FitCheckWebApp.Helpers;
 using FitCheckWebApp.Models;
-using FitCheckWebApp.ViewModels;
+using FitCheckWebApp.ViewModels.Account;
 using FitCheckWebApp.ViewModels.Transaction;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -24,7 +25,62 @@ namespace FitCheckWebApp.Controllers
 
 
         [HttpGet, Authorize]
-        public IActionResult PaymentMethod() => View();
+        public IActionResult PaymentMethod(string plan)
+        {
+            var model = new TransactionViewModel();
+
+            if (!string.IsNullOrEmpty(plan) && Enum.TryParse(plan, true, out MembershipPlan selectedPlan))
+            {
+                model.MembershipPlan = selectedPlan;
+            }
+            else
+            {
+                model.MembershipPlan = MembershipPlan.None;
+            }
+
+
+            bool isUpgrade = TempData["IsUpgrade"] as bool? ?? false;
+
+            Console.WriteLine($"=== PAYMENT METHOD DEBUG ===");
+            Console.WriteLine($"IsUpgrade from TempData: {isUpgrade}");
+            Console.WriteLine($"TempData['UpgradeAmount']: {TempData["UpgradeAmount"]}");
+
+            if (isUpgrade)
+            {
+               
+                string upgradeAmountStr = TempData["UpgradeAmount"] as string ?? "0";
+                decimal.TryParse(upgradeAmountStr, out decimal upgradeCost);
+
+                model.Amount = upgradeCost;
+                model.IsUpgrade = true;
+                model.CurrentPlan = TempData["CurrentPlan"] as string;
+
+                Console.WriteLine($"Model.Amount set to: {model.Amount}");
+                Console.WriteLine($"Model.IsUpgrade: {model.IsUpgrade}");
+                Console.WriteLine($"Model.CurrentPlan: {model.CurrentPlan}");
+
+                TempData.Keep("IsUpgrade");
+                TempData.Keep("UpgradeAmount");
+                TempData.Keep("UpgradePlan");
+                TempData.Keep("CurrentPlan");
+            }
+            else
+            {
+       
+                model.Amount = model.MembershipPlan switch
+                {
+                    MembershipPlan.FitStart => 999m,
+                    MembershipPlan.FitPro => 1499m,
+                    MembershipPlan.FitElite => 2499m,
+                    _ => 0m
+                };
+                model.IsUpgrade = false;
+                Console.WriteLine($"Regular subscription - Amount: {model.Amount}");
+            }
+
+            return View(model);
+        }
+
 
         [HttpPost, Authorize]
         public IActionResult PaymentMethod(TransactionViewModel newtransaction)
@@ -39,23 +95,106 @@ namespace FitCheckWebApp.Controllers
 
             bool isRenewal = TempData["IsRenewal"] != null && (bool)TempData["IsRenewal"];
             bool isExtension = lastTransaction != null && lastTransaction.Status == TransactionStatus.Active;
+            bool isUpgrade = TempData["IsUpgrade"] != null && (bool)TempData["IsUpgrade"];
+
+            decimal upgradeAmount = 0m;
+            if (TempData["UpgradeAmount"] != null)
+            {
+                upgradeAmount = decimal.Parse((string)TempData["UpgradeAmount"]);
+            }
 
             if (isRenewal && lastTransaction != null)
             {
                 newtransaction.MembershipPlan = lastTransaction.MembershipPlan;
             }
 
-            DateTime startDate;
+            var account = AccountManager.FindById(accountId);
+
+
+            if (isUpgrade && lastTransaction != null)
+            {
+                Console.WriteLine($">>> UPGRADE: Canceling old transaction {lastTransaction.TransactionID} and creating new one");
+
+
+                lastTransaction.Status = TransactionStatus.Cancelled;
+                TransactionManager.UpdateTransaction(lastTransaction);
+
+
+                DateTime startDate = DateTime.Now; 
+                DateTime endDate = lastTransaction.EndDate; 
+
+                decimal fullNewAmount = newtransaction.MembershipPlan switch
+                {
+                    MembershipPlan.FitStart => 999m,
+                    MembershipPlan.FitPro => 1499m,
+                    MembershipPlan.FitElite => 2499m,
+                    _ => 0m
+                };
+
+                var status = newtransaction.PaymentMethod.ToString() == "Cash"
+                    ? TransactionStatus.Pending
+                    : TransactionStatus.Active;
+
+                var upgradeTransaction = new Transaction
+                {
+                    AccountID = accountId,
+                    MembershipPlan = newtransaction.MembershipPlan,
+                    PaymentMethod = newtransaction.PaymentMethod,
+                    StartDate = startDate,
+                    EndDate = endDate,
+                    TransactionDate = DateTime.Now,
+                    Status = status,
+                    Amount = upgradeAmount 
+                };
+
+                TransactionManager.PostTransaction(upgradeTransaction);
+
+
+                if (account != null && status == TransactionStatus.Active)
+                {
+                    account.MembershipPlan = newtransaction.MembershipPlan;
+                    AccountManager.UpdateAccount(account);
+
+
+                    try
+                    {
+                        var savedTransaction = TransactionManager.FindLatestActiveByAccount(accountId);
+                        string fullName = $"{account.FirstName} {account.LastName}";
+                        string referenceNumber = $"REF-UPG-{DateTime.Now:yyyyMMdd}-{savedTransaction?.TransactionID ?? 0:D6}";
+
+                        EmailHelper.SendTransactionReceipt(
+                            toEmail: account.Email!,
+                            userName: fullName,
+                            membershipPlan: newtransaction.MembershipPlan.ToString(),
+                            amount: upgradeAmount,
+                            transactionDate: upgradeTransaction.TransactionDate,
+                            endDate: endDate,
+                            transactionId: (savedTransaction?.TransactionID ?? 0).ToString(),
+                            referenceNumber: referenceNumber
+                        );
+
+                        Console.WriteLine($"✅ Upgrade receipt sent to {account.Email}");
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"⚠️ Email failed: {ex.Message}");
+                    }
+                }
+
+                return RedirectToAction("UserMembership");
+            }
+
+            DateTime regularStartDate;
             if (isExtension && lastTransaction != null)
             {
-                startDate = lastTransaction.EndDate.AddDays(1);
+                regularStartDate = lastTransaction.EndDate.AddDays(1);
             }
             else
             {
-                startDate = DateTime.Now;
+                regularStartDate = DateTime.Now;
             }
 
-            DateTime endDate = startDate.AddMonths(1);
+            DateTime regularEndDate = regularStartDate.AddMonths(1);
 
             decimal amount = newtransaction.MembershipPlan switch
             {
@@ -65,7 +204,7 @@ namespace FitCheckWebApp.Controllers
                 _ => 0m
             };
 
-            var status = newtransaction.PaymentMethod.ToString() == "Cash"
+            var transactionStatus = newtransaction.PaymentMethod.ToString() == "Cash"
                 ? TransactionStatus.Pending
                 : TransactionStatus.Active;
 
@@ -74,16 +213,14 @@ namespace FitCheckWebApp.Controllers
                 AccountID = accountId,
                 MembershipPlan = newtransaction.MembershipPlan,
                 PaymentMethod = newtransaction.PaymentMethod,
-                StartDate = startDate,
-                EndDate = endDate,
+                StartDate = regularStartDate,
+                EndDate = regularEndDate,
                 TransactionDate = DateTime.Now,
-                Status = status,
+                Status = transactionStatus,
                 Amount = amount
             };
 
             TransactionManager.PostTransaction(transaction);
-
-            var account = AccountManager.FindById(accountId);
 
             if (transaction.Status == TransactionStatus.Active)
             {
@@ -96,7 +233,7 @@ namespace FitCheckWebApp.Controllers
                     account.MembershipPlan = newtransaction.MembershipPlan;
                     AccountManager.UpdateAccount(account);
 
-                    // ===== SEND EMAIL RECEIPT =====
+
                     try
                     {
                         var savedTransaction = TransactionManager.FindLatestActiveByAccount(accountId);
@@ -109,7 +246,7 @@ namespace FitCheckWebApp.Controllers
                             membershipPlan: newtransaction.MembershipPlan.ToString(),
                             amount: amount,
                             transactionDate: transaction.TransactionDate,
-                            endDate: endDate,
+                            endDate: regularEndDate,
                             transactionId: (savedTransaction?.TransactionID ?? 0).ToString(),
                             referenceNumber: referenceNumber
                         );
@@ -125,7 +262,6 @@ namespace FitCheckWebApp.Controllers
 
             return RedirectToAction("UserMembership");
         }
-
 
 
 
@@ -145,20 +281,12 @@ namespace FitCheckWebApp.Controllers
             transaction.Status = TransactionStatus.Cancelled;
             TransactionManager.UpdateTransaction(transaction);
 
-            var latestActive = TransactionManager.FindLatestActiveByAccount(accountId);
+
 
             var account = AccountManager.FindById(accountId);
             if (account != null)
             {
-                if (latestActive != null)
-                {
-                    account.MembershipPlan = latestActive.MembershipPlan;
-                }
-                else
-                {
-                    account.MembershipPlan = MembershipPlan.None;
-                }
-
+                account.MembershipPlan = MembershipPlan.None;
                 AccountManager.UpdateAccount(account);
             }
 
@@ -166,12 +294,54 @@ namespace FitCheckWebApp.Controllers
         }
 
 
-
-
         // ===== PAGES =====
 
+        [Authorize]
+        public IActionResult UserMembership()
+        {
+            if (!User.Identity!.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
 
-        public IActionResult UserMembership() => View();
+            int accountId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+            var account = AccountManager.FindById(accountId);
+
+            if (account == null)
+                return RedirectToAction("Login", "Account");
+
+            var transaction = TransactionManager.FindLatestActiveByAccount(accountId);
+
+            var model = new MembershipPassViewModel
+            {
+                FullName = $"{account.FirstName} {account.LastName}",
+                MemberID = account.MemberID,
+            };
+
+
+            if (transaction != null)
+            {
+
+                bool isActive = transaction.Status == TransactionStatus.Active && transaction.EndDate > DateTime.Now;
+
+                model.HasActiveMembership = transaction.Status == TransactionStatus.Active && transaction.EndDate > DateTime.Now;
+                model.MembershipPlan = transaction.MembershipPlan.ToString();
+
+                model.canUpgrade = transaction.MembershipPlan < MembershipPlan.FitElite && transaction.MembershipPlan > MembershipPlan.None;
+
+                model.CurrentPlanLabel = isActive ? "CURRENT PLAN" : "EXPIRED PLAN";
+
+                model.NextPlanLabel = model.canUpgrade ? "UPGRADE NOW" : "SUBSCRIBE NOW";
+
+
+            }
+            else
+            {
+                model.MembershipPlan = "None";
+                model.CurrentPlanLabel = "NO ACTIVE PLAN";
+                model.NextPlanLabel = "SUBSCRIBE NOW";
+            }
+
+            return View(model);
+        }
 
 
 
@@ -200,8 +370,6 @@ namespace FitCheckWebApp.Controllers
 
             return View(model);
         }
-
-
 
 
         [HttpPost]
@@ -242,6 +410,74 @@ namespace FitCheckWebApp.Controllers
             return RedirectToAction("UserMembership", "Transaction");
 
         }
+
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public IActionResult UpgradeMembership(string plan)
+        {
+            Console.WriteLine($">>>>>>> UpgradeMembership called with plan: {plan}");
+
+            if (!System.Enum.TryParse<MembershipPlan>(plan, out var newPlan))
+            {
+                TempData["Error"] = "Invalid membership plan selected.";
+                return RedirectToAction("UserMembership");
+            }
+
+            int accountId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+            var account = AccountManager.FindById(accountId);
+            if (account == null)
+                return RedirectToAction("Login", "Account");
+
+            var lastTransaction = TransactionManager.FindLatestActiveByAccount(accountId);
+
+            if (lastTransaction != null)
+            {
+                
+            }
+
+            if (lastTransaction == null || lastTransaction.Status != TransactionStatus.Active)
+            {
+                TempData["Error"] = "No active membership found. Please subscribe to a new plan.";
+                return RedirectToAction("PaymentMethod", new { plan = plan });
+            }
+
+            if (newPlan <= lastTransaction.MembershipPlan)
+            {
+                TempData["Error"] = "You can only upgrade to a higher plan.";
+                return RedirectToAction("UserMembership");
+            }
+
+            decimal currentAmount = lastTransaction.Amount;
+            decimal newAmount = newPlan switch
+            {
+                MembershipPlan.FitStart => 999m,
+                MembershipPlan.FitPro => 1499m,
+                MembershipPlan.FitElite => 2499m,
+                _ => 0m
+            };
+
+            
+
+            decimal upgradeCost = Helpers.Helpers.UnusedMembershipCalculator(
+                currentAmount: currentAmount,
+                newAmount: newAmount,
+                startDate: lastTransaction.StartDate
+            );
+
+           
+
+            TempData["IsUpgrade"] = true;
+            TempData["UpgradeAmount"] = upgradeCost.ToString("F2");
+            TempData["UpgradePlan"] = plan;
+            TempData["CurrentPlan"] = lastTransaction.MembershipPlan.ToString();
+
+            Console.WriteLine($">>>>>>> TempData set - UpgradeAmount: {TempData["UpgradeAmount"]}");
+
+            return RedirectToAction("PaymentMethod", new { plan = plan });
+        }
+
+
 
     }
 }
