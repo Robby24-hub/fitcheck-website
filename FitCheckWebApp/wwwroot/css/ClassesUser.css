@@ -528,6 +528,7 @@ footer .right-side-footer {
     position: relative;
     transition: all 0.3s ease;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+    
 }
 
 .class-card:hover {
