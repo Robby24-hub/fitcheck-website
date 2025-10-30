@@ -1,23 +1,21 @@
+@using FitCheckWebApp.ViewModels.Transaction
 @{
     Layout = null;
 }
 
-@model FitCheckWebApp.ViewModels.TransactionViewModel
+@model TransactionViewModel
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- CSS - FIXED -->
     <link rel="stylesheet" href="~/css/PaymentMethod.css" asp-append-version="true" />
-    <!-- Favicon -->
     <link rel="icon" href="~/images_fitcheck/fitcheckicon.png" />
     <title>Select Payment Method | FitCheck Gym</title>
 </head>
 <body>
     <header>
-
         <div class="brand-container">
             <img asp-append-version="true" src="~/images_fitcheck/fitcheckicon.png" alt="logo" class="logo" />
             <h1 class="brand">FITCHECK</h1>
@@ -26,171 +24,256 @@
         <nav class="navbar">
             <a asp-controller="Account" asp-action="UserHome">Home</a>
             <a asp-controller="Transaction" asp-action="UserMembership">Membership</a>
-            <a href="#">Classes</a>
-            <a href="#">Products</a>
-            <a href="#">Account</a>
-            <a href="#">Log Out</a>
+            <a asp-controller="Account" asp-action="ClassesUser">Classes</a>
+            <a asp-controller="Account" asp-action="Products">Products</a>
+            <a asp-controller="Account" asp-action="AccountUser">Account</a>
+            <form method="post" style="display:inline;">
+                <button type="button" class="logout-btn" onclick="openLogoutModal()">Logout</button>
+            </form>
         </nav>
     </header>
 
-<main class="container">
-  <h1 class="page-title">Select Payment Method</h1>
-  <section class="grid">
-    <a class="card" href="#" aria-label="Pay with Mastercard" onclick="showPaymentForm('mastercard')">
-      <img src="~/images_fitcheck/Mastercard.png" alt="Mastercard" width="306" height="228"/>
-    </a>
-    <a class="card" href="#" aria-label="Pay with GCash" onclick="showPaymentForm('gcash')">
-      <img src="~/images_fitcheck/Gcash.png" alt="GCash" width="306" height="228"/>
-    </a>
-    <a class="card" href="#" aria-label="Pay with Pay Cash" onclick="showPaymentForm('paycash')">
-      <img src="~/images_fitcheck/Paycash.png" alt="Pay Cash" width="306" height="228"/>
-    </a>
-  </section>
-</main>
+    <main class="container">
+        <h1 class="page-title">Select Payment Method</h1>
 
-<!-- Modal for Payment Form -->
-<div id="paymentModal" class="payment-modal">
-  <div class="payment-modal-content">
-    <span class="close-btn" onclick="closePaymentForm()">&times;</span>
-    <h2>Payment Details</h2>
-    <form asp-controller="Transaction" asp-action="PaymentMethod" method="post"  id="paymentForm">
-
-       <input type="hidden" asp-for="PaymentMethod" id="paymentMethod" value="" />
-
-      <div class="form-row">
-        <div class="input-group">
-          <label for="firstName">First Name</label>
-          <input type="text" id="firstName" name="firstName" required>
-        </div>
-        <div class="input-group">
-          <label for="surname">Surname</label>
-          <input type="text" id="surname" name="surname" required>
-        </div>
-      </div>
-
-      <!-- Dynamic Fields Based on Payment Method -->
-      <div class="form-row" id="dynamicFields"></div>
-
-      <!-- Membership Plan and Price -->
-      <div class="form-row">
-        <label for="membershipPlanSelect">Membership Plan:</label>
-        <select asp-for="MembershipPlan" id="membershipPlanSelect" required>
-          <option value="" disabled selected>Select a plan</option>
-          <option value="FitStart" data-price="999">FitStart — ₱999</option>
-          <option value="FitPro" data-price="1499">FitPro — ₱1,499</option>
-          <option value="FitElite" data-price="2499">FitElite — ₱2,499</option>
-        </select>
-      </div>
-
-      <div class="form-row">
-        <label>Price: </label>
-        <span id="membershipPriceValue">₱0</span>
-      </div>
-
-      <div class="form-row">
-        <p style="color: red; font-size: 14px; text-align: center;">Note: There are no refunds for payments made.</p>
-      </div>
-
-      <div class="form-row">
-        <button type="submit" class="pay-btn">Pay Now</button>
-      </div>
-    </form>
-  </div>
-</div>
-
-<!-- Thank You Message Modal -->
-<div id="thankYouModal" class="payment-modal">
-  <div class="payment-modal-content">
-    <span class="close-btn" onclick="closeThankYouMessage()">&times;</span>
-    <h2>Thank You for Subscribing!</h2>
-    <p>Your payment has been successfully processed. We appreciate your subscription to FitCheck!</p>
-  </div>
-</div>
-
-<script>
-    window.onload = function() {
-      const membershipSelect = document.getElementById('membershipPlanSelect');
-      const priceDisplay = document.getElementById('membershipPriceValue');
-
-      membershipSelect.addEventListener('change', function() {
-        const selectedOption = membershipSelect.options[membershipSelect.selectedIndex];
-        priceDisplay.textContent = '₱' + selectedOption.getAttribute('data-price');
-      });
-
-      const params = new URLSearchParams(window.location.search);
-      const planParam = params.get('plan');
-      if (planParam) {
-        for (let option of membershipSelect.options) {
-          if (option.value === planParam) {
-            option.selected = true;
-            priceDisplay.textContent = '₱' + option.getAttribute('data-price');
-          }
+        @* Show upgrade banner if this is an upgrade *@
+        @if (Model.IsUpgrade)
+        {
+            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 25px; margin: 20px auto; border-radius: 12px; text-align: center; max-width: 600px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                <h3 style="margin: 0 0 15px 0; font-size: 24px;">🎉 Upgrading Your Membership</h3>
+                <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 8px; margin: 10px 0;">
+                    <p style="margin: 5px 0; font-size: 18px;">
+                        <strong>@Model.CurrentPlan</strong> → <strong>@Model.MembershipPlan</strong>
+                    </p>
+                </div>
+                <p style="margin: 15px 0 5px 0; font-size: 28px; font-weight: bold;">
+                    ₱@Model.Amount.ToString("N2")
+                </p>
+                <small style="opacity: 0.9;">Prorated upgrade cost based on remaining days</small>
+            </div>
         }
-      }
-    };
 
-    function showPaymentForm(paymentMethod) {
-      const modal = document.getElementById("paymentModal");
-      modal.style.display = "block";
+        <section class="grid">
+            <a class="card" href="#" aria-label="Pay with Mastercard" onclick="showPaymentForm('mastercard')">
+                <img src="~/images_fitcheck/Mastercard.png" alt="Mastercard" width="306" height="228" />
+            </a>
+            <a class="card" href="#" aria-label="Pay with GCash" onclick="showPaymentForm('gcash')">
+                <img src="~/images_fitcheck/Gcash.png" alt="GCash" width="306" height="228" />
+            </a>
+            <a class="card" href="#" aria-label="Pay with Pay Cash" onclick="showPaymentForm('paycash')">
+                <img src="~/images_fitcheck/Paycash.png" alt="Pay Cash" width="306" height="228" />
+            </a>
+        </section>
+    </main>
 
-      const hiddenPayment = document.getElementById("paymentMethod");
-      const dynamicFields = document.getElementById("dynamicFields");
+    <!-- Modal for Payment Form -->
+    <div id="paymentModal" class="payment-modal">
+        <div class="payment-modal-content">
+            <span class="close-btn" onclick="closePaymentForm()">&times;</span>
+            <h2>Payment Details</h2>
+            <form asp-controller="Transaction" asp-action="PaymentMethod" method="post" id="paymentForm">
+                @Html.AntiForgeryToken()
 
-      if (paymentMethod === 'mastercard') {
-        hiddenPayment.value = "Credit"; 
-        dynamicFields.innerHTML = `
-          <div class="form-row">
-            <div class="input-group">
-              <label for="cardNumber">Card Number</label>
-              <input type="text" id="cardNumber" name="cardNumber" required>
-            </div>
-            <div class="input-group">
-              <label for="cardHolderName">Cardholder Name</label>
-              <input type="text" id="cardHolderName" name="cardHolderName" required>
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="input-group">
-              <label for="cvv">CVV</label>
-              <input type="text" id="cvv" name="cvv" required>
-            </div>
-            <div class="input-group">
-              <label for="validity">Validity</label>
-              <input type="text" id="validity" name="validity" required>
-            </div>
-          </div>`;
-      } else if (paymentMethod === 'gcash') {
-        hiddenPayment.value = "Debit"; 
-        dynamicFields.innerHTML = `
-          <div class="form-row">
-            <div class="input-group">
-              <label for="accountNumber">Account Number</label>
-              <input type="text" id="accountNumber" name="accountNumber" required>
-            </div>
-          </div>`;
-      } else if (paymentMethod === 'paycash') {
-        hiddenPayment.value = "Cash"; 
-        dynamicFields.innerHTML = `
-          <div class="form-row">
-            <div class="input-group">
-              <label for="cellphoneNumber">Cellphone No. (+63)</label>
-              <input type="text" id="cellphoneNumber" name="cellphoneNumber" required>
-            </div>
-          </div>
-          <div class="form-row">
-            <label>Go to the nearest FitCheck branch to complete the payment.</label>
-          </div>`;
-      }
-    }
+                <input type="hidden" asp-for="PaymentMethod" id="paymentMethod" value="" />
+                <input type="hidden" asp-for="MembershipPlan" id="hiddenMembershipPlan" />
+                <input type="hidden" asp-for="IsUpgrade" />
+                <input type="hidden" asp-for="Amount" />
 
-    function closePaymentForm() {
-      document.getElementById("paymentModal").style.display = "none";
-    }
+                <div class="form-row">
+                    <div class="input-group">
+                        <label for="firstName">First Name</label>
+                        <input type="text" id="firstName" name="firstName" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="surname">Surname</label>
+                        <input type="text" id="surname" name="surname" required>
+                    </div>
+                </div>
 
-    function closeThankYouMessage() {
-      document.getElementById("thankYouModal").style.display = "none";
-    }
-  </script>
+                <!-- Dynamic Fields Based on Payment Method -->
+                <div class="form-row" id="dynamicFields"></div>
+
+                <!-- Membership Plan Display -->
+                <div class="form-row">
+                    <label for="membershipPlanDisplay">Membership Plan:</label>
+                    @if (Model.IsUpgrade)
+                    {
+                        <input type="text" id="membershipPlanDisplay" value="@Model.MembershipPlan (Upgrade)" readonly style="background: #f3f4f6; cursor: not-allowed; padding: 10px; border: 1px solid #d1d5db; border-radius: 5px; width: 100%;">
+                    }
+                    else
+                    {
+                        <select asp-for="MembershipPlan" id="membershipPlanSelect" required onchange="updatePrice()">
+                            <option value="" disabled>Select a plan</option>
+                            <option value="FitStart" data-price="999">FitStart — ₱999</option>
+                            <option value="FitPro" data-price="1499">FitPro — ₱1,499</option>
+                            <option value="FitElite" data-price="2499">FitElite — ₱2,499</option>
+                        </select>
+                    }
+                </div>
+
+                <div class="form-row">
+                    <label>
+                        @if (Model.IsUpgrade)
+                        {
+                            <strong style="color: #7c3aed;">Upgrade Cost:</strong>
+                        }
+                        else
+                        {
+                            <strong>Price:</strong>
+                        }
+                    </label>
+                    <span id="membershipPriceValue" style="font-size: 24px; font-weight: bold; color: @(Model.IsUpgrade ? "#7c3aed" : "#059669");">
+                        ₱@Model.Amount.ToString("N2")
+                    </span>
+                </div>
+
+                @if (Model.IsUpgrade)
+                {
+                    <div class="form-row">
+                        <p style="color: #7c3aed; font-size: 14px; text-align: center; background: #f3e8ff; padding: 10px; border-radius: 5px;">
+                            ✓ Prorated amount - You only pay the difference!
+                        </p>
+                    </div>
+                }
+
+                <div class="form-row">
+                    <p style="color: red; font-size: 14px; text-align: center;">Note: There are no refunds for payments made.</p>
+                </div>
+
+                <div class="form-row">
+                    <button type="submit" class="pay-btn">
+                        @if (Model.IsUpgrade)
+                        {
+                            <text>Complete Upgrade</text>
+                        }
+                        else
+                        {
+                            <text>Pay Now</text>
+                        }
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Thank You Message Modal -->
+    <div id="thankYouModal" class="payment-modal">
+        <div class="payment-modal-content">
+            <span class="close-btn" onclick="closeThankYouMessage()">&times;</span>
+            <h2>Thank You for @(Model.IsUpgrade ? "Upgrading" : "Subscribing")!</h2>
+            <p>Your payment has been successfully processed. @(Model.IsUpgrade ? "Your membership has been upgraded!" : "We appreciate your subscription to FitCheck!")</p>
+            <a asp-controller="Transaction" asp-action="UserMembership" style="display: inline-block; margin-top: 15px; padding: 10px 30px; background: #667eea; color: white; text-decoration: none; border-radius: 5px; font-weight: bold;">
+                Back to Membership
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Initialize page
+        window.onload = function() {
+            const isUpgrade = @(Model.IsUpgrade.ToString().ToLower());
+            const planValue = '@Model.MembershipPlan';
+            const amount = @Model.Amount;
+
+            if (!isUpgrade) {
+                // For regular subscriptions, set the selected plan
+                const membershipSelect = document.getElementById('membershipPlanSelect');
+                if (membershipSelect && planValue) {
+                    for (let option of membershipSelect.options) {
+                        if (option.value === planValue) {
+                            option.selected = true;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            // Set hidden field
+            document.getElementById('hiddenMembershipPlan').value = planValue;
+        };
+
+        function updatePrice() {
+            const membershipSelect = document.getElementById('membershipPlanSelect');
+            const selectedOption = membershipSelect.options[membershipSelect.selectedIndex];
+            const price = selectedOption.getAttribute('data-price');
+
+            document.getElementById('membershipPriceValue').textContent = '₱' + price;
+            document.getElementById('hiddenMembershipPlan').value = selectedOption.value;
+        }
+
+        function showPaymentForm(paymentMethod) {
+            const modal = document.getElementById("paymentModal");
+            modal.style.display = "block";
+
+            const hiddenPayment = document.getElementById("paymentMethod");
+            const dynamicFields = document.getElementById("dynamicFields");
+
+            if (paymentMethod === 'mastercard') {
+                hiddenPayment.value = "Credit";
+                dynamicFields.innerHTML = `
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label for="cardNumber">Card Number</label>
+                            <input type="text" id="cardNumber" name="cardNumber" maxlength="16" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="cardHolderName">Cardholder Name</label>
+                            <input type="text" id="cardHolderName" name="cardHolderName" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label for="cvv">CVV</label>
+                            <input type="text" id="cvv" name="cvv" maxlength="3" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="validity">Expiry (MM/YY)</label>
+                            <input type="text" id="validity" name="validity" placeholder="MM/YY" maxlength="5" required>
+                        </div>
+                    </div>`;
+            } else if (paymentMethod === 'gcash') {
+                hiddenPayment.value = "Debit";
+                dynamicFields.innerHTML = `
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label for="accountNumber">GCash Number</label>
+                            <input type="text" id="accountNumber" name="accountNumber" placeholder="09XXXXXXXXX" maxlength="11" required>
+                        </div>
+                    </div>`;
+            } else if (paymentMethod === 'paycash') {
+                hiddenPayment.value = "Cash";
+                dynamicFields.innerHTML = `
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label for="cellphoneNumber">Cellphone No. (+63)</label>
+                            <input type="text" id="cellphoneNumber" name="cellphoneNumber" placeholder="9XXXXXXXXX" maxlength="10" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <p style="color: #f59e0b; font-weight: bold; text-align: center; background: #fef3c7; padding: 10px; border-radius: 5px;">
+                            ⚠️ Go to the nearest FitCheck branch to complete the payment.
+                        </p>
+                    </div>`;
+            }
+        }
+
+        function closePaymentForm() {
+            document.getElementById("paymentModal").style.display = "none";
+        }
+
+        function closeThankYouMessage() {
+            document.getElementById("thankYouModal").style.display = "none";
+            window.location.href = '@Url.Action("UserMembership", "Transaction")';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById("paymentModal");
+            if (event.target == modal) {
+                closePaymentForm();
+            }
+        }
+    </script>
 
     <div class="hr-container">
         <hr>

@@ -49,7 +49,8 @@ namespace FitCheckWebApp.Helpers
             var today = DateTime.Today;
 
             int age = today.Year - date.Year;
-            if (date > today.AddYears(-age))
+
+            if (date.Month > today.Month || (date.Month == today.Month && date.Day > today.Day))
                 age--;
 
             return age < 0 ? 0 : age;
@@ -85,7 +86,28 @@ namespace FitCheckWebApp.Helpers
             }
         }
 
+        public static decimal UnusedMembershipCalculator(decimal currentAmount, decimal newAmount, DateTime startDate)
+        {
 
+            DateTime today = DateTime.Now;
+            int totalDays = 30;
+
+            TimeSpan usedSpan = today - startDate;
+
+            double daysUsed = usedSpan.TotalDays;
+            double daysUnused = totalDays - daysUsed;
+
+            double usedPercantege = daysUsed / totalDays;
+            double unusedPercentage = daysUnused / totalDays;
+
+
+            double unusedValue = Convert.ToDouble(currentAmount) * unusedPercentage;
+            double upgradeCost = Convert.ToDouble(newAmount) - unusedValue;
+
+            return Convert.ToDecimal(upgradeCost);
+
+
+        }
 
 
     }

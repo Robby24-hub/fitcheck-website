@@ -140,7 +140,7 @@ namespace FitCheckWebApp.DataAccess
                                 StartDate = reader.GetDateTime("StartDate"),
                                 EndDate = reader.GetDateTime("EndDate"),
                                 TransactionDate = reader.GetDateTime("TransactionDate"),
-                                Status = Enum.Parse<FitCheckWebApp.Models.TransactionStatus>(reader.GetString("Status"))
+                                Status = Enum.Parse<FitCheckWebApp.Models.TransactionStatus>(reader.GetString("Status"), true)
                             };
                         }
                     }

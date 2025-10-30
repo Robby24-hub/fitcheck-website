@@ -1,4 +1,4 @@
-﻿namespace FitCheckWebApp.ViewModels
+﻿namespace FitCheckWebApp.ViewModels.Account
 {
     public class ChangePasswordViewModel
     {

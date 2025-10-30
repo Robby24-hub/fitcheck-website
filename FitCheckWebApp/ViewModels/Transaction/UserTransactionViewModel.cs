@@ -1,4 +1,4 @@
-﻿namespace FitCheckWebApp.ViewModels
+﻿namespace FitCheckWebApp.ViewModels.Transaction
 {
     public class UserTransactionViewModel
     {

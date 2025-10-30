@@ -1,6 +1,6 @@
 ﻿using FitCheckWebApp.DataAccess;
 using FitCheckWebApp.Models;
-using FitCheckWebApp.ViewModels;
+using FitCheckWebApp.ViewModels.Admin;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -177,6 +177,33 @@ namespace FitCheckWebApp.Controllers
 
             return RedirectToAction("AdminClass");
         }
+
+        [HttpPost]
+        [Authorize(Roles = "admin")]
+        public IActionResult DeleteClass(int id)
+        {
+            try
+            {
+                bool deleted = ClassManager.DeleteClass(id);
+
+                if (deleted)
+                {
+                    TempData["SuccessMessage"] = "Class deleted successfully!";
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Class not found or could not be deleted.";
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "An error occurred while deleting the class.";
+                Console.WriteLine($"Error deleting class: {ex.Message}");
+            }
+
+            return RedirectToAction("AdminClass");
+        }
+
 
     }
 }
