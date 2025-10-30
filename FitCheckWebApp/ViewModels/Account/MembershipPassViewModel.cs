@@ -7,6 +7,9 @@
         public string? MemberID { get; set; }
         public string? MembershipPlan { get; set; }
 
+        public string? EmergencyName { get; set; }
+
+        public string? EmergencyContact { get; set; }
 
         public DateTime? TransactionDate { get; set; }
         public DateTime? EndDate { get; set; }
