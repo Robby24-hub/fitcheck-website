@@ -88,7 +88,7 @@ main {
 
 /* Outer card */
 .outer-container {
-    background: #232323;
+    background: #000;
     border-radius: 20px;
     padding: clamp(1.5rem, 4vw, 2.5rem);
     width: 100%;
@@ -152,6 +152,13 @@ main {
     flex-direction: column;
     width: 100%;
     min-width: 0; /* Allows flex items to shrink below content size */
+    position: relative;
+}
+
+/* Password field wrapper */
+.password-wrapper {
+    position: relative;
+    width: 100%;
 }
 
 /* Input field */
@@ -174,6 +181,37 @@ main {
 
     .input-field::placeholder {
         color: #999;
+    }
+
+    /* Password field with icon */
+    .input-field.password-input {
+        padding-right: 45px;
+    }
+
+/* Password toggle button */
+.password-toggle {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+    transition: color 0.2s ease;
+}
+
+    .password-toggle:hover {
+        color: #333;
+    }
+
+    .password-toggle svg {
+        width: 20px;
+        height: 20px;
     }
 
 /* Error messages - FIXED HEIGHT to prevent layout shift */
