@@ -86,7 +86,9 @@
                                 <td>@c.ParticipantsCount / @c.ParticipantLimit</td>
                                 <td>
                                     <button class="edit-btn" onclick="openEditForm(@c.Id)">Edit</button>
+                                    <button class="delete-btn" onclick="openDeleteModal(@c.Id)">Delete</button>
                                 </td>
+
                             </tr>
                         }
                     }
@@ -244,15 +246,28 @@
                     }
                 </select>
 
-                <div class="button-row">
+                <div class="button-row single-btn">
                     <button type="submit" class="submit-btn">UPDATE CLASS</button>
-                    <button type="button" class="delete-btn" onclick="deleteClass()">DELETE CLASS</button>
                 </div>
+
 
             </form>
             <span class="close-btn" id="closeEditBtn">&times;</span>
         </div>
     </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="modal-overlay">
+        <div class="modal-content">
+            <h3>Confirm Delete</h3>
+            <p>Are you sure you want to delete this class? This action cannot be undone.</p>
+            <div class="modal-buttons">
+                <button type="button" class="btn-yes" id="confirmDeleteBtn">Yes</button>
+                <button type="button" class="btn-no" onclick="closeDeleteModal()">No</button>
+            </div>
+        </div>
+    </div>
+
 
     @functions {
         private string TimeSpanTo12Hour(TimeSpan t)
@@ -366,6 +381,53 @@
             }
         }
     </script>
+
+    <script>
+        let classToDeleteId = null;
+
+        function openDeleteModal(id) {
+            classToDeleteId = id;
+            document.getElementById("deleteModal").style.display = "flex";
+        }
+
+        function closeDeleteModal() {
+            document.getElementById("deleteModal").style.display = "none";
+            classToDeleteId = null;
+        }
+
+        document.getElementById("confirmDeleteBtn").addEventListener("click", function () {
+            if (!classToDeleteId) {
+                alert("Error: No class selected to delete.");
+                return;
+            }
+
+            fetch(`/Admin/DeleteClass/${classToDeleteId}`, {
+                method: "POST"
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert("Class deleted successfully!");
+                    location.reload();
+                } else {
+                    alert("Failed to delete class.");
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("An error occurred while deleting the class.");
+            })
+            .finally(() => closeDeleteModal());
+        });
+
+        // Optional: close modal if user clicks outside
+        window.addEventListener("click", e => {
+            const modal = document.getElementById("deleteModal");
+            if (e.target === modal) {
+                closeDeleteModal();
+            }
+        });
+    </script>
+
 
 
 
