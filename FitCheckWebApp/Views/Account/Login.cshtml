@@ -55,10 +55,15 @@
                     <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
 
-                <div>
+                <div class="password-container">
                     <input asp-for="Password" type="password" class="password-field" placeholder="Password" required />
+                    <span class="toggle-password" onclick="togglePasswordVisibility()">
+                        <i id="eyeIcon" data-lucide="eye-off"></i>
+                    </span>
                     <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
+
+
 
                 <a href="#" class="forgot-password" onclick="openVerificationPopup()">
                     <p>Forgot Password?</p>
@@ -110,6 +115,30 @@
             document.getElementById("emailVerificationPopup").style.display = "none";
         });
     </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            lucide.createIcons(); // initialize all icons
+
+            window.togglePasswordVisibility = function () {
+                const passwordField = document.querySelector(".password-field");
+                const eyeIcon = document.getElementById("eyeIcon");
+
+                if (passwordField.type === "password") {
+                    passwordField.type = "text";
+                    eyeIcon.setAttribute("data-lucide", "eye");
+                } else {
+                    passwordField.type = "password";
+                    eyeIcon.setAttribute("data-lucide", "eye-off");
+                }
+
+                // Re-render Lucide after updating icon
+                lucide.createIcons();
+            };
+        });
+    </script>
+
+
 
     <!-- Hanggang js -->
 
@@ -163,5 +192,10 @@
             </div>
         </div>
     </footer>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+
+
 </body>
 </html>
