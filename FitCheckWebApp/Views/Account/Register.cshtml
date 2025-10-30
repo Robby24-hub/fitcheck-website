@@ -42,12 +42,12 @@
                         <div class="form-group">
                             <div class="input-row">
                                 <div class="input-wrapper">
-                                    <input asp-for="FirstName" type="text" placeholder="First Name" class="input-field medium" required>
+                                    <input asp-for="FirstName" type="text" placeholder="First Name" class="input-field half" required>
                                     <span asp-validation-for="FirstName" class="text-danger"></span>
                                 </div>
 
                                 <div class="input-wrapper">
-                                    <input asp-for="LastName" type="text" placeholder="Last Name" class="input-field medium" required>
+                                    <input asp-for="LastName" type="text" placeholder="Last Name" class="input-field half" required>
                                     <span asp-validation-for="LastName" class="text-danger"></span>
                                 </div>
                             </div>
@@ -75,12 +75,12 @@
 
                             <div class="input-row">
                                 <div class="input-wrapper">
-                                    <input asp-for="ContactNumber" type="tel" placeholder="Contact Number" class="input-field medium" required>
+                                    <input asp-for="ContactNumber" type="tel" placeholder="Contact Number" class="input-field half" required>
                                     <span asp-validation-for="ContactNumber" class="text-danger"></span>
                                 </div>
 
                                 <div class="input-wrapper">
-                                    <input asp-for="Email" type="email" placeholder="Email Address" class="input-field medium" required>
+                                    <input asp-for="Email" type="email" placeholder="Email Address" class="input-field half" required>
                                     <span asp-validation-for="Email" class="text-danger"></span>
                                 </div>
                             </div>
@@ -134,7 +134,7 @@
                                     <a asp-controller="Account" asp-action="TermsAndConditions" class="link">Terms and Conditions</a>
                                 </span>
                             </label>
-                            <span asp-validation-for="AgreeTerms" class="text-danger"></span>
+                            <span asp-validation-for="AgreeTerms" class="text-danger termscondprvipol"></span>
                         </div>
 
                         <div class="checkbox-wrapper">
