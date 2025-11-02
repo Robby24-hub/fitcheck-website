@@ -79,11 +79,11 @@
                     <div class="pass-details emergency-details">
                         <p>
                             <span class="label">Name :</span>
-                            <span class="value">@(!string.IsNullOrEmpty(Model?.EmergencyName) ? Model.EmergencyName : "Unknown")</span>
+                            <span class="value">@(!string.IsNullOrEmpty(Model!.EmergencyName) ? Model.EmergencyName : "Unknown")</span>
                         </p>
                         <p>
                             <span class="label">Contact Number :</span>
-                            <span class="value">@(!string.IsNullOrEmpty(Model?.EmergencyContact) ? Model.EmergencyContact : "N/A")</span>
+                            <span class="value">@(!string.IsNullOrEmpty(Model.EmergencyContact) ? Model.EmergencyContact : "N/A")</span>
                         </p>
                     </div>
                 </div>

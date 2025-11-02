@@ -263,6 +263,8 @@ namespace FitCheckWebApp.Controllers
                 model.TransactionDate = transaction.TransactionDate;
                 model.EndDate = transaction.EndDate;
                 model.Status = transaction.Status.ToString();
+                model.EmergencyName = account.EmergencyName;
+                model.EmergencyContact = account.EmergencyContact;
 
                 model.HasActiveMembership = transaction.Status == TransactionStatus.Active && transaction.EndDate > DateTime.Now;
                 model.CanRenew = transaction.Status == TransactionStatus.Expired ||
