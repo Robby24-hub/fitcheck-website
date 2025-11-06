@@ -199,7 +199,27 @@
 
             // Set hidden field
             document.getElementById('hiddenMembershipPlan').value = planValue;
+
+            // Initialize form submission handler
+            initializeFormHandler();
         };
+
+        function initializeFormHandler() {
+            const form = document.getElementById('paymentForm');
+
+            form.addEventListener('submit', function(e) {
+                e.preventDefault(); // Always prevent default first
+
+                if (!validateForm()) {
+                    // Show validation errors and keep modal open
+                    showAllValidationErrors();
+                    return false;
+                }
+
+                // If validation passes, submit the form
+                this.submit();
+            });
+        }
 
         function updatePrice() {
             const membershipSelect = document.getElementById('membershipPlanSelect');
@@ -210,7 +230,7 @@
             document.getElementById('hiddenMembershipPlan').value = selectedOption.value;
         }
 
-                function showPaymentForm(paymentMethod) {
+        function showPaymentForm(paymentMethod) {
             const modal = document.getElementById("paymentModal");
             modal.style.display = "block";
 
@@ -261,11 +281,11 @@
                     <div class="form-row">
                         <div class="input-group">
                             <label for="accountNumber">GCash Number</label>
-                            <input type="tel" id="accountNumber" name="accountNumber" asp-for="AccountNumber"
-                                   placeholder="09XXXXXXXXX" maxlength="11" required
-                                   pattern="(09|\+639)\d{9}"
-                                   title="Enter your 11-digit GCash number (09XXXXXXXXX)"
-                                   oninput="formatPhilippineNumber(this, 'gcash')">
+                             <input type="tel" id="accountNumber" name="accountNumber" asp-for="AccountNumber"
+                                    placeholder="09XXXXXXXXX" maxlength="11" required
+                                    pattern="09[0-9]{9}"
+                                    title="Enter your 11-digit GCash number starting with 09"
+                                    oninput="formatPhilippineNumber(this, 'gcash')">
                             <small style="display: block; margin-top: 5px; color: #6b7280; font-size: 12px;">
                                 Format: 09XXXXXXXXX (11 digits)
                             </small>
@@ -278,13 +298,13 @@
                     <div class="form-row">
                         <div class="input-group">
                             <label for="cellphoneNumber">Cellphone Number</label>
-                            <input type="tel" id="cellphoneNumber" name="cellphoneNumber" asp-for="CellphoneNumber"
-                                   placeholder="09XXXXXXXXX or 9XXXXXXXXX" maxlength="11" required
-                                   pattern="(09|\+639|9)\d{9}"
-                                   title="Enter your Philippine mobile number (09XXXXXXXXX, +639XXXXXXXXX, or 9XXXXXXXXX)"
-                                   oninput="formatPhilippineNumber(this, 'paycash')">
+                             <input type="tel" id="cellphoneNumber" name="cellphoneNumber" asp-for="CellphoneNumber"
+                                    placeholder="09XXXXXXXXX or 9XXXXXXXXX" maxlength="11" required
+                                    pattern="(09[0-9]{9}|9[0-9]{9})"
+                                    title="Enter your Philippine mobile number (09XXXXXXXXX or 9XXXXXXXXX)"
+                                    oninput="formatPhilippineNumber(this, 'paycash')">
                             <small style="display: block; margin-top: 5px; color: #6b7280; font-size: 12px;">
-                                Format: 09XXXXXXXXX, +639XXXXXXXXX, or 9XXXXXXXXX
+                                Format: 09XXXXXXXXX or 9XXXXXXXXX
                             </small>
                             <span asp-validation-for="CellphoneNumber" class="field-validation-error"></span>
                         </div>
@@ -295,7 +315,6 @@
                         </p>
                     </div>`;
             }
-
 
             clearValidationMessages();
         }
@@ -320,35 +339,39 @@
             input.value = value;
         }
 
-                function formatPhilippineNumber(input, type) {
-            let value = input.value.replace(/\D/g, '');
+        // Fixed Philippine number formatting - preserves leading 0
+        function formatPhilippineNumber(input, type) {
+            let value = input.value;
 
-            // Remove leading zeros except for the pattern
-            if (value.startsWith('0') && value.length > 1) {
-                value = value.substring(1);
-            }
+            // Remove all non-digits first
+            let digits = value.replace(/\D/g, '');
 
-            // Handle different formats
             if (type === 'gcash') {
-                // GCash must start with 9 and be 10 digits (without 0)
-                if (value.length > 10) {
-                    value = value.substring(0, 10);
+                // For GCash: ensure it starts with 09 and has exactly 11 digits
+                if (digits.startsWith('09')) {
+                    // Already in correct format, just limit to 11 digits
+                    value = digits.substring(0, 11);
+                } else if (digits.startsWith('9') && digits.length === 10) {
+                    // Convert 9171234567 to 09171234567
+                    value = '09' + digits;
+                } else if (digits.startsWith('63') && digits.length === 11) {
+                    // Convert 639171234567 to 09171234567
+                    value = '09' + digits.substring(2);
+                } else {
+                    // Keep as is, let validation handle it
+                    value = digits;
                 }
-
-                // Auto-format as user types
-                if (value.length <= 10) {
-                    input.value = value;
-                }
-
             } else if (type === 'paycash') {
-                // Regular Philippine number - can be 10 digits (9XXXXXXXXX)
-                // or 11 digits (09XXXXXXXXX)
-                if (value.length > 10) {
-                    value = value.substring(0, 10);
+                // For PayCash: preserve whatever format user enters
+                // But ensure maximum length
+                if (digits.length > 11) {
+                    value = digits.substring(0, 11);
+                } else {
+                    value = digits;
                 }
-
-                input.value = value;
             }
+
+            input.value = value;
 
             // Real-time validation feedback
             validatePhilippineNumber(input, type);
@@ -359,11 +382,12 @@
             let isValid = false;
 
             if (type === 'gcash') {
-                // GCash: 09 + 9 digits or 9 + 9 digits (total 10 digits without 0)
-                isValid = /^9\d{9}$/.test(value) && value.length === 10;
+                // GCash must be exactly 11 digits starting with 09
+                isValid = /^09\d{9}$/.test(value) && value.length === 11;
             } else if (type === 'paycash') {
-                // Philippine mobile: 9 + 9 digits (10 digits total)
-                isValid = /^9\d{9}$/.test(value) && value.length === 10;
+                // PayCash can be: 09XXXXXXXXX (11 digits) or 9XXXXXXXXX (10 digits)
+                isValid = (/^09\d{9}$/.test(value) && value.length === 11) ||
+                         (/^9\d{9}$/.test(value) && value.length === 10);
             }
 
             if (value && !isValid) {
@@ -385,7 +409,78 @@
             const validationSummary = document.querySelector('.validation-summary');
             if (validationSummary) {
                 validationSummary.innerHTML = '';
+                validationSummary.style.display = 'none';
             }
+        }
+
+        function showAllValidationErrors() {
+            // Force validation summary to show
+            const validator = document.querySelector('.validation-summary');
+            if (validator) {
+                validator.style.display = 'block';
+                validator.innerHTML = '<ul><li>Please fix the validation errors above before submitting.</li></ul>';
+            }
+        }
+
+        function validateForm() {
+            const form = document.getElementById('paymentForm');
+            let isValid = true;
+            clearValidationMessages();
+
+            // Validate required fields
+            const requiredFields = form.querySelectorAll('[required]');
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    showFieldError(field, 'This field is required');
+                    isValid = false;
+                }
+            });
+
+            // Validate Philippine numbers specifically
+            const gcashField = document.getElementById('accountNumber');
+            if (gcashField && gcashField.value) {
+                const gcashValue = gcashField.value.replace(/\D/g, '');
+                if (!/^09\d{9}$/.test(gcashValue)) {
+                    showFieldError(gcashField, 'Please enter a valid 11-digit GCash number starting with 09');
+                    isValid = false;
+                }
+            }
+
+            const cellphoneField = document.getElementById('cellphoneNumber');
+            if (cellphoneField && cellphoneField.value) {
+                const cellValue = cellphoneField.value.replace(/\D/g, '');
+                const isValidCell = (/^09\d{9}$/.test(cellValue) && cellValue.length === 11) ||
+                                   (/^9\d{9}$/.test(cellValue) && cellValue.length === 10);
+
+                if (!isValidCell) {
+                    showFieldError(cellphoneField, 'Please enter a valid Philippine mobile number (09XXXXXXXXX or 9XXXXXXXXX)');
+                    isValid = false;
+                }
+            }
+
+            // Validate other patterns
+            const patternFields = form.querySelectorAll('[pattern]');
+            patternFields.forEach(field => {
+                if (field.id !== 'accountNumber' && field.id !== 'cellphoneNumber') {
+                    const pattern = new RegExp(field.pattern);
+                    const fieldValue = field.value.replace(/\s/g, '');
+                    if (field.value && !pattern.test(fieldValue)) {
+                        showFieldError(field, field.title);
+                        isValid = false;
+                    }
+                }
+            });
+
+            return isValid;
+        }
+
+        function showFieldError(field, message) {
+            const errorSpan = field.parentNode.querySelector('.field-validation-error');
+            if (errorSpan) {
+                errorSpan.textContent = message;
+            }
+            field.style.borderColor = '#ef4444';
+            field.style.backgroundColor = '#fef2f2';
         }
 
         function closePaymentForm() {
@@ -404,62 +499,6 @@
                 closePaymentForm();
             }
         }
-
-                function validateForm() {
-            let isValid = true;
-            clearValidationMessages();
-
-            // Validate required fields
-            const requiredFields = form.querySelectorAll('[required]');
-            requiredFields.forEach(field => {
-                if (!field.value.trim()) {
-                    showFieldError(field, 'This field is required');
-                    isValid = false;
-                }
-            });
-
-            // Validate Philippine numbers specifically
-            const gcashField = document.getElementById('accountNumber');
-            if (gcashField && gcashField.value) {
-                const gcashValue = gcashField.value.replace(/\D/g, '');
-                if (!/^9\d{9}$/.test(gcashValue)) {
-                    showFieldError(gcashField, 'Please enter a valid 11-digit GCash number (09XXXXXXXXX)');
-                    isValid = false;
-                }
-            }
-
-            const cellphoneField = document.getElementById('cellphoneNumber');
-            if (cellphoneField && cellphoneField.value) {
-                const cellValue = cellphoneField.value.replace(/\D/g, '');
-                if (!/^9\d{9}$/.test(cellValue)) {
-                    showFieldError(cellphoneField, 'Please enter a valid Philippine mobile number (09XXXXXXXXX or 9XXXXXXXXX)');
-                    isValid = false;
-                }
-            }
-
-            // Validate other patterns
-            const patternFields = form.querySelectorAll('[pattern]');
-            patternFields.forEach(field => {
-                if (field.id !== 'accountNumber' && field.id !== 'cellphoneNumber') {
-                    const pattern = new RegExp(field.pattern);
-                    if (field.value && !pattern.test(field.value.replace(/\s/g, ''))) {
-                        showFieldError(field, field.title);
-                        isValid = false;
-                    }
-                }
-            });
-
-            return isValid;
-        }
-
-        function showFieldError(field, message) {
-            const errorSpan = field.parentNode.querySelector('.field-validation-error');
-            if (errorSpan) {
-                errorSpan.textContent = message;
-            }
-            field.style.borderColor = '#ef4444';
-        }
-
     </script>
 
     <div class="hr-container">
