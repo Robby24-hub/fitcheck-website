@@ -240,6 +240,42 @@ h2 {
     margin-top: 20px;
 }
 
+/* Validation Styles */
+.validation-summary {
+    background-color: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 20px;
+    color: #dc2626;
+}
+
+    .validation-summary ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+
+.field-validation-error {
+    color: #dc2626;
+    font-size: 12px;
+    margin-top: 5px;
+    display: block;
+}
+
+.input-group input:invalid {
+    border-color: #fca5a5;
+}
+
+.input-group input:valid {
+    border-color: #86efac;
+}
+
+.input-group input:focus:invalid {
+    border-color: #ef4444;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
 /*===========================================*/
 
 footer {

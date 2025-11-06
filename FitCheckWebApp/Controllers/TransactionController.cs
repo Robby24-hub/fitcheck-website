@@ -70,7 +70,7 @@ namespace FitCheckWebApp.Controllers
                 model.Amount = model.MembershipPlan switch
                 {
                     MembershipPlan.FitStart => 999m,
-                    MembershipPlan.FitPro => 1499m,
+                    MembershipPlan.FitPro => 1499m, 
                     MembershipPlan.FitElite => 2499m,
                     _ => 0m
                 };
@@ -87,7 +87,21 @@ namespace FitCheckWebApp.Controllers
         {
             int accountId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
             if (!ModelState.IsValid)
+            {
+                // Preserve the necessary data when returning the view
+                newtransaction.IsUpgrade = TempData["IsUpgrade"] as bool? ?? false;
+                newtransaction.CurrentPlan = TempData["CurrentPlan"] as string;
+
+                // If it's an upgrade, preserve the amount
+                if (newtransaction.IsUpgrade)
+                {
+                    string upgradeAmountStr = TempData["UpgradeAmount"] as string ?? "0";
+                    decimal.TryParse(upgradeAmountStr, out decimal upgradeCost);
+                    newtransaction.Amount = upgradeCost;
+                }
+
                 return View(newtransaction);
+            }
             if (!User.Identity!.IsAuthenticated)
                 return RedirectToAction("Login", "Account");
 
