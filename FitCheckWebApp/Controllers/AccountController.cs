@@ -254,6 +254,8 @@ namespace FitCheckWebApp.Controllers
             {
                 FullName = $"{account.FirstName} {account.LastName}",
                 MemberID = account.MemberID,
+                EmergencyName = account.EmergencyName, 
+                EmergencyContact = account.EmergencyContact 
             };
 
             if (transaction != null)
@@ -263,14 +265,10 @@ namespace FitCheckWebApp.Controllers
                 model.TransactionDate = transaction.TransactionDate;
                 model.EndDate = transaction.EndDate;
                 model.Status = transaction.Status.ToString();
-                model.EmergencyName = account.EmergencyName;
-                model.EmergencyContact = account.EmergencyContact;
 
                 model.HasActiveMembership = transaction.Status == TransactionStatus.Active && transaction.EndDate > DateTime.Now;
                 model.CanRenew = transaction.Status == TransactionStatus.Expired ||
                                  (transaction.EndDate <= DateTime.Now && transaction.Status != TransactionStatus.Cancelled);
-
-
 
                 if (transaction.EndDate <= DateTime.Now)
                 {
@@ -280,7 +278,6 @@ namespace FitCheckWebApp.Controllers
                 {
                     model.WarningMessage = $"Your membership will expire in {(transaction.EndDate - DateTime.Now).Days} days.";
                 }
-
             }
             else
             {
@@ -292,8 +289,6 @@ namespace FitCheckWebApp.Controllers
 
                 model.HasActiveMembership = false;
                 model.CanRenew = false;
-
-
             }
 
             Console.WriteLine($"[DEBUG] Status: {transaction?.Status}");
@@ -301,8 +296,8 @@ namespace FitCheckWebApp.Controllers
             Console.WriteLine($"[DEBUG] Now: {DateTime.Now}");
             Console.WriteLine($"[DEBUG] HasActiveMembership: {model.HasActiveMembership}");
             Console.WriteLine($"[DEBUG] CanRenew: {model.CanRenew}");
-
-
+            Console.WriteLine($"[DEBUG] EmergencyName: {model.EmergencyName}"); 
+            Console.WriteLine($"[DEBUG] EmergencyContact: {model.EmergencyContact}"); 
 
             return View(model);
         }
