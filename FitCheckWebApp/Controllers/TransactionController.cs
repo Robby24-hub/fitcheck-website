@@ -38,16 +38,31 @@ namespace FitCheckWebApp.Controllers
                 model.MembershipPlan = MembershipPlan.None;
             }
 
-
             bool isUpgrade = TempData["IsUpgrade"] as bool? ?? false;
 
             Console.WriteLine($"=== PAYMENT METHOD DEBUG ===");
             Console.WriteLine($"IsUpgrade from TempData: {isUpgrade}");
             Console.WriteLine($"TempData['UpgradeAmount']: {TempData["UpgradeAmount"]}");
 
+            // CHECK IF THIS SHOULD ACTUALLY BE AN UPGRADE
+            int accountId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+            var lastTransaction = TransactionManager.FindLatestActiveByAccount(accountId);
+
+            // If there's no active transaction, this CANNOT be an upgrade
+            if (lastTransaction == null)
+            {
+                isUpgrade = false;
+                // Clear any upgrade-related TempData
+                TempData.Remove("IsUpgrade");
+                TempData.Remove("UpgradeAmount");
+                TempData.Remove("UpgradePlan");
+                TempData.Remove("CurrentPlan");
+
+                Console.WriteLine(">>> No active transaction found - forcing IsUpgrade = false");
+            }
+
             if (isUpgrade)
             {
-               
                 string upgradeAmountStr = TempData["UpgradeAmount"] as string ?? "0";
                 decimal.TryParse(upgradeAmountStr, out decimal upgradeCost);
 
@@ -66,11 +81,11 @@ namespace FitCheckWebApp.Controllers
             }
             else
             {
-       
+                // Regular new subscription
                 model.Amount = model.MembershipPlan switch
                 {
                     MembershipPlan.FitStart => 999m,
-                    MembershipPlan.FitPro => 1499m, 
+                    MembershipPlan.FitPro => 1499m,
                     MembershipPlan.FitElite => 2499m,
                     _ => 0m
                 };
@@ -82,17 +97,50 @@ namespace FitCheckWebApp.Controllers
         }
 
 
+
         [HttpPost, Authorize]
         public IActionResult PaymentMethod(TransactionViewModel newtransaction)
         {
             int accountId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+
+            Console.WriteLine($"=== MODEL STATE DEBUG ===");
+            Console.WriteLine($"ModelState IsValid: {ModelState.IsValid}");
+
+            // Log all model state errors
+            foreach (var state in ModelState)
+            {
+                foreach (var error in state.Value.Errors)
+                {
+                    Console.WriteLine($"Field: {state.Key}, Error: {error.ErrorMessage}");
+                }
+            }
+
+            // Log the actual values received
+            Console.WriteLine($"FirstName: {newtransaction.FirstName}");
+            Console.WriteLine($"Surname: {newtransaction.Surname}");
+            Console.WriteLine($"CardNumber: {newtransaction.CardNumber}");
+            Console.WriteLine($"AccountNumber: {newtransaction.AccountNumber}");
+            Console.WriteLine($"CellphoneNumber: {newtransaction.CellphoneNumber}");
+            Console.WriteLine($"PaymentMethod: {newtransaction.PaymentMethod}");
+            Console.WriteLine($"MembershipPlan: {newtransaction.MembershipPlan}");
+
+            // Check if this should actually be an upgrade
+            var lastTransaction = TransactionManager.FindLatestActiveByAccount(accountId);
+            if (lastTransaction == null)
+            {
+                // No active transaction, so this cannot be an upgrade
+                newtransaction.IsUpgrade = false;
+                TempData.Remove("IsUpgrade");
+                TempData.Remove("UpgradeAmount");
+                Console.WriteLine(">>> No active transaction - treating as new subscription");
+            }
+
             if (!ModelState.IsValid)
             {
-                // Preserve the necessary data when returning the view
+                // Preserve data and return to view with errors
                 newtransaction.IsUpgrade = TempData["IsUpgrade"] as bool? ?? false;
                 newtransaction.CurrentPlan = TempData["CurrentPlan"] as string;
 
-                // If it's an upgrade, preserve the amount
                 if (newtransaction.IsUpgrade)
                 {
                     string upgradeAmountStr = TempData["UpgradeAmount"] as string ?? "0";
@@ -100,12 +148,12 @@ namespace FitCheckWebApp.Controllers
                     newtransaction.Amount = upgradeCost;
                 }
 
+                Console.WriteLine("Returning view with validation errors");
                 return View(newtransaction);
             }
+
             if (!User.Identity!.IsAuthenticated)
                 return RedirectToAction("Login", "Account");
-
-            var lastTransaction = TransactionManager.FindLatestActiveByAccount(accountId);
 
             bool isRenewal = TempData["IsRenewal"] != null && (bool)TempData["IsRenewal"];
             bool isExtension = lastTransaction != null && lastTransaction.Status == TransactionStatus.Active;
@@ -129,13 +177,11 @@ namespace FitCheckWebApp.Controllers
             {
                 Console.WriteLine($">>> UPGRADE: Canceling old transaction {lastTransaction.TransactionID} and creating new one");
 
-
                 lastTransaction.Status = TransactionStatus.Cancelled;
                 TransactionManager.UpdateTransaction(lastTransaction);
 
-
-                DateTime startDate = DateTime.Now; 
-                DateTime endDate = lastTransaction.EndDate; 
+                DateTime startDate = DateTime.Now;
+                DateTime endDate = lastTransaction.EndDate;
 
                 decimal fullNewAmount = newtransaction.MembershipPlan switch
                 {
@@ -158,17 +204,15 @@ namespace FitCheckWebApp.Controllers
                     EndDate = endDate,
                     TransactionDate = DateTime.Now,
                     Status = status,
-                    Amount = upgradeAmount 
+                    Amount = upgradeAmount
                 };
 
                 TransactionManager.PostTransaction(upgradeTransaction);
-
 
                 if (account != null && status == TransactionStatus.Active)
                 {
                     account.MembershipPlan = newtransaction.MembershipPlan;
                     AccountManager.UpdateAccount(account);
-
 
                     try
                     {
@@ -247,7 +291,6 @@ namespace FitCheckWebApp.Controllers
                     account.MembershipPlan = newtransaction.MembershipPlan;
                     AccountManager.UpdateAccount(account);
 
-
                     try
                     {
                         var savedTransaction = TransactionManager.FindLatestActiveByAccount(accountId);
@@ -295,7 +338,11 @@ namespace FitCheckWebApp.Controllers
             transaction.Status = TransactionStatus.Cancelled;
             TransactionManager.UpdateTransaction(transaction);
 
-
+            // Clear upgrade flags when membership is canceled
+            TempData.Remove("IsUpgrade");
+            TempData.Remove("UpgradeAmount");
+            TempData.Remove("UpgradePlan");
+            TempData.Remove("CurrentPlan");
 
             var account = AccountManager.FindById(accountId);
             if (account != null)
@@ -306,6 +353,7 @@ namespace FitCheckWebApp.Controllers
 
             return RedirectToAction("UserMembership");
         }
+
 
 
         // ===== PAGES =====
