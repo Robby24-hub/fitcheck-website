@@ -10,234 +10,297 @@ namespace FitCheckWebApp.DataAccess
 
         public static List<Class> GetAllClasses()
         {
-            var classes = new List<Class>();
-            using (var connection = new MySqlConnection(connectionString))
+            try
             {
-                connection.Open();
-                using (var cmd = connection.CreateCommand())
+                var classes = new List<Class>();
+                using (var connection = new MySqlConnection(connectionString))
                 {
-                    cmd.CommandText = @"
+                    connection.Open();
+                    using (var cmd = connection.CreateCommand())
+                    {
+                        cmd.CommandText = @"
                 SELECT c.*, 
                        CONCAT(a.FirstName, ' ', a.LastName) AS InstructorName
                 FROM Class c
                 LEFT JOIN Account a ON c.AccountID = a.Id
             ";
-                    using (var reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
+                        using (var reader = cmd.ExecuteReader())
                         {
-                            try
+                            while (reader.Read())
                             {
-                                
-                                string typeValue = reader.GetString("Type").Replace(" ", "");
-                                string dayValue = reader.GetString("Day");
-
-                                var cls = new Class
+                                try
                                 {
-                                    Id = reader.GetInt32("Id"),
-                                    AccountID = reader.GetInt32("AccountID"),
-                                    InstructorName = reader.IsDBNull(reader.GetOrdinal("InstructorName"))
-                                        ? "Unassigned"
-                                        : reader.GetString("InstructorName"),
-                                    Type = Enum.Parse<ClassType>(typeValue, ignoreCase: true),
-                                    Day = Enum.Parse<DayOfWeekClass>(dayValue, ignoreCase: true),
-                                    Time = reader.GetTimeSpan("Time"),
-                                    DurationMinutes = reader.GetInt32("DurationMinutes"),
-                                    ParticipantLimit = reader.GetInt32("ParticipantLimit"),
-                                    ParticipantsCount = reader.GetInt32("ParticipantsCount")
-                                };
-                                classes.Add(cls);
-                            }
-                            catch (Exception ex)
-                            {
-                                // Log the problematic row
-                                Console.WriteLine($"Error parsing class ID {reader.GetInt32("Id")}: {ex.Message}");
-                                Console.WriteLine($"Type value: '{reader.GetString("Type")}', Day value: '{reader.GetString("Day")}'");
-                                // Skip this row and continue
-                                continue;
+                                    string typeValue = reader.GetString("Type").Replace(" ", "");
+                                    string dayValue = reader.GetString("Day");
+
+                                    var cls = new Class
+                                    {
+                                        Id = reader.GetInt32("Id"),
+                                        AccountID = reader.GetInt32("AccountID"),
+                                        InstructorName = reader.IsDBNull(reader.GetOrdinal("InstructorName"))
+                                            ? "Unassigned"
+                                            : reader.GetString("InstructorName"),
+                                        Type = Enum.Parse<ClassType>(typeValue, ignoreCase: true),
+                                        Day = Enum.Parse<DayOfWeekClass>(dayValue, ignoreCase: true),
+                                        Time = reader.GetTimeSpan("Time"),
+                                        DurationMinutes = reader.GetInt32("DurationMinutes"),
+                                        ParticipantLimit = reader.GetInt32("ParticipantLimit"),
+                                        ParticipantsCount = reader.GetInt32("ParticipantsCount")
+                                    };
+                                    classes.Add(cls);
+                                }
+                                catch (Exception ex)
+                                {
+                                    // Log the problematic row
+                                    Console.WriteLine($"Error parsing class ID {reader.GetInt32("Id")}: {ex.Message}");
+                                    Console.WriteLine($"Type value: '{reader.GetString("Type")}', Day value: '{reader.GetString("Day")}'");
+                                    // Skip this row and continue
+                                    continue;
+                                }
                             }
                         }
                     }
                 }
+                return classes;
             }
-            return classes;
+            catch (MySqlException ex)
+            {
+                throw new Exception($"Database error while retrieving all classes: {ex.Message}", ex);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error retrieving all classes: {ex.Message}", ex);
+            }
         }
-
 
         public static Class? GetClassById(int id)
         {
-            using var connection = new MySqlConnection(connectionString);
-            connection.Open();
-            using var cmd = connection.CreateCommand();
+            try
+            {
+                using var connection = new MySqlConnection(connectionString);
+                connection.Open();
+                using var cmd = connection.CreateCommand();
 
-            cmd.CommandText = @"
+                cmd.CommandText = @"
         SELECT c.*, 
                CONCAT(a.FirstName, ' ', a.LastName) AS InstructorName
         FROM Class c
         LEFT JOIN Account a ON c.AccountID = a.Id
         WHERE c.Id = @Id
     ";
-            cmd.Parameters.AddWithValue("@Id", id);
+                cmd.Parameters.AddWithValue("@Id", id);
 
-            using var reader = cmd.ExecuteReader();
-            if (reader.Read())
-            {
-                return new Class
+                using var reader = cmd.ExecuteReader();
+                if (reader.Read())
                 {
-                    Id = reader.GetInt32("Id"),
-                    AccountID = reader.GetInt32("AccountID"),
-                    InstructorName = reader.IsDBNull(reader.GetOrdinal("InstructorName"))
-                        ? "Unassigned"
-                        : reader.GetString("InstructorName"),
-                    Type = Enum.Parse<ClassType>(reader.GetString("Type").Replace(" ", ""), ignoreCase: true),
-                    Day = Enum.Parse<DayOfWeekClass>(reader.GetString("Day"), ignoreCase: true),
-                    Time = reader.GetTimeSpan("Time"),
-                    DurationMinutes = reader.GetInt32("DurationMinutes"),
-                    ParticipantLimit = reader.GetInt32("ParticipantLimit"),
-                    ParticipantsCount = reader.GetInt32("ParticipantsCount")
-                };
+                    return new Class
+                    {
+                        Id = reader.GetInt32("Id"),
+                        AccountID = reader.GetInt32("AccountID"),
+                        InstructorName = reader.IsDBNull(reader.GetOrdinal("InstructorName"))
+                            ? "Unassigned"
+                            : reader.GetString("InstructorName"),
+                        Type = Enum.Parse<ClassType>(reader.GetString("Type").Replace(" ", ""), ignoreCase: true),
+                        Day = Enum.Parse<DayOfWeekClass>(reader.GetString("Day"), ignoreCase: true),
+                        Time = reader.GetTimeSpan("Time"),
+                        DurationMinutes = reader.GetInt32("DurationMinutes"),
+                        ParticipantLimit = reader.GetInt32("ParticipantLimit"),
+                        ParticipantsCount = reader.GetInt32("ParticipantsCount")
+                    };
+                }
+                return null;
             }
-            return null;
+            catch (MySqlException ex)
+            {
+                throw new Exception($"Database error while retrieving class by ID: {ex.Message}", ex);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error retrieving class by ID: {ex.Message}", ex);
+            }
         }
 
         public static bool IncrementParticipantCount(int classId)
         {
-            using var connection = new MySqlConnection(connectionString);
-            connection.Open();
-            using var cmd = connection.CreateCommand();
-
-
-            using var transaction = connection.BeginTransaction();
-            cmd.Transaction = transaction;
-
             try
             {
+                using var connection = new MySqlConnection(connectionString);
+                connection.Open();
+                using var cmd = connection.CreateCommand();
 
-                cmd.CommandText = @"
+                using var transaction = connection.BeginTransaction();
+                cmd.Transaction = transaction;
+
+                try
+                {
+                    cmd.CommandText = @"
             SELECT ParticipantsCount, ParticipantLimit 
             FROM Class 
             WHERE Id = @Id
         ";
-                cmd.Parameters.AddWithValue("@Id", classId);
+                    cmd.Parameters.AddWithValue("@Id", classId);
 
-                using (var reader = cmd.ExecuteReader())
-                {
-                    if (!reader.Read())
+                    using (var reader = cmd.ExecuteReader())
                     {
-                        transaction.Rollback();
-                        return false; 
+                        if (!reader.Read())
+                        {
+                            transaction.Rollback();
+                            return false;
+                        }
+
+                        int currentCount = reader.GetInt32("ParticipantsCount");
+                        int limit = reader.GetInt32("ParticipantLimit");
+
+                        if (currentCount >= limit)
+                        {
+                            transaction.Rollback();
+                            return false;
+                        }
                     }
 
-                    int currentCount = reader.GetInt32("ParticipantsCount");
-                    int limit = reader.GetInt32("ParticipantLimit");
-
-                    if (currentCount >= limit)
-                    {
-                        transaction.Rollback();
-                        return false; 
-                    }
-                }
-
-               
-                cmd.Parameters.Clear();
-                cmd.CommandText = @"
+                    cmd.Parameters.Clear();
+                    cmd.CommandText = @"
                     UPDATE Class 
                     SET ParticipantsCount = ParticipantsCount + 1 
                     WHERE Id = @Id 
                     AND ParticipantsCount < ParticipantLimit
                 ";
-                cmd.Parameters.AddWithValue("@Id", classId);
+                    cmd.Parameters.AddWithValue("@Id", classId);
 
-                int rowsAffected = cmd.ExecuteNonQuery();
+                    int rowsAffected = cmd.ExecuteNonQuery();
 
-                if (rowsAffected > 0)
-                {
-                    transaction.Commit();
-                    return true;
+                    if (rowsAffected > 0)
+                    {
+                        transaction.Commit();
+                        return true;
+                    }
+                    else
+                    {
+                        transaction.Rollback();
+                        return false;
+                    }
                 }
-                else
+                catch
                 {
                     transaction.Rollback();
-                    return false;
+                    throw;
                 }
             }
-            catch
+            catch (MySqlException ex)
             {
-                transaction.Rollback();
-                throw;
+                throw new Exception($"Database error while incrementing participant count: {ex.Message}", ex);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error incrementing participant count: {ex.Message}", ex);
             }
         }
-
 
         public static int CountClassesByDay(DayOfWeekClass day)
         {
-            using var connection = new MySqlConnection(connectionString);
-            connection.Open();
-            using var cmd = connection.CreateCommand();
+            try
+            {
+                using var connection = new MySqlConnection(connectionString);
+                connection.Open();
+                using var cmd = connection.CreateCommand();
 
-            cmd.CommandText = "SELECT COUNT(*) FROM Class WHERE Day = @Day";
-            cmd.Parameters.AddWithValue("@Day", day.ToString());
+                cmd.CommandText = "SELECT COUNT(*) FROM Class WHERE Day = @Day";
+                cmd.Parameters.AddWithValue("@Day", day.ToString());
 
-            return Convert.ToInt32(cmd.ExecuteScalar());
+                return Convert.ToInt32(cmd.ExecuteScalar());
+            }
+            catch (MySqlException ex)
+            {
+                throw new Exception($"Database error while counting classes by day: {ex.Message}", ex);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error counting classes by day: {ex.Message}", ex);
+            }
         }
 
-        
         public static int CountClassesByDayExcludingId(DayOfWeekClass day, int excludeId)
         {
-            using var connection = new MySqlConnection(connectionString);
-            connection.Open();
-            using var cmd = connection.CreateCommand();
+            try
+            {
+                using var connection = new MySqlConnection(connectionString);
+                connection.Open();
+                using var cmd = connection.CreateCommand();
 
-            cmd.CommandText = "SELECT COUNT(*) FROM Class WHERE Day = @Day AND Id != @Id";
-            cmd.Parameters.AddWithValue("@Day", day.ToString());
-            cmd.Parameters.AddWithValue("@Id", excludeId);
+                cmd.CommandText = "SELECT COUNT(*) FROM Class WHERE Day = @Day AND Id != @Id";
+                cmd.Parameters.AddWithValue("@Day", day.ToString());
+                cmd.Parameters.AddWithValue("@Id", excludeId);
 
-            return Convert.ToInt32(cmd.ExecuteScalar());
+                return Convert.ToInt32(cmd.ExecuteScalar());
+            }
+            catch (MySqlException ex)
+            {
+                throw new Exception($"Database error while counting classes by day excluding ID: {ex.Message}", ex);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error counting classes by day excluding ID: {ex.Message}", ex);
+            }
         }
 
         public static void AddClass(Class cls)
         {
-            
-            int existingClassCount = CountClassesByDay(cls.Day);
-            if (existingClassCount >= 3)
+            try
             {
-                throw new InvalidOperationException($"Cannot add class. Maximum of 3 classes allowed per day. {cls.Day} already has {existingClassCount} classes.");
-            }
+                int existingClassCount = CountClassesByDay(cls.Day);
+                if (existingClassCount >= 3)
+                {
+                    throw new InvalidOperationException($"Cannot add class. Maximum of 3 classes allowed per day. {cls.Day} already has {existingClassCount} classes.");
+                }
 
-            using var connection = new MySqlConnection(connectionString);
-            connection.Open();
-            using var cmd = connection.CreateCommand();
+                using var connection = new MySqlConnection(connectionString);
+                connection.Open();
+                using var cmd = connection.CreateCommand();
 
-            cmd.CommandText = @"
+                cmd.CommandText = @"
                 INSERT INTO Class (AccountID, Type, Day, Time, DurationMinutes, ParticipantLimit, ParticipantsCount)
                 VALUES (@AccountID, @Type, @Day, @Time, @DurationMinutes, @ParticipantLimit, @ParticipantsCount)
             ";
 
-            cmd.Parameters.AddWithValue("@AccountID", cls.AccountID);
-            cmd.Parameters.AddWithValue("@Type", cls.Type.ToString());
-            cmd.Parameters.AddWithValue("@Day", cls.Day.ToString());
-            cmd.Parameters.AddWithValue("@Time", cls.Time);
-            cmd.Parameters.AddWithValue("@DurationMinutes", cls.DurationMinutes);
-            cmd.Parameters.AddWithValue("@ParticipantLimit", cls.ParticipantLimit);
-            cmd.Parameters.AddWithValue("@ParticipantsCount", cls.ParticipantsCount);
+                cmd.Parameters.AddWithValue("@AccountID", cls.AccountID);
+                cmd.Parameters.AddWithValue("@Type", cls.Type.ToString());
+                cmd.Parameters.AddWithValue("@Day", cls.Day.ToString());
+                cmd.Parameters.AddWithValue("@Time", cls.Time);
+                cmd.Parameters.AddWithValue("@DurationMinutes", cls.DurationMinutes);
+                cmd.Parameters.AddWithValue("@ParticipantLimit", cls.ParticipantLimit);
+                cmd.Parameters.AddWithValue("@ParticipantsCount", cls.ParticipantsCount);
 
-            cmd.ExecuteNonQuery();
+                cmd.ExecuteNonQuery();
+            }
+            catch (MySqlException ex)
+            {
+                throw new Exception($"Database error while adding class: {ex.Message}", ex);
+            }
+            catch (InvalidOperationException)
+            {
+                throw; // Re-throw business logic exceptions as-is
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error adding class: {ex.Message}", ex);
+            }
         }
 
         public static void UpdateClass(Class cls)
         {
-            
-            int existingClassCount = CountClassesByDayExcludingId(cls.Day, cls.Id);
-            if (existingClassCount >= 3)
+            try
             {
-                throw new InvalidOperationException($"Cannot update class. Maximum of 3 classes allowed per day. {cls.Day} already has {existingClassCount} other classes.");
-            }
+                int existingClassCount = CountClassesByDayExcludingId(cls.Day, cls.Id);
+                if (existingClassCount >= 3)
+                {
+                    throw new InvalidOperationException($"Cannot update class. Maximum of 3 classes allowed per day. {cls.Day} already has {existingClassCount} other classes.");
+                }
 
-            using var connection = new MySqlConnection(connectionString);
-            connection.Open();
-            using var cmd = connection.CreateCommand();
+                using var connection = new MySqlConnection(connectionString);
+                connection.Open();
+                using var cmd = connection.CreateCommand();
 
-            cmd.CommandText = @"
+                cmd.CommandText = @"
                 UPDATE Class 
                 SET AccountID=@AccountID, 
                     Type=@Type, 
@@ -249,68 +312,102 @@ namespace FitCheckWebApp.DataAccess
                 WHERE Id=@Id
             ";
 
-            cmd.Parameters.AddWithValue("@AccountID", cls.AccountID);
-            cmd.Parameters.AddWithValue("@Type", cls.Type.ToString());
-            cmd.Parameters.AddWithValue("@Day", cls.Day.ToString());
-            cmd.Parameters.AddWithValue("@Time", cls.Time);
-            cmd.Parameters.AddWithValue("@DurationMinutes", cls.DurationMinutes);
-            cmd.Parameters.AddWithValue("@ParticipantLimit", cls.ParticipantLimit);
-            cmd.Parameters.AddWithValue("@ParticipantsCount", cls.ParticipantsCount);
-            cmd.Parameters.AddWithValue("@Id", cls.Id);
+                cmd.Parameters.AddWithValue("@AccountID", cls.AccountID);
+                cmd.Parameters.AddWithValue("@Type", cls.Type.ToString());
+                cmd.Parameters.AddWithValue("@Day", cls.Day.ToString());
+                cmd.Parameters.AddWithValue("@Time", cls.Time);
+                cmd.Parameters.AddWithValue("@DurationMinutes", cls.DurationMinutes);
+                cmd.Parameters.AddWithValue("@ParticipantLimit", cls.ParticipantLimit);
+                cmd.Parameters.AddWithValue("@ParticipantsCount", cls.ParticipantsCount);
+                cmd.Parameters.AddWithValue("@Id", cls.Id);
 
-            cmd.ExecuteNonQuery();
+                cmd.ExecuteNonQuery();
+            }
+            catch (MySqlException ex)
+            {
+                throw new Exception($"Database error while updating class: {ex.Message}", ex);
+            }
+            catch (InvalidOperationException)
+            {
+                throw; // Re-throw business logic exceptions as-is
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error updating class: {ex.Message}", ex);
+            }
         }
 
         public static int CountUpcomingClassesToday()
         {
-            using var connection = new MySqlConnection(connectionString);
-            connection.Open();
-            using var cmd = connection.CreateCommand();
+            try
+            {
+                using var connection = new MySqlConnection(connectionString);
+                connection.Open();
+                using var cmd = connection.CreateCommand();
 
-            // Get today's day name (e.g., "Monday", "Tuesday")
-            string today = DateTime.Now.DayOfWeek.ToString();
+                // Get today's day name (e.g., "Monday", "Tuesday")
+                string today = DateTime.Now.DayOfWeek.ToString();
 
-            // Get current time
-            TimeSpan currentTime = DateTime.Now.TimeOfDay;
+                // Get current time
+                TimeSpan currentTime = DateTime.Now.TimeOfDay;
 
-            cmd.CommandText = @"
+                cmd.CommandText = @"
                 SELECT COUNT(*) 
                 FROM Class 
                 WHERE Day = @Day 
                 AND Time > @CurrentTime
             ";
-            cmd.Parameters.AddWithValue("@Day", today);
-            cmd.Parameters.AddWithValue("@CurrentTime", currentTime);
+                cmd.Parameters.AddWithValue("@Day", today);
+                cmd.Parameters.AddWithValue("@CurrentTime", currentTime);
 
-            return Convert.ToInt32(cmd.ExecuteScalar());
+                return Convert.ToInt32(cmd.ExecuteScalar());
+            }
+            catch (MySqlException ex)
+            {
+                throw new Exception($"Database error while counting upcoming classes: {ex.Message}", ex);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error counting upcoming classes: {ex.Message}", ex);
+            }
         }
 
         public static bool DeleteClass(int classId)
         {
-            using var connection = new MySqlConnection(connectionString);
-            connection.Open();
+            try
+            {
+                using var connection = new MySqlConnection(connectionString);
+                connection.Open();
 
-            using var cmd = connection.CreateCommand();
-            cmd.CommandText = "DELETE FROM Class WHERE Id = @Id";
-            cmd.Parameters.AddWithValue("@Id", classId);
+                using var cmd = connection.CreateCommand();
+                cmd.CommandText = "DELETE FROM Class WHERE Id = @Id";
+                cmd.Parameters.AddWithValue("@Id", classId);
 
-            int rowsAffected = cmd.ExecuteNonQuery();
+                int rowsAffected = cmd.ExecuteNonQuery();
 
-
-            return rowsAffected > 0;
+                return rowsAffected > 0;
+            }
+            catch (MySqlException ex)
+            {
+                throw new Exception($"Database error while deleting class: {ex.Message}", ex);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error deleting class: {ex.Message}", ex);
+            }
         }
-
 
         public static List<Class> GetAllClassesForTrainer(int trainerId)
         {
-            
-            var allClasses = GetAllClasses();
-
-            
-            return allClasses.Where(c => c.AccountID == trainerId).ToList();
+            try
+            {
+                var allClasses = GetAllClasses();
+                return allClasses.Where(c => c.AccountID == trainerId).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error retrieving classes for trainer: {ex.Message}", ex);
+            }
         }
-
-
-
     }
 }
