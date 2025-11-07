@@ -19,10 +19,9 @@ namespace FitCheckWebApp.Controllers
             var userId = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? "0");
             var currentUser = AccountManager.FindById(userId);
 
-            // Get only classes assigned to this trainer
+
             var trainerClasses = ClassManager.GetAllClassesForTrainer(userId);
 
-            // Group classes by day
             var classesByDay = trainerClasses
                 .GroupBy(c => c.Day)
                 .ToDictionary(
