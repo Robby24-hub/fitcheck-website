@@ -109,6 +109,25 @@ namespace FitCheckWebApp.Helpers
 
         }
 
+        public static bool IsValidEmail(string email)
+        {
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == email;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public static bool IsValidPhone(string phone)
+        {
+            // Basic phone validation - adjust based on your requirements
+            return !string.IsNullOrWhiteSpace(phone) && phone.Length >= 10 && phone.All(char.IsDigit);
+        }
+
 
     }
 }
