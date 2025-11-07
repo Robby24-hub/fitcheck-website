@@ -252,19 +252,24 @@
         }
 
         // Age calculation
-        document.addEventListener("DOMContentLoaded", function () {
+                document.addEventListener("DOMContentLoaded", function () {
             const birthDateInput = document.querySelector("input[name='BirthDate']");
             const ageOutput = document.getElementById("ageOutput");
 
             if (birthDateInput && ageOutput) {
-                // Set max date to today
+                
                 const today = new Date().toISOString().split("T")[0];
                 birthDateInput.setAttribute("max", today);
 
-                // Set min date to 120 years ago (reasonable maximum human age)
+                
                 const minDate = new Date();
                 minDate.setFullYear(minDate.getFullYear() - 120);
                 birthDateInput.setAttribute("min", minDate.toISOString().split("T")[0]);
+
+               
+                const maxDate = new Date();
+                maxDate.setFullYear(maxDate.getFullYear() - 18);
+                birthDateInput.setAttribute("max", maxDate.toISOString().split("T")[0]);
 
                 birthDateInput.addEventListener("change", function () {
                     const birthDateValue = this.value;
@@ -273,22 +278,29 @@
                         return;
                     }
 
-                    // Parse date components to avoid timezone issues
+
                     const [year, month, day] = birthDateValue.split("-").map(Number);
                     const todayDate = new Date();
 
                     let age = todayDate.getFullYear() - year;
 
-                    // Check if birthday hasn't occurred yet this year
-                    const currentMonth = todayDate.getMonth() + 1; // JavaScript months are 0-indexed
+                    const currentMonth = todayDate.getMonth() + 1; 
                     const currentDay = todayDate.getDate();
 
                     if (month > currentMonth || (month === currentMonth && day > currentDay)) {
                         age--;
                     }
 
-                    // Display age only if it's reasonable
+          
                     ageOutput.value = (age >= 0 && age <= 120) ? age : "";
+
+                  
+                    if (age < 18) {
+                        ageOutput.style.color = 'red';
+                     
+                    } else {
+                        ageOutput.style.color = ''; 
+                    }
                 });
             }
         });

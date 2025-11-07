@@ -127,6 +127,12 @@ namespace FitCheckWebApp.Controllers
 
             model.Age = Helpers.Helpers.CalculateAge(model.BirthDate);
 
+            if (model.Age < 18)
+            {
+                ModelState.AddModelError("BirthDate", "You must be at least 18 years old to register.");
+                return View(model);
+            }
+
             if (model.Age < 0)
             {
                 ModelState.AddModelError("Age", "Invalid age calculated from birth date.");
