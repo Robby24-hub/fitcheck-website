@@ -592,16 +592,59 @@ namespace FitCheckWebApp.Controllers
 
                 if (account == null)
                     return RedirectToAction("Login");
+    
+                if (string.IsNullOrWhiteSpace(model.FirstName))
+                {
+                    TempData["ErrorMessage"] = "First name is required.";
+                    return RedirectToAction("UserProfileUser");
+                }
 
-                account.FirstName = model.FirstName;
-                account.LastName = model.LastName;
+                if (string.IsNullOrWhiteSpace(model.LastName))
+                {
+                    TempData["ErrorMessage"] = "Last name is required.";
+                    return RedirectToAction("UserProfileUser");
+                }
+
+                if (string.IsNullOrWhiteSpace(model.Email) || !IsValidEmail(model.Email))
+                {
+                    TempData["ErrorMessage"] = "Valid email is required.";
+                    return RedirectToAction("UserProfileUser");
+                }
+
+                if (string.IsNullOrWhiteSpace(model.ContactNumber) || !IsValidPhone(model.ContactNumber))
+                {
+                    TempData["ErrorMessage"] = "Valid contact number is required.";
+                    return RedirectToAction("UserProfileUser");
+                }
+
+                if (model.BirthDate == null || model.BirthDate > DateTime.Now)
+                {
+                    TempData["ErrorMessage"] = "Valid birth date is required.";
+                    return RedirectToAction("UserProfileUser");
+                }
+
+
+                if (string.IsNullOrWhiteSpace(model.EmergencyName))
+                {
+                    TempData["ErrorMessage"] = "Emergency contact name is required.";
+                    return RedirectToAction("UserProfileUser");
+                }
+
+                if (string.IsNullOrWhiteSpace(model.EmergencyContact) || !IsValidPhone(model.EmergencyContact))
+                {
+                    TempData["ErrorMessage"] = "Valid emergency contact number is required.";
+                    return RedirectToAction("UserProfileUser");
+                }
+
+                account.FirstName = model.FirstName.Trim();
+                account.LastName = model.LastName.Trim();
                 account.BirthDate = model.BirthDate;
                 account.Age = Helpers.Helpers.CalculateAge(model.BirthDate);
                 account.Gender = model.Gender;
-                account.ContactNumber = model.ContactNumber;
-                account.Email = model.Email;
-                account.EmergencyName = model.EmergencyName;
-                account.EmergencyContact = model.EmergencyContact;
+                account.ContactNumber = model.ContactNumber.Trim();
+                account.Email = model.Email.Trim();
+                account.EmergencyName = model.EmergencyName.Trim();
+                account.EmergencyContact = model.EmergencyContact.Trim();
 
                 AccountManager.UpdateAccount(account);
 
