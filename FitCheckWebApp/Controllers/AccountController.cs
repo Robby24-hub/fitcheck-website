@@ -80,6 +80,13 @@ namespace FitCheckWebApp.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            HttpContext.Session.Clear();
+
+            Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+            Response.Headers["Expires"] = "-1";
+            Response.Headers["Pragma"] = "no-cache";
+
             return RedirectToAction("Login", "Account");
         }
         #endregion
@@ -159,12 +166,26 @@ namespace FitCheckWebApp.Controllers
         // ===== STATIC PAGES =======
         // ==========================
         #region Static Pages
+
+        [Authorize]
         public IActionResult TermsAndConditions() => View();
+
+        [Authorize]
         public IActionResult PrivacyPolicy() => View();
+
+        [Authorize]
         public IActionResult Products() => View();
+
+        [Authorize]
         public IActionResult AccountUser() => View();
+
+        [Authorize]
         public IActionResult AboutFitcheckUser() => View();
+
+        [Authorize]
         public IActionResult PrivacyPolicyUser() => View();
+
+        [Authorize]
         public IActionResult TermsConditionsUser() => View();
         #endregion
 
