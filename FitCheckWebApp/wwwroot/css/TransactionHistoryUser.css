@@ -1,4 +1,6 @@
-﻿/* Reset */
+﻿/* =====================================================
+   RESET & BASE STYLES
+   ===================================================== */
 * {
     margin: 0;
     padding: 0;
@@ -10,7 +12,9 @@ body {
     background-color: black;
 }
 
-/* Header */
+/* =====================================================
+   HEADER STYLES
+   ===================================================== */
 header {
     background-color: black;
     color: white;
@@ -23,7 +27,6 @@ header {
     z-index: 1000;
 }
 
-/* Brand section*/
 .brand-container {
     display: flex;
     align-items: center;
@@ -42,7 +45,9 @@ header {
     color: #d2f801;
 }
 
-/* Navbar */
+/* =====================================================
+   NAVIGATION STYLES
+   ===================================================== */
 .navbar {
     display: flex;
     gap: 3rem;
@@ -59,7 +64,6 @@ header {
             color: #d2f801;
         }
 
-    /* Back link style */
     .navbar .back-link {
         display: flex;
         align-items: center;
@@ -86,9 +90,9 @@ header {
                 transform: translateX(-4px);
             }
 
-
-/*=====================================================================*/
-/*MAIN*/
+/* =====================================================
+   MAIN CONTENT STYLES
+   ===================================================== */
 main {
     min-height: 60vh;
     background-color: black;
@@ -112,6 +116,9 @@ main {
     letter-spacing: 2px;
 }
 
+/* =====================================================
+   TABLE STYLES
+   ===================================================== */
 .table-wrapper {
     overflow-x: auto;
     border-radius: 8px;
@@ -137,6 +144,7 @@ main {
         border-bottom: 2px solid #d2f801;
         text-transform: uppercase;
         letter-spacing: 1px;
+        white-space: nowrap;
     }
 
     .transaction-table td {
@@ -198,7 +206,9 @@ main {
     font-size: 1.1rem;
 }
 
-/* Empty State */
+/* =====================================================
+   EMPTY STATE
+   ===================================================== */
 .empty-state {
     text-align: center;
     padding: 4rem 2rem;
@@ -219,27 +229,9 @@ main {
     font-size: 1.2rem;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-    .page-title {
-        font-size: 2rem;
-    }
-
-    .transaction-table th,
-    .transaction-table td {
-        padding: 1rem;
-        font-size: 0.9rem;
-    }
-
-    .plan-badge {
-        padding: 0.4rem 0.8rem;
-        font-size: 0.8rem;
-    }
-}
-
-
-/*===========================================*/
-
+/* =====================================================
+   FOOTER STYLES
+   ===================================================== */
 footer {
     background-color: black;
     color: white;
@@ -250,7 +242,6 @@ footer {
     font-family: Arial, Helvetica, sans-serif;
 }
 
-/* HR line */
 .hr-container {
     display: flex;
     justify-content: center;
@@ -262,13 +253,6 @@ hr {
     border: 1px solid rgb(98, 98, 98);
 }
 
-/* Footer content container */
-.left-side-footer,
-.right-side-footer {
-    display: flex;
-}
-
-/* Space out left & right evenly */
 footer {
     display: flex;
     flex-direction: column;
@@ -291,7 +275,6 @@ footer .right-side-footer {
     gap: 2rem;
 }
 
-/*================ Left side =================*/
 .description-footer {
     display: flex;
     align-items: center;
@@ -311,7 +294,6 @@ footer .right-side-footer {
         max-width: 400px;
     }
 
-/* Social follow */
 .follow-socials-container {
     display: flex;
     flex-direction: row;
@@ -342,13 +324,11 @@ footer .right-side-footer {
             transform: scale(1.1);
         }
 
-/*================ Right side =================*/
 .right-side-footer {
     flex-direction: column;
     gap: 1rem;
     flex: 1;
 }
-
 
     .right-side-footer div {
         display: flex;
@@ -366,3 +346,345 @@ footer .right-side-footer {
         width: 25px;
         height: auto;
     }
+
+/* =====================================================
+   RESPONSIVE DESIGN - TABLET
+   ===================================================== */
+@media (max-width: 1024px) {
+    /* Header */
+    header {
+        padding: 0 1.5rem;
+    }
+
+    /* Main Content */
+    main {
+        padding: 2.5rem 1.5rem;
+    }
+
+    .transaction-container {
+        max-width: 100%;
+    }
+
+    .page-title {
+        font-size: 2.2rem;
+        margin-bottom: 2.5rem;
+    }
+
+    /* Table */
+    .transaction-table th {
+        padding: 1.25rem 1.5rem;
+        font-size: 1rem;
+    }
+
+    .transaction-table td {
+        padding: 1.25rem 1.5rem;
+        font-size: 0.95rem;
+    }
+
+    .plan-badge {
+        padding: 0.45rem 1rem;
+        font-size: 0.85rem;
+    }
+
+    /* Footer */
+    .footer-container {
+        gap: 5rem;
+    }
+}
+
+/* =====================================================
+   RESPONSIVE DESIGN - MOBILE
+   ===================================================== */
+@media (max-width: 768px) {
+    /* Header - Keep horizontal alignment */
+    header {
+        padding: 0 1rem;
+    }
+
+    /* Brand */
+    .brand {
+        font-size: 1.5rem;
+    }
+
+    .logo {
+        width: 4rem;
+    }
+
+    /* Navigation */
+    .navbar {
+        gap: 1.5rem;
+    }
+
+        .navbar a {
+            font-size: 1rem;
+        }
+
+        .navbar .back-link i {
+            width: 20px;
+            height: 20px;
+        }
+
+    /* Main Content */
+    main {
+        padding: 2rem 1rem;
+    }
+
+    .page-title {
+        font-size: 1.8rem;
+        margin-bottom: 2rem;
+        letter-spacing: 1px;
+    }
+
+    /* Table - Mobile Card View */
+    .table-wrapper {
+        border-radius: 0;
+        background-color: transparent;
+    }
+
+    .transaction-table {
+        display: block;
+    }
+
+        .transaction-table thead {
+            display: none;
+        }
+
+        .transaction-table tbody {
+            display: block;
+        }
+
+            .transaction-table tbody tr {
+                display: block;
+                background-color: rgba(255, 255, 255, 0.03);
+                border: 1px solid rgba(98, 98, 98, 0.3);
+                border-radius: 8px;
+                margin-bottom: 1rem;
+                padding: 1rem;
+            }
+
+                .transaction-table tbody tr:hover {
+                    background-color: rgba(210, 248, 1, 0.08);
+                }
+
+        .transaction-table td {
+            display: block;
+            text-align: left;
+            padding: 0.75rem 0;
+            border-bottom: none;
+            position: relative;
+            padding-left: 45%;
+        }
+
+            .transaction-table td:before {
+                content: attr(data-label);
+                position: absolute;
+                left: 0;
+                width: 40%;
+                padding-right: 10px;
+                white-space: nowrap;
+                font-weight: bold;
+                color: #d2f801;
+                text-transform: uppercase;
+                font-size: 0.85rem;
+            }
+
+            /* Add data labels via HTML or adjust here */
+            .transaction-table td:nth-child(1):before {
+                content: "Reference ID";
+            }
+
+            .transaction-table td:nth-child(2):before {
+                content: "Order Time";
+            }
+
+            .transaction-table td:nth-child(3):before {
+                content: "Plan";
+            }
+
+            .transaction-table td:nth-child(4):before {
+                content: "Total";
+            }
+
+    .plan-badge {
+        padding: 0.4rem 0.9rem;
+        font-size: 0.8rem;
+    }
+
+    /* Empty State */
+    .empty-state {
+        padding: 3rem 1.5rem;
+    }
+
+    .empty-icon i {
+        width: 48px;
+        height: 48px;
+    }
+
+    .empty-state p {
+        font-size: 1.1rem;
+    }
+
+    /* Footer */
+    .footer-container {
+        flex-direction: column;
+        gap: 3rem;
+        align-items: center;
+    }
+
+    footer .left-side-footer,
+    footer .right-side-footer {
+        width: 100%;
+        align-items: center;
+        text-align: center;
+    }
+
+    .description-footer {
+        flex-direction: column;
+        text-align: center;
+    }
+
+        .description-footer p {
+            max-width: 100%;
+        }
+
+    .follow-socials-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .right-side-footer div {
+        justify-content: center;
+    }
+
+    .right-side-footer p {
+        width: auto;
+        text-align: center;
+    }
+}
+
+/* =====================================================
+   RESPONSIVE DESIGN - SMALL MOBILE
+   ===================================================== */
+@media (max-width: 480px) {
+    /* Brand */
+    .brand {
+        font-size: 1.2rem;
+    }
+
+    .logo {
+        width: 3rem;
+    }
+
+    /* Header */
+    header {
+        gap: 0.75rem;
+    }
+
+    /* Navigation */
+    .navbar {
+        gap: 1rem;
+    }
+
+        .navbar a {
+            font-size: 0.9rem;
+        }
+
+    /* Main Content */
+    main {
+        padding: 1.5rem 0.5rem;
+    }
+
+    .page-title {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    /* Table - Mobile Card View */
+    .transaction-table tbody tr {
+        padding: 0.85rem;
+        margin-bottom: 0.85rem;
+    }
+
+    .transaction-table td {
+        padding: 0.6rem 0;
+        font-size: 0.9rem;
+        padding-left: 42%;
+    }
+
+        .transaction-table td:before {
+            font-size: 0.8rem;
+            width: 38%;
+        }
+
+    .plan-badge {
+        padding: 0.35rem 0.75rem;
+        font-size: 0.75rem;
+    }
+
+    .total-amount {
+        font-size: 1rem;
+    }
+
+    /* Empty State */
+    .empty-state {
+        padding: 2.5rem 1rem;
+    }
+
+    .empty-icon i {
+        width: 40px;
+        height: 40px;
+    }
+
+    .empty-state p {
+        font-size: 1rem;
+    }
+
+    /* Footer */
+    .description-footer img {
+        width: 4rem;
+    }
+
+    .description-footer p,
+    .right-side-footer p {
+        font-size: 0.85rem;
+    }
+
+    .social-media-container img {
+        width: 18px;
+    }
+
+    .right-side-footer img {
+        width: 22px;
+    }
+
+    .follow-us-footer {
+        font-size: 1.1rem;
+    }
+}
+
+/* =====================================================
+   ALTERNATIVE: HORIZONTAL SCROLL FOR MOBILE
+   (Uncomment this section if you prefer scrollable table instead of card view)
+   ===================================================== */
+/*
+@media (max-width: 768px) {
+    .table-wrapper {
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .transaction-table {
+        min-width: 600px;
+    }
+
+    .transaction-table th,
+    .transaction-table td {
+        padding: 1rem;
+        font-size: 0.9rem;
+    }
+
+    .plan-badge {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.8rem;
+    }
+}
+*/

@@ -1,4 +1,6 @@
-﻿/* Reset */
+﻿/* =====================================================
+   RESET & BASE STYLES
+   ===================================================== */
 * {
     margin: 0;
     padding: 0;
@@ -10,7 +12,9 @@ body {
     background-color: black;
 }
 
-/* Header */
+/* =====================================================
+   HEADER STYLES
+   ===================================================== */
 header {
     background-color: black;
     color: white;
@@ -23,7 +27,7 @@ header {
     z-index: 1000;
 }
 
-/* Brand section*/
+/* Brand section */
 .brand-container {
     display: flex;
     align-items: center;
@@ -42,7 +46,40 @@ header {
     color: #d2f801;
 }
 
-/* Navbar */
+/* =====================================================
+   HAMBURGER MENU
+   ===================================================== */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    gap: 5px;
+    z-index: 1001;
+}
+
+    .hamburger span {
+        width: 30px;
+        height: 3px;
+        background-color: #d2f801;
+        border-radius: 3px;
+        transition: all 0.3s ease;
+    }
+
+    .hamburger.active span:nth-child(1) {
+        transform: rotate(45deg) translate(8px, 8px);
+    }
+
+    .hamburger.active span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .hamburger.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(8px, -8px);
+    }
+
+/* =====================================================
+   NAVIGATION STYLES
+   ===================================================== */
 .navbar {
     display: flex;
     gap: 3rem;
@@ -87,9 +124,9 @@ header {
         box-shadow: 0 0 12px rgba(210, 248, 1, 0.7);
     }
 
-/*=====================================================================*/
-/*MAIN*/
-
+/* =====================================================
+   MAIN CONTENT STYLES
+   ===================================================== */
 main {
     min-height: 90vh;
     color: white;
@@ -99,11 +136,11 @@ main {
     justify-content: center;
     flex-direction: column;
     padding: 20px;
-
 }
 
-
-/* ===================== Account Buttons ===================== */
+/* =====================================================
+   ACCOUNT BUTTONS GRID
+   ===================================================== */
 .grid-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -114,9 +151,9 @@ main {
     justify-items: center;
 }
 
-.grid-container a {
-    text-decoration: none;
-}
+    .grid-container a {
+        text-decoration: none;
+    }
 
 .btn-container {
     display: flex;
@@ -142,7 +179,6 @@ main {
         gap: 10px;
         letter-spacing: 0.5px;
         text-align: center;
-        
     }
 
         .btn-container button i {
@@ -152,7 +188,6 @@ main {
             transition: transform 0.3s ease, color 0.3s ease;
         }
 
-        /* Hover effects */
         .btn-container button:hover {
             background-color: #d2f801;
             color: black;
@@ -165,15 +200,16 @@ main {
                 transform: scale(1.1);
             }
 
-        /* Active effect */
         .btn-container button:active {
             transform: scale(0.97);
             box-shadow: 0 0 10px #a5c400;
         }
 
-/* Modal Overlay */
+/* =====================================================
+   MODAL STYLES
+   ===================================================== */
 .modal-overlay {
-    display: none; /* hidden by default */
+    display: none;
     position: fixed;
     top: 0;
     left: 0;
@@ -185,7 +221,6 @@ main {
     z-index: 2000;
 }
 
-/* Modal Content */
 .modal-content {
     background-color: #111;
     color: white;
@@ -200,11 +235,14 @@ main {
     .modal-content h3 {
         color: #d2f801;
         margin-bottom: 15px;
+        font-size: 1.5rem;
+        letter-spacing: 1px;
     }
 
     .modal-content p {
         margin-bottom: 25px;
         font-size: 1rem;
+        color: #d3d3d3;
     }
 
 .modal-buttons {
@@ -243,8 +281,9 @@ main {
         transform: scale(1.05);
     }
 
-/*===========================================*/
-
+/* =====================================================
+   FOOTER STYLES
+   ===================================================== */
 footer {
     background-color: black;
     color: white;
@@ -255,7 +294,6 @@ footer {
     font-family: Arial, Helvetica, sans-serif;
 }
 
-/* HR line */
 .hr-container {
     display: flex;
     justify-content: center;
@@ -267,13 +305,6 @@ hr {
     border: 1px solid rgb(98, 98, 98);
 }
 
-/* Footer content container */
-.left-side-footer,
-.right-side-footer {
-    display: flex;
-}
-
-/* Space out left & right evenly */
 footer {
     display: flex;
     flex-direction: column;
@@ -296,7 +327,7 @@ footer .right-side-footer {
     gap: 2rem;
 }
 
-/*================ Left side =================*/
+/* Left side footer */
 .description-footer {
     display: flex;
     align-items: center;
@@ -316,7 +347,6 @@ footer .right-side-footer {
         max-width: 400px;
     }
 
-/* Social follow */
 .follow-socials-container {
     display: flex;
     flex-direction: row;
@@ -347,13 +377,12 @@ footer .right-side-footer {
             transform: scale(1.1);
         }
 
-/*================ Right side =================*/
+/* Right side footer */
 .right-side-footer {
     flex-direction: column;
     gap: 1rem;
     flex: 1;
 }
-
 
     .right-side-footer div {
         display: flex;
@@ -372,3 +401,293 @@ footer .right-side-footer {
         height: auto;
     }
 
+/* =====================================================
+   RESPONSIVE DESIGN - TABLET
+   ===================================================== */
+@media (max-width: 1024px) {
+    /* Main Content */
+    main {
+        padding: 40px 20px;
+    }
+
+    /* Grid Container */
+    .grid-container {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.75rem;
+        width: 85%;
+        max-width: 800px;
+        margin: 2.5rem auto;
+    }
+
+    .btn-container button {
+        width: 150px;
+        height: 150px;
+        font-size: 0.95rem;
+    }
+
+        .btn-container button i {
+            width: 36px;
+            height: 36px;
+        }
+
+    /* Footer */
+    .footer-container {
+        gap: 5rem;
+    }
+}
+
+/* =====================================================
+   RESPONSIVE DESIGN - MOBILE
+   ===================================================== */
+@media (max-width: 768px) {
+    /* Header */
+    header {
+        padding: 0 1rem;
+    }
+
+    /* Brand */
+    .brand {
+        font-size: 1.5rem;
+    }
+
+    .logo {
+        width: 4rem;
+    }
+
+    /* Hamburger Menu */
+    .hamburger {
+        display: flex;
+    }
+
+    /* Navigation */
+    .navbar {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 70%;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.98);
+        flex-direction: column;
+        justify-content: center;
+        gap: 2rem;
+        transition: right 0.3s ease-in-out;
+        padding: 2rem;
+    }
+
+        .navbar.show {
+            right: 0;
+        }
+
+        .navbar a {
+            font-size: 1.5rem;
+            text-align: center;
+        }
+
+    .logout-btn {
+        width: 100%;
+        padding: 0.8rem 1.5rem;
+        font-size: 1.2rem;
+    }
+
+    /* Overlay for menu */
+    body.menu-open::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+    }
+
+    /* Main Content */
+    main {
+        padding: 30px 15px;
+        min-height: 85vh;
+    }
+
+    /* Grid Container - 2 columns on mobile */
+    .grid-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+        width: 90%;
+        max-width: 500px;
+        margin: 2rem auto;
+    }
+
+    .btn-container button {
+        width: 140px;
+        height: 140px;
+        font-size: 0.9rem;
+        gap: 8px;
+    }
+
+        .btn-container button i {
+            width: 32px;
+            height: 32px;
+        }
+
+    /* Modal */
+    .modal-content {
+        padding: 20px 25px;
+        max-width: 350px;
+    }
+
+        .modal-content h3 {
+            font-size: 1.3rem;
+        }
+
+        .modal-content p {
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+        }
+
+    .modal-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .btn-yes, .btn-no {
+        width: 100%;
+        padding: 0.6rem 1.2rem;
+    }
+
+    /* Footer */
+    .footer-container {
+        flex-direction: column;
+        gap: 3rem;
+        align-items: center;
+    }
+
+    footer .left-side-footer,
+    footer .right-side-footer {
+        width: 100%;
+        align-items: center;
+        text-align: center;
+    }
+
+    .description-footer {
+        flex-direction: column;
+        text-align: center;
+    }
+
+        .description-footer p {
+            max-width: 100%;
+        }
+
+    .follow-socials-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .right-side-footer div {
+        justify-content: center;
+    }
+
+    .right-side-footer p {
+        width: auto;
+        text-align: center;
+    }
+}
+
+/* =====================================================
+   RESPONSIVE DESIGN - SMALL MOBILE
+   ===================================================== */
+@media (max-width: 480px) {
+    /* Brand */
+    .brand {
+        font-size: 1.2rem;
+    }
+
+    .logo {
+        width: 3rem;
+    }
+
+    /* Main Content */
+    main {
+        padding: 25px 10px;
+        min-height: 80vh;
+    }
+
+    /* Grid Container - Single column on very small screens */
+    .grid-container {
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+        width: 85%;
+        max-width: 300px;
+        margin: 1.5rem auto;
+    }
+
+    .btn-container button {
+        width: 160px;
+        height: 160px;
+        font-size: 0.95rem;
+        gap: 10px;
+    }
+
+        .btn-container button i {
+            width: 36px;
+            height: 36px;
+        }
+
+    /* Modal */
+    .modal-content {
+        padding: 18px 20px;
+        max-width: 90%;
+    }
+
+        .modal-content h3 {
+            font-size: 1.2rem;
+        }
+
+        .modal-content p {
+            font-size: 0.9rem;
+            margin-bottom: 18px;
+        }
+
+    /* Footer */
+    .description-footer img {
+        width: 4rem;
+    }
+
+    .description-footer p,
+    .right-side-footer p {
+        font-size: 0.85rem;
+    }
+
+    .social-media-container img {
+        width: 18px;
+    }
+
+    .right-side-footer img {
+        width: 22px;
+    }
+
+    .follow-us-footer {
+        font-size: 1.1rem;
+    }
+}
+
+/* =====================================================
+   RESPONSIVE DESIGN - EXTRA SMALL MOBILE
+   ===================================================== */
+@media (max-width: 380px) {
+    /* Further reduce button sizes on very small screens */
+    .grid-container {
+        width: 90%;
+        max-width: 280px;
+    }
+
+    .btn-container button {
+        width: 145px;
+        height: 145px;
+        font-size: 0.875rem;
+        gap: 8px;
+    }
+
+        .btn-container button i {
+            width: 30px;
+            height: 30px;
+        }
+}
