@@ -409,5 +409,207 @@ namespace FitCheckWebApp.DataAccess
                 throw new Exception($"Error retrieving classes for trainer: {ex.Message}", ex);
             }
         }
+
+
+
+        public static bool AddUserToClass(int userId, int classId)
+        {
+            try
+            {
+                using var connection = new MySqlConnection(connectionString);
+                connection.Open();
+                using var cmd = connection.CreateCommand();
+
+                cmd.CommandText = @"
+            INSERT INTO UserClassJoin (UserId, ClassId) 
+            VALUES (@UserId, @ClassId)
+        ";
+                cmd.Parameters.AddWithValue("@UserId", userId);
+                cmd.Parameters.AddWithValue("@ClassId", classId);
+
+                int rowsAffected = cmd.ExecuteNonQuery();
+                return rowsAffected > 0;
+            }
+            catch (MySqlException ex)
+            {
+
+                if (ex.Message.Contains("Duplicate"))
+                {
+                    return false;
+                }
+                throw new Exception($"Database error while adding user to class: {ex.Message}", ex);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error adding user to class: {ex.Message}", ex);
+            }
+        }
+
+        public static bool RemoveUserFromClass(int userId, int classId)
+        {
+            try
+            {
+                using var connection = new MySqlConnection(connectionString);
+                connection.Open();
+                using var cmd = connection.CreateCommand();
+
+                cmd.CommandText = @"
+            DELETE FROM UserClassJoin 
+            WHERE UserId = @UserId AND ClassId = @ClassId
+        ";
+                cmd.Parameters.AddWithValue("@UserId", userId);
+                cmd.Parameters.AddWithValue("@ClassId", classId);
+
+                int rowsAffected = cmd.ExecuteNonQuery();
+                return rowsAffected > 0;
+            }
+            catch (MySqlException ex)
+            {
+                throw new Exception($"Database error while removing user from class: {ex.Message}", ex);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error removing user from class: {ex.Message}", ex);
+            }
+        }
+
+        public static HashSet<int> GetUserJoinedClassIds(int userId)
+        {
+            try
+            {
+                var joinedClassIds = new HashSet<int>();
+                using var connection = new MySqlConnection(connectionString);
+                connection.Open();
+                using var cmd = connection.CreateCommand();
+
+                cmd.CommandText = @"
+            SELECT ClassId 
+            FROM UserClassJoin 
+            WHERE UserId = @UserId
+        ";
+                cmd.Parameters.AddWithValue("@UserId", userId);
+
+                using var reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    joinedClassIds.Add(reader.GetInt32("ClassId"));
+                }
+
+                return joinedClassIds;
+            }
+            catch (MySqlException ex)
+            {
+                throw new Exception($"Database error while getting user joined classes: {ex.Message}", ex);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error getting user joined classes: {ex.Message}", ex);
+            }
+        }
+
+        public static bool IsUserJoinedClass(int userId, int classId)
+        {
+            try
+            {
+                using var connection = new MySqlConnection(connectionString);
+                connection.Open();
+                using var cmd = connection.CreateCommand();
+
+                cmd.CommandText = @"
+            SELECT COUNT(*) 
+            FROM UserClassJoin 
+            WHERE UserId = @UserId AND ClassId = @ClassId
+        ";
+                cmd.Parameters.AddWithValue("@UserId", userId);
+                cmd.Parameters.AddWithValue("@ClassId", classId);
+
+                var result = cmd.ExecuteScalar();
+                return Convert.ToInt32(result) > 0;
+            }
+            catch (MySqlException ex)
+            {
+                throw new Exception($"Database error while checking user class join: {ex.Message}", ex);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error checking user class join: {ex.Message}", ex);
+            }
+        }
+
+        public static bool DecrementParticipantCount(int classId)
+        {
+            try
+            {
+                using var connection = new MySqlConnection(connectionString);
+                connection.Open();
+                using var cmd = connection.CreateCommand();
+
+                using var transaction = connection.BeginTransaction();
+                cmd.Transaction = transaction;
+
+                try
+                {
+                    cmd.CommandText = @"
+                SELECT ParticipantsCount 
+                FROM Class 
+                WHERE Id = @Id
+            ";
+                    cmd.Parameters.AddWithValue("@Id", classId);
+
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        if (!reader.Read())
+                        {
+                            transaction.Rollback();
+                            return false;
+                        }
+
+                        int currentCount = reader.GetInt32("ParticipantsCount");
+
+                        if (currentCount <= 0)
+                        {
+                            transaction.Rollback();
+                            return false;
+                        }
+                    }
+
+                    cmd.Parameters.Clear();
+                    cmd.CommandText = @"
+                UPDATE Class 
+                SET ParticipantsCount = ParticipantsCount - 1 
+                WHERE Id = @Id 
+                AND ParticipantsCount > 0
+            ";
+                    cmd.Parameters.AddWithValue("@Id", classId);
+
+                    int rowsAffected = cmd.ExecuteNonQuery();
+
+                    if (rowsAffected > 0)
+                    {
+                        transaction.Commit();
+                        return true;
+                    }
+                    else
+                    {
+                        transaction.Rollback();
+                        return false;
+                    }
+                }
+                catch
+                {
+                    transaction.Rollback();
+                    throw;
+                }
+            }
+            catch (MySqlException ex)
+            {
+                throw new Exception($"Database error while decrementing participant count: {ex.Message}", ex);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error decrementing participant count: {ex.Message}", ex);
+            }
+        }
+
     }
 }
