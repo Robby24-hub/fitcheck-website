@@ -30,7 +30,15 @@
             <h1 class="brand">FITCHECK</h1>
         </div>
 
-        <nav class="navbar">
+        <!-- Hamburger Icon -->
+        <div class="hamburger" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="navbar" id="navbar">
             <a asp-controller="Account" asp-action="UserHome">Home</a>
             <a asp-controller="Transaction" asp-action="UserMembership">Membership</a>
             <a asp-controller="Account" asp-action="ClassesUser">Classes</a>
@@ -39,7 +47,6 @@
             <form method="post" style="display:inline;">
                 <button type="button" class="logout-btn" onclick="openLogoutModal()">Logout</button>
             </form>
-
         </nav>
     </header>
 
@@ -163,6 +170,28 @@
                 closeLogoutModal();
             }
         }
+
+        function toggleMenu() {
+            const navbar = document.getElementById('navbar');
+            const hamburger = document.querySelector('.hamburger');
+            const body = document.body;
+
+            navbar.classList.toggle('show');
+            hamburger.classList.toggle('active');
+            body.classList.toggle('menu-open');
+        }
+
+        // Close menu when clicking outside (overlay)
+        window.onclick = function (e) {
+            const navbar = document.getElementById('navbar');
+            const hamburger = document.querySelector('.hamburger');
+
+            if (e.target.classList.contains('menu-open')) {
+                navbar.classList.remove('show');
+                hamburger.classList.remove('active');
+                document.body.classList.remove('menu-open');
+            }
+        };
 
     </script>
 

@@ -1,4 +1,6 @@
-﻿/* Reset */
+﻿/* =====================================================
+   RESET & BASE STYLES
+   ===================================================== */
 * {
     margin: 0;
     padding: 0;
@@ -10,7 +12,9 @@ body {
     background-color: black;
 }
 
-/* Header */
+/* =====================================================
+   HEADER STYLES
+   ===================================================== */
 header {
     background-color: black;
     color: white;
@@ -23,7 +27,6 @@ header {
     z-index: 1000;
 }
 
-/* Brand section*/
 .brand-container {
     display: flex;
     align-items: center;
@@ -42,7 +45,9 @@ header {
     color: #d2f801;
 }
 
-/* Navbar */
+/* =====================================================
+   NAVIGATION STYLES
+   ===================================================== */
 .navbar {
     display: flex;
     gap: 3rem;
@@ -59,7 +64,6 @@ header {
             color: #d2f801;
         }
 
-    /* Back link style */
     .navbar .back-link {
         display: flex;
         align-items: center;
@@ -86,9 +90,9 @@ header {
                 transform: translateX(-4px);
             }
 
-
-/*=====================================================================*/
-
+/* =====================================================
+   MAIN CONTENT STYLES
+   ===================================================== */
 main {
     min-height: 100vh;
     color: white;
@@ -97,6 +101,7 @@ main {
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    padding: 2rem 1rem;
 }
 
 .section-title {
@@ -114,20 +119,19 @@ main {
 .separator {
     width: 80%;
     border: 1px solid rgb(98, 98, 98);
-    margin: 3rem;
-
+    margin: 3rem auto;
 }
 
-/* Membership Pass */
+/* =====================================================
+   MEMBERSHIP PASS CARDS
+   ===================================================== */
 .membership-pass {
     flex: 1;
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    
     flex-direction: row;
     gap: 3rem;
-    
 }
 
 .pass-card {
@@ -146,7 +150,6 @@ main {
     flex-shrink: 0;
     justify-content: space-between;
 }
-
 
 .pass-header {
     background-color: rgba(0, 0, 0, 0.7);
@@ -179,7 +182,7 @@ main {
 
 .emergency-body {
     flex-direction: column;
-    align-items: flex-start; /* move content to left */
+    align-items: flex-start;
     display: flex;
 }
 
@@ -187,38 +190,35 @@ main {
         color: #d2f801;
         font-size: 1.5rem;
         margin-bottom: 0.5rem;
-        align-self:center;
+        align-self: center;
     }
 
-
-.emergency-details{
+.emergency-details {
     display: flex;
     justify-content: flex-start;
     flex-direction: column;
-
 }
 
+.pass-details p {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 0;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
 
-    .pass-details p {
-        font-size: 1rem;
-        line-height: 1.6;
-        margin: 0;
-        display: flex;
-        flex-direction: row;
-        gap: 10px;
-    }
+.pass-details span.label {
+    color: #d2f801;
+    font-size: 1.1rem;
+    font-weight: normal;
+}
 
-    .pass-details span.label {
-        color: #d2f801;
-        font-size: 1.1rem;
-        font-weight: normal;
-    }
-
-    .pass-details span.value {
-        color: #fff;
-        font-size: 1.1rem;
-        font-weight: normal;
-    }
+.pass-details span.value {
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: normal;
+}
 
 .pass-footer {
     background-color: #d2f801;
@@ -226,64 +226,9 @@ main {
     width: 100%;
 }
 
-/* Responsive */
-@media (max-width: 1200px) {
-    .content-container {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .membership-overview,
-    .membership-pass {
-        max-width: 600px;
-        width: 100%;
-    }
-}
-
-.btn-container {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    width: 50%;
-    margin-top: 1.5rem;
-    flex-direction: column;
-}
-
-    .btn-container form {
-        width: 100%;
-        max-width: 300px;
-        display: flex;
-        justify-content:center;
-        margin: .5rem;
-    }
-
-
-.btn {
-    width: 80%;
-    background: #d2f801;
-    color: #1a1a1a;
-    font-size: 16px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    padding: 16px;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-transform: uppercase;
-}
-
-    .btn:hover {
-        background: #d4ff33;
-        transform: translateY(-2px);
-        box-shadow: 0 5px 20px rgba(200, 255, 0, 0.4);
-    }
-
-    .btn:active {
-    transform: translateY(0);
-}
-
-/* Manage Membership Section */
+/* =====================================================
+   MANAGE MEMBERSHIP SECTION
+   ===================================================== */
 .manage-membership {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(210, 248, 1, 0.2);
@@ -328,7 +273,6 @@ main {
     max-width: 300px;
 }
 
-    /* Button Variants */
     .manage-btn.cancel {
         background: #ff4d4d;
         color: white;
@@ -360,7 +304,51 @@ main {
             box-shadow: 0 4px 15px rgba(210, 248, 1, 0.4);
         }
 
-/* Modal Overlay */
+.btn-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 50%;
+    margin-top: 1.5rem;
+    flex-direction: column;
+}
+
+    .btn-container form {
+        width: 100%;
+        max-width: 300px;
+        display: flex;
+        justify-content: center;
+        margin: .5rem;
+    }
+
+.btn {
+    width: 80%;
+    background: #d2f801;
+    color: #1a1a1a;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    padding: 16px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+}
+
+    .btn:hover {
+        background: #d4ff33;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba(200, 255, 0, 0.4);
+    }
+
+    .btn:active {
+        transform: translateY(0);
+    }
+
+/* =====================================================
+   MODAL STYLES
+   ===================================================== */
 .modal-overlay {
     display: none;
     position: fixed;
@@ -372,13 +360,13 @@ main {
     z-index: 9999;
 }
 
-/* Modal Box */
 .modal-content {
     background: #1a1a1a;
     border: 1px solid rgba(210, 248, 1, 0.3);
     border-radius: 15px;
     padding: 2rem 2.5rem;
     max-width: 420px;
+    width: 90%;
     text-align: center;
     color: white;
     box-shadow: 0 0 25px rgba(210, 248, 1, 0.4);
@@ -400,7 +388,6 @@ main {
         line-height: 1.4;
     }
 
-/* Buttons inside modal */
 .modal-buttons {
     display: flex;
     justify-content: center;
@@ -417,28 +404,26 @@ main {
     transition: all 0.3s ease;
 }
 
-    /* Confirm and Close Styles */
-    .confirm-renew, .close-keep-it{
-        background: #d2f801;
-        color: #1a1a1a;
+.confirm-renew, .close-keep-it {
+    background: #d2f801;
+    color: #1a1a1a;
+}
+
+    .confirm-renew:hover, .close-keep-it:hover {
+        background: #eaff47;
+        box-shadow: 0 0 15px rgba(210, 248, 1, 0.4);
     }
 
-        .confirm-renew:hover, .close-keep-it:hover {
-            background: #eaff47;
-            box-shadow: 0 0 15px rgba(210, 248, 1, 0.4);
-        }
+.confirm-cancel, .close-not-now {
+    background: #333;
+    color: white;
+    border: 1px solid #666;
+}
 
-    .confirm-cancel, .close-not-now {
-        background: #333;
-        color: white;
-        border: 1px solid #666;
+    .confirm-cancel:hover, .close-not-now:hover {
+        background: #444;
     }
 
-        .confirm-cancel:hover, .close-not-now:hover {
-            background: #444;
-        }
-
-/* Fade-in animation */
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -451,8 +436,9 @@ main {
     }
 }
 
-/*===========================================*/
-
+/* =====================================================
+   FOOTER STYLES
+   ===================================================== */
 footer {
     background-color: black;
     color: white;
@@ -463,7 +449,6 @@ footer {
     font-family: Arial, Helvetica, sans-serif;
 }
 
-/* HR line */
 .hr-container {
     display: flex;
     justify-content: center;
@@ -475,13 +460,6 @@ hr {
     border: 1px solid rgb(98, 98, 98);
 }
 
-/* Footer content container */
-.left-side-footer,
-.right-side-footer {
-    display: flex;
-}
-
-/* Space out left & right evenly */
 footer {
     display: flex;
     flex-direction: column;
@@ -504,7 +482,6 @@ footer .right-side-footer {
     gap: 2rem;
 }
 
-/*================ Left side =================*/
 .description-footer {
     display: flex;
     align-items: center;
@@ -524,7 +501,6 @@ footer .right-side-footer {
         max-width: 400px;
     }
 
-/* Social follow */
 .follow-socials-container {
     display: flex;
     flex-direction: row;
@@ -555,13 +531,11 @@ footer .right-side-footer {
             transform: scale(1.1);
         }
 
-/*================ Right side =================*/
 .right-side-footer {
     flex-direction: column;
     gap: 1rem;
     flex: 1;
 }
-
 
     .right-side-footer div {
         display: flex;
@@ -579,3 +553,400 @@ footer .right-side-footer {
         width: 25px;
         height: auto;
     }
+
+/* =====================================================
+   RESPONSIVE DESIGN - TABLET
+   ===================================================== */
+@media (max-width: 1024px) {
+    /* Header */
+    header {
+        padding: 0 1.5rem;
+    }
+
+    /* Main Content */
+    main {
+        padding: 1.5rem 1rem;
+    }
+
+    .section-title {
+        font-size: 1.8rem;
+        margin: 2.5rem 0 1.25rem 0;
+    }
+
+    /* Membership Pass - Stack cards vertically on smaller tablets */
+    .membership-pass {
+        gap: 2rem;
+    }
+
+    .pass-card {
+        width: 450px;
+        height: 280px;
+    }
+
+    .pass-header h3 {
+        font-size: 1.2rem;
+    }
+
+    .pass-details span.label,
+    .pass-details span.value {
+        font-size: 1rem;
+    }
+
+    .emergency-body h5 {
+        font-size: 1.3rem;
+    }
+
+    /* Manage Membership */
+    .manage-membership {
+        width: 95%;
+        max-width: 650px;
+        padding: 1.75rem;
+    }
+
+    /* Footer */
+    .footer-container {
+        gap: 5rem;
+    }
+}
+
+@media (max-width: 900px) {
+    /* Stack membership cards vertically */
+    .membership-pass {
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+    }
+
+    .pass-card {
+        width: 100%;
+        max-width: 500px;
+    }
+}
+
+/* =====================================================
+   RESPONSIVE DESIGN - MOBILE
+   ===================================================== */
+@media (max-width: 768px) {
+    /* Header - Keep horizontal alignment */
+    header {
+        padding: 0 1rem;
+    }
+
+    /* Brand */
+    .brand {
+        font-size: 1.5rem;
+    }
+
+    .logo {
+        width: 4rem;
+    }
+
+    /* Navigation */
+    .navbar {
+        gap: 1.5rem;
+    }
+
+        .navbar a {
+            font-size: 1rem;
+        }
+
+        .navbar .back-link i {
+            width: 20px;
+            height: 20px;
+        }
+
+    /* Main Content */
+    main {
+        padding: 1.5rem 0.5rem;
+    }
+
+    .section-title {
+        font-size: 1.6rem;
+        margin: 2rem 0 1rem 0;
+        letter-spacing: 1px;
+    }
+
+    .separator {
+        width: 90%;
+        margin: 2rem auto;
+    }
+
+    /* Membership Pass Cards */
+    .membership-pass {
+        flex-direction: column;
+        gap: 1.5rem;
+        width: 100%;
+    }
+
+    .pass-card {
+        width: 95%;
+        max-width: 450px;
+        height: auto;
+        min-height: 250px;
+    }
+
+    .pass-header {
+        padding: 12px 20px;
+    }
+
+        .pass-header img {
+            width: 30px;
+            height: 30px;
+        }
+
+        .pass-header h3 {
+            font-size: 1.1rem;
+        }
+
+    .pass-body {
+        padding: 15px 20px;
+    }
+
+    .pass-details p {
+        font-size: 0.95rem;
+        line-height: 1.5;
+        flex-wrap: wrap;
+    }
+
+    .pass-details span.label,
+    .pass-details span.value {
+        font-size: 1rem;
+    }
+
+    .emergency-body h5 {
+        font-size: 1.2rem;
+    }
+
+    .pass-footer {
+        height: 30px;
+    }
+
+    /* Manage Membership */
+    .manage-membership {
+        width: 95%;
+        padding: 1.5rem;
+        margin: 1rem auto 3rem auto;
+        gap: 1.5rem;
+    }
+
+        .manage-membership p {
+            font-size: 0.95rem;
+        }
+
+    .manage-options {
+        gap: 1rem;
+    }
+
+    .manage-btn {
+        width: 90%;
+        max-width: 280px;
+        padding: 12px 20px;
+        font-size: 0.95rem;
+    }
+
+    /* Modal */
+    .modal-content {
+        padding: 1.75rem 2rem;
+        max-width: 380px;
+    }
+
+        .modal-content h3 {
+            font-size: 1.3rem;
+        }
+
+        .modal-content p {
+            font-size: 0.95rem;
+            margin-bottom: 1.25rem;
+        }
+
+    .modal-buttons {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .modal-btn {
+        width: 100%;
+        padding: 12px 18px;
+    }
+
+    /* Footer */
+    .footer-container {
+        flex-direction: column;
+        gap: 3rem;
+        align-items: center;
+    }
+
+    footer .left-side-footer,
+    footer .right-side-footer {
+        width: 100%;
+        align-items: center;
+        text-align: center;
+    }
+
+    .description-footer {
+        flex-direction: column;
+        text-align: center;
+    }
+
+        .description-footer p {
+            max-width: 100%;
+        }
+
+    .follow-socials-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .right-side-footer div {
+        justify-content: center;
+    }
+
+    .right-side-footer p {
+        width: auto;
+        text-align: center;
+    }
+}
+
+/* =====================================================
+   RESPONSIVE DESIGN - SMALL MOBILE
+   ===================================================== */
+@media (max-width: 480px) {
+    /* Brand */
+    .brand {
+        font-size: 1.2rem;
+    }
+
+    .logo {
+        width: 3rem;
+    }
+
+    /* Header */
+    header {
+        gap: 0.75rem;
+    }
+
+    /* Navigation */
+    .navbar {
+        gap: 1rem;
+    }
+
+        .navbar a {
+            font-size: 0.9rem;
+        }
+
+    /* Main Content */
+    main {
+        padding: 1rem 0.25rem;
+    }
+
+    .section-title {
+        font-size: 1.4rem;
+        margin: 1.5rem 0 1rem 0;
+    }
+
+    .separator {
+        width: 95%;
+        margin: 1.5rem auto;
+    }
+
+    /* Membership Pass Cards */
+    .pass-card {
+        width: 98%;
+        min-height: 240px;
+    }
+
+    .pass-header {
+        padding: 10px 15px;
+    }
+
+        .pass-header img {
+            width: 28px;
+            height: 28px;
+        }
+
+        .pass-header h3 {
+            font-size: 1rem;
+        }
+
+    .pass-body {
+        padding: 12px 15px;
+    }
+
+    .pass-details p {
+        font-size: 0.9rem;
+        gap: 8px;
+    }
+
+    .pass-details span.label,
+    .pass-details span.value {
+        font-size: 0.9rem;
+    }
+
+    .emergency-body h5 {
+        font-size: 1.1rem;
+    }
+
+    .pass-footer {
+        height: 25px;
+    }
+
+    /* Manage Membership */
+    .manage-membership {
+        width: 98%;
+        padding: 1.25rem 1rem;
+        margin: 1rem auto 2.5rem auto;
+    }
+
+        .manage-membership p {
+            font-size: 0.9rem;
+        }
+
+    .manage-btn {
+        width: 95%;
+        padding: 11px 18px;
+        font-size: 0.9rem;
+    }
+
+    /* Modal */
+    .modal-content {
+        padding: 1.5rem 1.5rem;
+        width: 95%;
+    }
+
+        .modal-content h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.85rem;
+        }
+
+        .modal-content p {
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+    .modal-btn {
+        padding: 11px 16px;
+        font-size: 0.9rem;
+    }
+
+    /* Footer */
+    .description-footer img {
+        width: 4rem;
+    }
+
+    .description-footer p,
+    .right-side-footer p {
+        font-size: 0.85rem;
+    }
+
+    .social-media-container img {
+        width: 18px;
+    }
+
+    .right-side-footer img {
+        width: 22px;
+    }
+
+    .follow-us-footer {
+        font-size: 1.1rem;
+    }
+}
