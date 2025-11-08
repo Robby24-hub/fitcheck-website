@@ -1,4 +1,4 @@
-/* =====================================================
+﻿/* =====================================================
    RESET & BASE STYLES
    ===================================================== */
 * {
@@ -654,6 +654,25 @@ footer .right-side-footer {
         bottom: 0.85rem;
         right: 0.85rem;
     }
+
+
+    .class-card.joined {
+        border: 2px solid #d2f801;
+        background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+    }
+
+        .class-card.joined::before {
+            content: "✓ JOINED";
+            position: absolute;
+            top: 0.5rem;
+            left: 0.5rem;
+            background-color: #d2f801;
+            color: black;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
 
     /* Modal */
     .modal-content {

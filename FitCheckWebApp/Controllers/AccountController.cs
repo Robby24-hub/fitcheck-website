@@ -335,47 +335,38 @@ namespace FitCheckWebApp.Controllers
         {
             var userId = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? "0");
             var currentUser = AccountManager.FindById(userId);
-            var allClasses = ClassManager.GetAllClasses();
 
-            var classesByDay = allClasses
-                .GroupBy(c => c.Day)
-                .ToDictionary(
-                    g => g.Key,
-                    g => g.Select(c => new ClassDisplayViewModel
+            var viewModel = new ClassesUserViewModel
+            {
+                HasActiveMembership = currentUser?.MembershipPlan != null &&
+                                     TransactionManager.GetActiveTransactionByAccountId(userId)?.Status == TransactionStatus.Active
+            };
+
+            var allClasses = ClassManager.GetAllClasses();
+            var joinedClassIds = ClassManager.GetUserJoinedClassIds(userId); // Use the new method
+
+            foreach (var day in Enum.GetValues<DayOfWeekClass>())
+            {
+                var classesForDay = allClasses
+                    .Where(c => c.Day == day)
+                    .Select(c => new ClassDisplayViewModel
                     {
                         Id = c.Id,
-                        Type = FormatClassType(c.Type),
-                        InstructorName = c.InstructorName ?? "Unassigned",
+                        Type = c.Type.ToString(),
+                        InstructorName = c.InstructorName,
                         Time = c.Time,
                         DurationMinutes = c.DurationMinutes,
                         ParticipantLimit = c.ParticipantLimit,
-                        ParticipantsCount = c.ParticipantsCount
+                        ParticipantsCount = c.ParticipantsCount,
+                        IsJoined = joinedClassIds.Contains(c.Id) // This will now work!
                     })
-                    .OrderBy(c => c.Time)
-                    .ToList()
-                );
+                    .ToList();
 
-            bool hasActiveMembership = false;
-            string? membershipPlan = null;
-
-            if (currentUser != null)
-            {
-                hasActiveMembership = currentUser.MembershipPlan != null && currentUser.MembershipPlan != MembershipPlan.None;
-                membershipPlan = currentUser.MembershipPlan.ToString();
-
-                var activeTransaction = TransactionManager.GetActiveTransactionByAccountId(userId);
-                if (activeTransaction == null || activeTransaction.Status != TransactionStatus.Active || activeTransaction.EndDate < DateTime.Now)
-                    hasActiveMembership = false;
+                viewModel.ClassesByDay[day] = classesForDay;
+                viewModel.JoinedClassIds = joinedClassIds;
             }
 
-            var model = new ClassesUserViewModel
-            {
-                ClassesByDay = classesByDay,
-                HasActiveMembership = hasActiveMembership,
-                MembershipPlan = membershipPlan
-            };
-
-            return View(model);
+            return View(viewModel);
         }
 
         [HttpPost]
@@ -406,10 +397,26 @@ namespace FitCheckWebApp.Controllers
                 if (classToJoin.ParticipantsCount >= classToJoin.ParticipantLimit)
                     return Json(new { success = false, message = "Class is full" });
 
+                // Check if user already joined this class
+                if (ClassManager.IsUserJoinedClass(userId, request.ClassId))
+                {
+                    return Json(new { success = false, message = "You have already joined this class" });
+                }
+
                 bool joined = ClassManager.IncrementParticipantCount(request.ClassId);
 
                 if (joined)
                 {
+                    // Add user to class join table
+                    bool userAdded = ClassManager.AddUserToClass(userId, request.ClassId);
+
+                    if (!userAdded)
+                    {
+                        // Rollback the participant count if we couldn't add to join table
+                        ClassManager.DecrementParticipantCount(request.ClassId);
+                        return Json(new { success = false, message = "Failed to join class" });
+                    }
+
                     var updatedClass = ClassManager.GetClassById(request.ClassId);
                     bool isFull = updatedClass != null && updatedClass.ParticipantsCount >= updatedClass.ParticipantLimit;
 
@@ -431,6 +438,69 @@ namespace FitCheckWebApp.Controllers
             {
                 Console.WriteLine($"Error joining class: {ex.Message}");
                 return Json(new { success = false, message = "An error occurred while joining the class" });
+            }
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult UnjoinClass([FromBody] JoinClassRequest request)
+        {
+            try
+            {
+                var userId = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? "0");
+                var currentUser = AccountManager.FindById(userId);
+
+                if (currentUser == null)
+                {
+                    return Json(new { success = false, message = "User not found" });
+                }
+
+                var classToUnjoin = ClassManager.GetClassById(request.ClassId);
+
+                if (classToUnjoin == null)
+                    return Json(new { success = false, message = "Class not found" });
+
+                // Check if user actually joined this class
+                if (!ClassManager.IsUserJoinedClass(userId, request.ClassId))
+                {
+                    return Json(new { success = false, message = "You haven't joined this class" });
+                }
+
+                bool unjoined = ClassManager.DecrementParticipantCount(request.ClassId);
+
+                if (unjoined)
+                {
+                    // Remove user from class join table
+                    bool userRemoved = ClassManager.RemoveUserFromClass(userId, request.ClassId);
+
+                    if (!userRemoved)
+                    {
+                        // Rollback the participant count if we couldn't remove from join table
+                        ClassManager.IncrementParticipantCount(request.ClassId);
+                        return Json(new { success = false, message = "Failed to unjoin class" });
+                    }
+
+                    var updatedClass = ClassManager.GetClassById(request.ClassId);
+                    bool isFull = updatedClass != null && updatedClass.ParticipantsCount >= updatedClass.ParticipantLimit;
+
+                    return Json(new
+                    {
+                        success = true,
+                        message = "Successfully unjoined the class!",
+                        isFull = isFull,
+                        participantsCount = updatedClass?.ParticipantsCount ?? 0,
+                        participantLimit = updatedClass?.ParticipantLimit ?? 0
+                    });
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Unable to unjoin class" });
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error unjoining class: {ex.Message}");
+                return Json(new { success = false, message = "An error occurred while unjoining the class" });
             }
         }
         #endregion

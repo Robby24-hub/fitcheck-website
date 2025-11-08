@@ -83,9 +83,13 @@
                                         MEMBERSHIP REQUIRED
                                     </button>
                                 }
-                                else if (cls.IsFull)
+                                else if (cls.IsFull && !cls.IsJoined)
                                 {
                                     <button class="join-btn" disabled style="background-color: #555; color: #999; cursor: not-allowed;">FULL</button>
+                                }
+                                else if (cls.IsJoined)
+                                {
+                                    <button class="unjoin-btn" onclick="unjoinClass(@cls.Id)" style="background-color: #dc3545;">UNJOIN</button>
                                 }
                                 else
                                 {
@@ -246,6 +250,49 @@
                 joinBtn.textContent = "JOIN";
             }
         }
+
+                async function unjoinClass(classId) {
+            const card = document.querySelector(`[data-class-id="${classId}"]`);
+            const unjoinBtn = card.querySelector('.unjoin-btn');
+
+            if (unjoinBtn.disabled) return;
+
+            unjoinBtn.disabled = true;
+            unjoinBtn.textContent = "UNJOINING...";
+
+            try {
+                const response = await fetch('/Account/UnjoinClass', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ classId: classId })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert("Successfully unjoined the class!");
+
+                    unjoinBtn.textContent = "JOIN";
+                    unjoinBtn.style.backgroundColor = "";
+                    unjoinBtn.className = "join-btn";
+                    unjoinBtn.onclick = () => joinClass(classId);
+                    unjoinBtn.disabled = false;
+
+                } else {
+                    alert(result.message || 'Failed to unjoin class');
+                    unjoinBtn.disabled = false;
+                    unjoinBtn.textContent = "UNJOIN";
+                }
+            } catch (error) {
+                console.error('Error unjoining class:', error);
+                alert('An error occurred while unjoining the class');
+                unjoinBtn.disabled = false;
+                unjoinBtn.textContent = "UNJOIN";
+            }
+        }
+
 
         function toggleMenu() {
             const navbar = document.getElementById('navbar');

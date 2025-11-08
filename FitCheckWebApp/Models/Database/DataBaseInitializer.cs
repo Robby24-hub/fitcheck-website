@@ -99,6 +99,17 @@ namespace FitCheckWebApp.Models.Database
                     );";
                     tableCmd.ExecuteNonQuery();
 
+                    tableCmd.CommandText = @"
+                    CREATE TABLE IF NOT EXISTS UserClassJoin (
+                        Id INT PRIMARY KEY AUTO_INCREMENT,
+                        UserId INT NOT NULL,
+                        ClassId INT NOT NULL,
+                        JoinedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+                        FOREIGN KEY (UserId) REFERENCES Account(Id),
+                        FOREIGN KEY (ClassId) REFERENCES Class(Id),
+                        UNIQUE KEY unique_user_class (UserId, ClassId)
+                    );";
+                    tableCmd.ExecuteNonQuery();
 
                     tableCmd.CommandText = "SELECT COUNT(*) FROM Account WHERE Username = 'admin'";
                     long count = (long)tableCmd.ExecuteScalar();
