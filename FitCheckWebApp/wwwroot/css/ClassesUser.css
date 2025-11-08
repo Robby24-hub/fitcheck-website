@@ -264,6 +264,34 @@ main {
         transform: none;
     }
 
+.unjoin-btn {
+    background-color: #;
+    color: black;
+    border: none;
+    border-radius: 8px;
+    padding: 0.4rem 1rem;
+    font-weight: bold;
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}x
+
+    .unjoin-btn:hover {
+        background-color: #ff0e0e;
+        transform: scale(1.05);
+        box-shadow: 0 0 10px rgba(255, 117, 117, 0.6);
+    }
+
+    .unjoin-btn:disabled {
+        background-color: #555 !important;
+        color: #999 !important;
+        cursor: not-allowed;
+        box-shadow: none;
+        transform: none;
+    }
+
 /* =====================================================
    MODAL STYLES
    ===================================================== */

@@ -208,15 +208,24 @@
             const form = document.getElementById('paymentForm');
 
             form.addEventListener('submit', function(e) {
-                e.preventDefault(); // Always prevent default first
+                e.preventDefault();
+
+                // Clean all formatted inputs before submission
+                const cardNumberInput = document.getElementById('cardNumber');
+                if (cardNumberInput && cardNumberInput.dataset.cleanValue) {
+                    // Replace the formatted value with clean value
+                    cardNumberInput.value = cardNumberInput.dataset.cleanValue;
+                }
 
                 if (!validateForm()) {
-                    // Show validation errors and keep modal open
+                    // Restore formatted display if validation fails
+                    if (cardNumberInput && cardNumberInput.value) {
+                        formatCardNumber(cardNumberInput);
+                    }
                     showAllValidationErrors();
                     return false;
                 }
 
-                // If validation passes, submit the form
                 this.submit();
             });
         }
@@ -244,7 +253,7 @@
                         <div class="input-group">
                             <label for="cardNumber">Card Number</label>
                             <input type="text" id="cardNumber" name="cardNumber" asp-for="CardNumber"
-                                   maxlength="19" required pattern="[0-9\s]{13,19}"
+                                   maxlength="23" required
                                    title="Enter a valid credit card number (13-19 digits)"
                                    oninput="formatCardNumber(this)" placeholder="1234 5678 9012 3456">
                             <span asp-validation-for="CardNumber" class="field-validation-error"></span>
@@ -281,11 +290,11 @@
                     <div class="form-row">
                         <div class="input-group">
                             <label for="accountNumber">GCash Number</label>
-                             <input type="tel" id="accountNumber" name="accountNumber" asp-for="AccountNumber"
-                                    placeholder="09XXXXXXXXX" maxlength="11" required
-                                    pattern="09[0-9]{9}"
-                                    title="Enter your 11-digit GCash number starting with 09"
-                                    oninput="formatPhilippineNumber(this, 'gcash')">
+                            <input type="tel" id="accountNumber" name="accountNumber" asp-for="AccountNumber"
+                                   placeholder="09XXXXXXXXX" maxlength="11" required
+                                   pattern="09[0-9]{9}"
+                                   title="Enter your 11-digit GCash number starting with 09"
+                                   oninput="formatPhilippineNumber(this, 'gcash')">
                             <small style="display: block; margin-top: 5px; color: #6b7280; font-size: 12px;">
                                 Format: 09XXXXXXXXX (11 digits)
                             </small>
@@ -298,11 +307,11 @@
                     <div class="form-row">
                         <div class="input-group">
                             <label for="cellphoneNumber">Cellphone Number</label>
-                             <input type="tel" id="cellphoneNumber" name="cellphoneNumber" asp-for="CellphoneNumber"
-                                    placeholder="09XXXXXXXXX or 9XXXXXXXXX" maxlength="11" required
-                                    pattern="(09[0-9]{9}|9[0-9]{9})"
-                                    title="Enter your Philippine mobile number (09XXXXXXXXX or 9XXXXXXXXX)"
-                                    oninput="formatPhilippineNumber(this, 'paycash')">
+                            <input type="tel" id="cellphoneNumber" name="cellphoneNumber" asp-for="CellphoneNumber"
+                                   placeholder="09XXXXXXXXX or 9XXXXXXXXX" maxlength="11" required
+                                   pattern="(09[0-9]{9}|9[0-9]{9})"
+                                   title="Enter your Philippine mobile number (09XXXXXXXXX or 9XXXXXXXXX)"
+                                   oninput="formatPhilippineNumber(this, 'paycash')">
                             <small style="display: block; margin-top: 5px; color: #6b7280; font-size: 12px;">
                                 Format: 09XXXXXXXXX or 9XXXXXXXXX
                             </small>
@@ -323,10 +332,37 @@
             // Remove all non-digits
             let value = input.value.replace(/\D/g, '');
 
-            // Add spaces every 4 digits
-            value = value.replace(/(\d{4})(?=\d)/g, '$1 ');
+            // Limit to 19 digits (maximum card length)
+            if (value.length > 19) {
+                value = value.substring(0, 19);
+            }
 
-            input.value = value;
+            // Add spaces every 4 digits for display
+            let displayValue = value.replace(/(\d{4})(?=\d)/g, '$1 ');
+
+            input.value = displayValue;
+
+            // Store clean value in data attribute
+            input.dataset.cleanValue = value;
+
+            // Real-time validation feedback
+            validateCardNumber(input);
+        }
+
+        function validateCardNumber(input) {
+            const cleanValue = input.dataset.cleanValue || '';
+            const isValid = cleanValue.length >= 13 && cleanValue.length <= 19 && /^\d+$/.test(cleanValue);
+
+            if (cleanValue && !isValid) {
+                input.style.borderColor = '#ef4444';
+                input.style.backgroundColor = '#fef2f2';
+            } else if (cleanValue && isValid) {
+                input.style.borderColor = '#86efac';
+                input.style.backgroundColor = '#f0fdf4';
+            } else {
+                input.style.borderColor = '#d1d5db';
+                input.style.backgroundColor = 'white';
+            }
         }
 
         function formatExpiryDate(input) {
@@ -436,6 +472,18 @@
                 }
             });
 
+            // Validate card number specifically
+            const cardNumberInput = document.getElementById('cardNumber');
+            if (cardNumberInput && cardNumberInput.value) {
+                const cleanCardNumber = cardNumberInput.dataset.cleanValue || cardNumberInput.value.replace(/\D/g, '');
+                const isValidCardNumber = /^\d{13,19}$/.test(cleanCardNumber);
+
+                if (!isValidCardNumber) {
+                    showFieldError(cardNumberInput, 'Card number must be 13-19 digits');
+                    isValid = false;
+                }
+            }
+
             // Validate Philippine numbers specifically
             const gcashField = document.getElementById('accountNumber');
             if (gcashField && gcashField.value) {
@@ -458,10 +506,10 @@
                 }
             }
 
-            // Validate other patterns
+            // Validate other patterns (excluding fields we already validated)
             const patternFields = form.querySelectorAll('[pattern]');
             patternFields.forEach(field => {
-                if (field.id !== 'accountNumber' && field.id !== 'cellphoneNumber') {
+                if (field.id !== 'cardNumber' && field.id !== 'accountNumber' && field.id !== 'cellphoneNumber') {
                     const pattern = new RegExp(field.pattern);
                     const fieldValue = field.value.replace(/\s/g, '');
                     if (field.value && !pattern.test(fieldValue)) {

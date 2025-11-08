@@ -27,7 +27,8 @@ namespace FitCheckWebApp.ViewModels.Transaction
         [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "Surname can only contain letters and spaces")]
         public string? Surname { get; set; }
 
-        [CreditCard(ErrorMessage = "Invalid credit card number")]
+        [Required(ErrorMessage = "Card number is required")]
+        [RegularExpression(@"^\d{13,19}$", ErrorMessage = "Card number must be 13-19 digits")]
         [StringLength(19, ErrorMessage = "Card number cannot exceed 19 characters")]
         public string? CardNumber { get; set; }
 
